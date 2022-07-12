@@ -18,13 +18,13 @@ export default {
     <div class="welcome-container">
         <div class="content-contianer">
             <div class="header-title">
-                <h3>Welcome to application</h3>
+                <h4>Welcome to application</h4>
             </div>
             <div class="body-content">
 
             </div>
             <div class="footer-container">
-                <h4>Create by nexter living team.</h4>
+                <h5>Create by nexter living team.</h5>
             </div>
         </div>
     </div>
@@ -36,14 +36,14 @@ export default {
     margin: auto;
     background: white;
     border-radius: 30px;
-    height: 80vh;
-    margin-top:100px;
+    height: 70vh;
+    margin-top:86px;
     width: 85%;
 }
 
 .content-contianer{
     display: grid;
-    grid-template-rows: 1fr 9fr 1fr;
+    grid-template-rows: 1fr 7fr 1fr;
     grid-row-gap: 2rem;
     row-gap: 1rem;
     text-align: center;
@@ -51,7 +51,7 @@ export default {
 }
 
 .header-title{
- 
+ margin-top: 30px
 }
 
 .body-content{

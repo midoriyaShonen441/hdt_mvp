@@ -84,8 +84,8 @@
             <div class="main-frame">
                 <div class="content-haddle">
                     <div class="text-container">
-                        <h3>If you are already press start</h3>
-                        <h3>and don't forget for allow camera.</h3>
+                        <h4>If you are already press start</h4>
+                        <h4>and don't forget for allow camera.</h4>
                     </div>
                 </div>
                 <div class="btn-voice-action">
@@ -116,10 +116,15 @@
     text-align: center;
 }
 
+.page-title > h1{
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+
 .main-frame{
     border: 1px solid rgb(249, 249, 249);
     width: 85%;
-    height: 85vh;
+    height: 70vh;
     background: white;
     margin: auto;
     border-radius: 20px;
@@ -130,5 +135,9 @@
     justify-content: center;
     align-items: center;
     margin-top: calc(5vh + 10px)
+}
+
+.text-container{
+    font-size: 10px !important;
 }
 </style>
