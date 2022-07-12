@@ -51,3 +51,11 @@ services:
     networks:
       - net
 
+  nginx:
+    container_name: nginx
+    restart: always
+    image: nginx:mainline-alpine
+    ports:
+      - 80:80
+      - 443:443
+
