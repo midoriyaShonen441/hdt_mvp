@@ -1,4 +1,6 @@
 <script>
+import axios from "axios";
+
 export default {
     data(){
         return{
@@ -6,7 +8,9 @@ export default {
         }
     },
     methods:{
-
+        async haddleLogin(){
+            const userLogin = axios.post("")
+        }
     },mounted(){
 
     }
@@ -21,10 +25,10 @@ export default {
         <div class="login-box-content">
             
                 <div class="login-user-email">
-                    <input class="input-email" placeholder='Enter your email.'/>
+                    <input class="input-email" type="email" placeholder='Enter your email.' required/>
                 </div>
                 <div class="btn-content">
-                    <button class="login-btn-email">login</button>
+                    <button class="login-btn-email" @click="haddleLogin">login</button>
                 </div>
 
         </div>
