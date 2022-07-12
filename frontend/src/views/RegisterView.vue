@@ -4,7 +4,7 @@
 export default {
     data(){
         return{
-
+            
         }
     },
     methods:{
@@ -18,7 +18,7 @@ export default {
 
 <template>
     <div class="reigster-conponent">
-        
+
     </div>
 </template>
 

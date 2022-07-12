@@ -82,11 +82,9 @@
     </div>
 </template>
 
-<style scoped>
+<style scoed>
 .on-of-cam{
     margin-top: 30px;
     margin-right: 10px;
 }
-
-
 </style>
