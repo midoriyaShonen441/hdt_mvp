@@ -1,0 +1,55 @@
+version: '3.7'
+
+volumes:
+  database:
+    external: true
+
+networks:
+  net:
+    external: true
+    driver: bridge
+
+services:
+
+  frontend:
+    container_name: hdt_frontend
+    restart: always
+    build: 
+      context: ./frontend
+    ports:
+      - 3333:3333
+    volumes:
+      - ./frontend:/usr/src/app:cached
+    networks:
+      - net
+
+  backend:
+    container_name: hdt_backend
+    restart: always
+    build:
+      context: ./backend
+    ports:
+      - 8888:8888
+    volumes:
+      - ./backend:/usr/src/app:cached
+    networks:
+      - net
+
+  database:
+    container_name: database
+    restart: always
+    image: mongo
+    ports:
+      - 27017:27017
+    networks:
+      - net
+    
+  database-admin:
+    container_name: database-admin
+    restart: always
+    image: mongo-express
+    ports:
+      - 8081:8081
+    networks:
+      - net
+
