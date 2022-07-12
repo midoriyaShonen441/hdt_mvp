@@ -16,4 +16,4 @@ COPY . .
 
 EXPOSE 3333
 
-CMD ["npm", "run", "serve", "--", "--port", "3333"]
+CMD ["npm", "run", "dev"]
