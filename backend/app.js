@@ -60,7 +60,7 @@ app.post("/login", async (req, res) => {
 })
 
 app.post("/getDialog", async (req, res) => {
-    const payload = payload
+    const payload = req.body;
 })
 
 
