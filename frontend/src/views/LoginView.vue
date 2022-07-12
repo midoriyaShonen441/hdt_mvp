@@ -19,12 +19,12 @@ export default {
             <h2><b>Login</b></h2>
         </div>
         <div class="login-box-content">
-            <div class="">
+            <div class="login-context">
                 <div class="login-user-email">
-                    <input/>
+                    <input class="input-email"/>
                 </div>
                 <div class="btn-content">
-                    <button>login</button>
+                    <button class="login-btn-email">login</button>
                 </div>
             </div> 
         </div>
@@ -43,5 +43,9 @@ export default {
     height: 40vh;
     background: white;
     border-radius: 30px;
+}
+
+.login-context{
+    text-align: "center";
 }
 </style>
