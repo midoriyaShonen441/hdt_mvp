@@ -1,6 +1,10 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
+<<<<<<< HEAD
 // import HomeView from './views/HomeView.vue';
+=======
+// import HelloWorld from './views/HomeView.vue';
+>>>>>>> 7beb1a5deef7980171aafec465b7fb0089513712
 </script>
 
 <template>
