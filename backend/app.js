@@ -107,14 +107,4 @@ app.post("/writeEmotion", async (req, res) => {
     };
 })
 
-
-app.post("/proceed", async(req, res) => {
-    const payload = req.body;
-    const processSentiment = require("./modules/processSentiment")
-    const sentimentScore = await processSentiment(payload.speech)
-
-    res.send(`${sentimentScore}`)
-
-})
-
 module.exports = app;
