@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const MONGO_URI = "mongodb://root:root@database:27017"
+const MONGO_URI = "mongodb://root:root@database:27017/hdt"
 
 exports.connect = () => {
     mongoose.connect(MONGO_URI, {
@@ -10,10 +10,10 @@ exports.connect = () => {
         driverInfo: { name: 'Mongoose', version: '6.2.1' }
     })
     .then(() => {
-        console.log("connected to Iot database")
+        console.log("connected to database")
     })
     .catch((error) => {
-        console.log("error Iot Database connecting")
+        console.log("error Database connecting")
         console.error(error)
         process.exit(1)
     });

@@ -3,10 +3,17 @@ const mongoose = require("mongoose")
 const emotion = new mongoose.Schema(
     {
         email: { type: String, required: true },
-        objective: [ String ],
-        faceResult: [ String ],
-        voiceResult: [ String ],
-        answer: [ String ]
+        metadata: {
+            objective: String,
+            sentence: String,
+            question: String
+        },
+        result: {
+            faceResult: String,
+            voiceResult: Number,
+            answer: String, 
+            topWord: [ String ]
+        }
 
     }, {
         timestamps: true
