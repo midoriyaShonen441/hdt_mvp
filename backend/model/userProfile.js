@@ -12,7 +12,8 @@ const userProfile = new mongoose.Schema(
             maritalStatus: String,
             occupation: String,
             interest: String
-        }
+        },
+        isFirstTime:{ type: Boolean, required: true},
     }, {
         timestamps: true
     }
