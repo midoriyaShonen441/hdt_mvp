@@ -1,74 +1,149 @@
 <script>
+import StarterDesc from '../components/StarterDesc.vue';
+import Dialogue1and2 from '../components/dialogue/object1/Dialogue1and2.vue';
+import Dialogue3 from '../components/dialogue/object2/Dialogue3.vue';
+import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
+
     const builder = CY.loader()
         .licenseKey("dad9b5df5ffd65750e82018b4286e6ce96c1d0dfd868")
         .addModule(CY.modules().FACE_EMOTION.name)
         .load()
 
+    window.SpeechRecognition = window.SpeechRecognition ||  window.webkitSpeechRecognition;
+    const recognition = new window.SpeechRecognition();
+    recognition.interimResults = true;
+    recognition.continuous = true;
+
     export default {
+        components:{
+            StarterDesc,
+            Dialogue1and2,
+            Dialogue3,
+            Dialogue4
+            // GoalSetting
+            // VoiceDetect
+            
+        },
         data(){
             return{
                 isCamera: false,
-                isAction: false
+                isActionBtn: false,
+                transcript: '',
+                isRecording: false,
+                runtimeTranscription_: "",
+                isRecord: false,
+                isStarter: true,
+
+                arrayMood: [],
+                isWord: [],
             }
         },
         methods:{
+            
+            testing(){
+                console.log(this.$store.state.storeUserArray);
+            },
+
             cameraAction(){
-                if(!this.isCamera){
+                if(!(this.isActionBtn)){
+                    this.isStarter = false
                     this.isCamera = true;
-                    this.cameraModelAction();
+                    this.isActionBtn = true;
+                    this.$store.state.userAction.isStartRec = true;
+
+                    // this.countAllRound += 1;
+                    this.recordFunction();
                 }else{
-                    this.isCamera = false
-                    this.cameraModelAction();
+                    this.isCamera = false;
+                    this.isActionBtn = false;
+                    this.$store.state.userAction.isStartRec = false;
+                    this.$store.state.userAction.sentenceIndex += 1;
+                    // this.countAllRound += 1;
+
+                    // console.log(this.titleObject)
+                    this.recordFunction();
                 }
             },
-            async myMed(){
-                const arrayData = await localStorage.getItem("cameraEmotion");
-                console.log("arrayData ===> ",parse.JSON(arrayData));
-            },
- 
-            cameraModelAction(){
 
-                let collectArray = [];
+            recordFunction(){
 
-                builder.then(({start}) => {
+
+                builder.then(({start, stop}) => {
                     if(this.isCamera){
                         start();
+                    }else{
+                        stop();
                     }
                 });
 
                 window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
-                    // console.log("evt.detail.output.dominantEmotion ===> ",evt.detail.output);
                     if(evt.detail.output.dominantEmotion !== undefined){
-                        console.log("evt.detail.output.dominantEmotion ===> ",evt.detail.output.dominantEmotion);
 
-                        const warping = {
-                            dominantEmotion: evt.detail.output.dominantEmotion,
-                            angry: evt.detail.output.emotion.Angry,
-                            disgust: evt.detail.output.emotion.Disgust,
-                            fear: evt.detail.output.emotion.Fear,
-                            happy: evt.detail.output.emotion.Happy,
-                            neutral: evt.detail.output.emotion.Neutral,
-                            sad: evt.detail.output.emotion.Sad,
-                            surprise: evt.detail.output.emotion.Surprise
-                        }
-                        collectArray.push(warping);
-                        if(collectArray.length === 21){
-                            builder.then(({stop}) => {
-                                localStorage.setItem("cameraEmotion", JSON.stringify(warping));
-                                stop();
-                                this.isCamera = false;
-                            })
-                        }
+                        console.log(evt.detail.output.dominantEmotion);
+                        this.arrayMood.push(evt.detail.output.dominantEmotion);
+
                     }else{
-                        console.log("passing")
+
+                        console.log("passing");
+
                     }
-                    
                 });
-            }   
+
+                if(this.isRecord === true){
+                    this.isWord.push(this.runtimeTranscription_);
+                    
+                    const wraping = {
+                            arrayMood: this.arrayMood,
+                            word: this.isWord
+                        }
+
+                    this.$store.state.storeUserArray = wraping
+
+                    console.log("this.isRecord true ==> ",this.isRecord);
+                    recognition.stop();
+                    this.runtimeTranscription_ = "";
+                    this.isRecord = false;
+
+                    recognition.addEventListener("end", () => {
+                        this.runtimeTranscription_ = "";
+                        recognition.stop();
+                        this.isRecord = false;
+
+                        
+                    });
+
+                }else{
+                    // event current voice reco word
+                    console.log("this.isRecord false ==> ",this.isRecord)
+                    recognition.addEventListener("result", event => {      
+                    var text = Array.from(event.results)
+                        .map(result => result[0])
+                        .map(result => result.transcript)
+                        .join("");
+                    
+                        this.runtimeTranscription_ = text;
+                        this.runtimeTranscription_ = this.runtimeTranscription_ + text;
+                        // this.isWord = this.runtimeTranscription_
+                        console.log(this.runtimeTranscription_);
+                    });
+                        recognition.start();
+                        this.isRecord = true;
+                }
+            },  
+        },
+
+        updated(){
+            // console.log(this.countAllRound)
+            // if(this.countAllRound <= 6 && this.countAllRound >= 0 ){
+            //     this.titleObject = "Dialogue1and2";
+            //     console.log(this.titleObject,"==>",this.countAllRound)
+            // }else if(this.countAllRound > 6){
+            //     this.titleObject = "goalSetting";
+            //     console.log(this.titleObject,"==>",this.countAllRound)
+            // }
+
         }
     }
-
-    
 </script>
 
 <template>
@@ -76,22 +151,38 @@
         <div class="home-component">
             <div class="page-title">
                 <h1>SCG Nexter Living</h1>
-            </div>
-            <div class="hamburger-container">
-
+                <button @click="testing">Debug</button>
             </div>
 
             <div class="main-frame">
-                <div class="content-haddle">
-                    <div class="text-container">
-                        <h4>If you are already press start</h4>
-                        <h4>and don't forget for allow camera.</h4>
+                    <StarterDesc v-if="isStarter"/>
+                    <Dialogue1and2 v-if="$store.state.userAction.dialogueNow === 'Dialogue1and2'"/>
+                    <Dialogue3 v-if="$store.state.userAction.dialogueNow  === 'Dialogue3'"/>
+                    <Dialogue4 v-if="$store.state.userAction.dialogueNow  === 'Dialogue4'"/>
+                    <!-- <GoalSetting v-if="titleObject === 'goalSetting'"/> -->
+                    <div class="voice-btn">
+                        <div >
+                            <div  v-if="!(isActionBtn)" @click="ToggleMic">
+                                <button 
+                                class="mic" 
+                                @click="cameraAction"
+                                >
+                                Record
+                            </button>
+                            </div>
+                            
+                            <div v-if="(isActionBtn)" @click="ToggleMic"> 
+                                <button 
+                                class="mic" 
+                                @click="cameraAction"
+                                >
+                                Next
+                            </button>
+                            </div>
+                            
+                        </div>             
                     </div>
-                </div>
-                <div class="btn-voice-action">
-                    <button class="on-of-cam" v-if="!isCamera" @click="cameraAction">Start</button>
-                    <!-- <button @click="myMed">Median</button> -->
-                </div>
+
             </div>
         </div>
     </div>
@@ -99,18 +190,6 @@
 
 <style scoed>
 
-.content-haddle{
-    margin-top: 10vh;
-    text-align: center;
-}
-.on-of-cam{
-    font-size: 20px;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    border: 1px solid rgb(190, 190, 190)
-}
 .page-title{
     color: white;
     text-align: center;
@@ -130,14 +209,17 @@
     border-radius: 20px;
 }
 
-.btn-voice-action{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: calc(5vh + 10px)
+
+.voice-btn{
+    margin-top: 5vh;
+    text-align: center;
 }
 
-.text-container{
-    font-size: 10px !important;
+.mic{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 </style>

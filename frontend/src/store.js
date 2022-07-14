@@ -6,7 +6,7 @@ export default createStore({
         objective1: {
             firstTimeGreeting:[
                 "Hi I'm your companion, your safe place or just to listen whatever you feel free to tell me. what would you like to call me?",
-                "Ok, I'm your  …(name)….."
+                "Ok, I'm your "
             ],
             goalSetting:[
                 "How would you like to be different as a result of our daily talkingt? Or how would you like your life to be different?",
@@ -195,6 +195,16 @@ export default createStore({
                 "How would you like your life to be different or coming closer with your goal?",
                 "What will the first thing you will do in tommorrow?"
             ]
-        }
+        },
+        userAction:{
+            userAnswer: "",
+            arrayCameraTrack:[],
+            sentenceIndex:0,
+            dialogueNow:"Dialogue1and2",
+            isStartRec: false
+        },
+        storeUserArray: [],
+        isMicRec: false
+
     }
 });

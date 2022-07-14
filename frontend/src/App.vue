@@ -44,7 +44,8 @@ export default {
               <p style="color:white; ">home</p>
             </div>
             <div style="text-align: center;"  @click="haddleRouter('borad')">
-              <i class='fas fa-chart-pie' style="font-size:36px;  color:white"></i>
+            <i class='fas fa-chart-pie' style='font-size:36px color:white' ></i>
+              <!-- <i class='fas fa-chart-pie' style="font-size:36px;  color:white"></i> -->
               <p style="color:white; ">borad</p>
             </div>
  
