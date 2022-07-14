@@ -201,7 +201,7 @@ export default createStore({
             arrayCameraTrack:[],
             sentenceIndex:0,
             dialogueNow:"Dialogue1and2",
-            isStartRec: false
+            isStartRec: false,
         },
         storeUserArray: [],
         isMicRec: false

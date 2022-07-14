@@ -13,25 +13,27 @@ export default {
             isFirstTime: false,
             content:"",
             counting:0,
+            rangeOfArray:0
 
         }
     },
     methods:{
         getRandomInt(){
-            // const maxNum = 2; 
-            // const isNum = Math.floor(Math.random() * maxNum)
-            // console.log("isNum ===>",isNum)
+            
         },
         
         objectSentence(){
-            // console.log()
             this.counting = this.$store.state.userAction.sentenceIndex;
             this.content = this.arrayOfSentence[this.counting];
-            // console.log("===>",this.content);
+
+            if(this.content ===  this.rangeOfArray){
+                this.$store.state.userAction.dialogueNow = "Dialogue3"
+            }
+  
         }
 
     },
-    mounted(){
+    beforeMount(){
    
         const ranInt = Math.floor(Math.random() * 2);
 
@@ -83,7 +85,10 @@ export default {
                 this.arrayOfSentence.push(element)
             })
         }
-        // console.log(this.arrayOfSentence)
+
+        this.rangeOfArray = this.arrayOfSentence.length
+        console.log(this.arrayOfSentence)
+        console.log('range array', this.rangeOfArray);
     },
     updated(){
         this.objectSentence()
@@ -105,7 +110,7 @@ export default {
     </div>
 </template>
 
-<style scoped>
+<style >
 .dialogue-container{
     width: 85%;
     margin: auto;

@@ -63,6 +63,7 @@ app.post("/login", async (req, res) => {
 
 app.post("/writeEmotion", async (req, res) => {
 
+    
     /*
     {
         "email": "natt@gmail.com",
@@ -73,6 +74,7 @@ app.post("/writeEmotion", async (req, res) => {
         "answer": "Hello Motherfucker"
 }
     */
+
     const payload = req.body;
     const emotion = require("./model/emotion");
 

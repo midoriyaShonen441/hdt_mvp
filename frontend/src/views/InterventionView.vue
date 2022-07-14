@@ -34,6 +34,7 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
                 isRecord: false,
                 isStarter: true,
 
+                setArrayMood: [],
                 arrayMood: [],
                 isWord: [],
             }
@@ -42,6 +43,9 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
             
             testing(){
                 console.log(this.$store.state.storeUserArray);
+                console.log("before title ==> ",this.$store.state.userAction.dialogueNow)
+                this.$store.state.userAction.dialogueNow = "Dialogue3";
+                console.log("after title ==> ",this.$store.state.userAction.dialogueNow)
             },
 
             cameraAction(){
@@ -51,23 +55,30 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
                     this.isActionBtn = true;
                     this.$store.state.userAction.isStartRec = true;
 
-                    // this.countAllRound += 1;
                     this.recordFunction();
                 }else{
                     this.isCamera = false;
                     this.isActionBtn = false;
                     this.$store.state.userAction.isStartRec = false;
+                    console.log(this.$store.state.userAction.dialogueNow)
                     this.$store.state.userAction.sentenceIndex += 1;
-                    // this.countAllRound += 1;
+                    
 
-                    // console.log(this.titleObject)
+                    this.arrayMood.push(this.setArrayMood)
+                    const wraping = {
+                            arrayMood: this.arrayMood,
+                            word: this.isWord
+                        }
+
+                    this.$store.state.storeUserArray = wraping;
+                    this.setArrayMood = []
+
                     this.recordFunction();
                 }
             },
 
             recordFunction(){
-
-
+                
                 builder.then(({start, stop}) => {
                     if(this.isCamera){
                         start();
@@ -80,7 +91,7 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
                     if(evt.detail.output.dominantEmotion !== undefined){
 
                         console.log(evt.detail.output.dominantEmotion);
-                        this.arrayMood.push(evt.detail.output.dominantEmotion);
+                        this.setArrayMood.push(evt.detail.output.dominantEmotion);
 
                     }else{
 
@@ -91,13 +102,6 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
 
                 if(this.isRecord === true){
                     this.isWord.push(this.runtimeTranscription_);
-                    
-                    const wraping = {
-                            arrayMood: this.arrayMood,
-                            word: this.isWord
-                        }
-
-                    this.$store.state.storeUserArray = wraping
 
                     console.log("this.isRecord true ==> ",this.isRecord);
                     recognition.stop();
@@ -123,7 +127,6 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
                     
                         this.runtimeTranscription_ = text;
                         this.runtimeTranscription_ = this.runtimeTranscription_ + text;
-                        // this.isWord = this.runtimeTranscription_
                         console.log(this.runtimeTranscription_);
                     });
                         recognition.start();
@@ -133,14 +136,7 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
         },
 
         updated(){
-            // console.log(this.countAllRound)
-            // if(this.countAllRound <= 6 && this.countAllRound >= 0 ){
-            //     this.titleObject = "Dialogue1and2";
-            //     console.log(this.titleObject,"==>",this.countAllRound)
-            // }else if(this.countAllRound > 6){
-            //     this.titleObject = "goalSetting";
-            //     console.log(this.titleObject,"==>",this.countAllRound)
-            // }
+ 
 
         }
     }
@@ -150,15 +146,15 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
     <div>
         <div class="home-component">
             <div class="page-title">
-                <h1>SCG Nexter Living</h1>
+                <h1>AnotherMe</h1>
                 <button @click="testing">Debug</button>
             </div>
 
             <div class="main-frame">
                     <StarterDesc v-if="isStarter"/>
-                    <Dialogue1and2 v-if="$store.state.userAction.dialogueNow === 'Dialogue1and2'"/>
-                    <Dialogue3 v-if="$store.state.userAction.dialogueNow  === 'Dialogue3'"/>
-                    <Dialogue4 v-if="$store.state.userAction.dialogueNow  === 'Dialogue4'"/>
+                    <Dialogue1and2 v-if="this.$store.state.userAction.dialogueNow === 'Dialogue1and2'"/>
+                    <Dialogue3 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue3'"/>
+                    <Dialogue4 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue4'"/>
                     <!-- <GoalSetting v-if="titleObject === 'goalSetting'"/> -->
                     <div class="voice-btn">
                         <div >
