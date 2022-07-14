@@ -36,33 +36,35 @@ import EndDialogue from '../components/EndDialogue.vue';
                 runtimeTranscription_: "",
                 isRecord: false,
                 isStarter: true,
-
-                setArrayMood: [],
+                isShowReset: false,
+                setArrayMood: [],   
                 arrayMood: [],
                 isWord: [],
             }
         },
         methods:{
             
-            testing(){
-                this.$store.state.userAction.sentenceIndex = 0;
-                console.log(this.$store.state.storeUserArray);
-                console.log("before title ==> ",this.$store.state.userAction.dialogueNow)
-                this.$store.state.userAction.dialogueNow = "end";
-                console.log("after title ==> ",this.$store.state.userAction.dialogueNow)
-            },
+            // testing(){
+            //     this.$store.state.userAction.sentenceIndex = 0;
+            //     console.log(this.$store.state.storeUserArray);
+            //     console.log("before title ==> ",this.$store.state.userAction.dialogueNow)
+            //     this.$store.state.userAction.dialogueNow = "end";
+            //     console.log("after title ==> ",this.$store.state.userAction.dialogueNow)
+            // },
 
             cameraAction(){
                 if(!(this.isActionBtn)){
                     this.isStarter = false
                     this.isCamera = true;
                     this.isActionBtn = true;
+                    this.isShowReset = true;
                     this.$store.state.userAction.isStartRec = true;
 
                     this.recordFunction();
                 }else{
                     this.isCamera = false;
                     this.isActionBtn = false;
+                    this.isShowReset = false;
                     this.$store.state.userAction.isStartRec = false;
                     console.log(this.$store.state.userAction.dialogueNow)
                     this.$store.state.userAction.sentenceIndex += 1;
@@ -140,6 +142,13 @@ import EndDialogue from '../components/EndDialogue.vue';
 
             haddleToHomePage(){
                 this.$router.push('/')
+            },
+
+            haddleReset(){
+                this.isWord = [];
+                this.arrayMood = [];
+                this.setArrayMood = [];
+                alert("Reset!")
             }
         },
 
@@ -155,7 +164,7 @@ import EndDialogue from '../components/EndDialogue.vue';
         <div class="home-component">
             <div class="page-title">
                 <h1>AnotherMe</h1>
-                <button @click="testing">Debug</button>
+                <!-- <button @click="testing">Debug</button> -->
             </div>
 
             <div class="main-frame">
@@ -166,8 +175,10 @@ import EndDialogue from '../components/EndDialogue.vue';
                     <EndDialogue  v-if="this.$store.state.userAction.dialogueNow  === 'end'"/>
                     <!-- <GoalSetting v-if="titleObject === 'goalSetting'"/> -->
                     <div class="voice-btn">
-                        <div v-if="this.$store.state.userAction.dialogueNow !== 'end'">
-
+                        <div class="set-btn-line" v-if="this.$store.state.userAction.dialogueNow !== 'end'">
+                            <div v-if="isShowReset">
+                                <button class="mic" @click="haddleReset">Reset</button>
+                            </div>
                             <div  v-if="!(isActionBtn)" @click="ToggleMic">
                                 <button 
                                 class="mic" 
@@ -185,6 +196,7 @@ import EndDialogue from '../components/EndDialogue.vue';
                                 Next
                             </button>
                             </div>
+                            
                         </div>  
 
                         <div class="finish-dialogue" v-if="this.$store.state.userAction.dialogueNow === 'end'">
@@ -221,7 +233,9 @@ import EndDialogue from '../components/EndDialogue.vue';
 
 
 .voice-btn{
-    margin-top: 5vh;
+    position: absolute;
+    width: 85%;
+    bottom: 140px;
     text-align: center;
 }
 
@@ -231,5 +245,10 @@ import EndDialogue from '../components/EndDialogue.vue';
     border-radius: 50%;
     border: none;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.set-btn-line{
+    display: flex;
+    justify-content: space-around;
 }
 </style>
