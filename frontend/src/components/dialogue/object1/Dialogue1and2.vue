@@ -18,15 +18,18 @@ export default {
         }
     },
     methods:{
-        getRandomInt(){
-            
-        },
+ 
         
         objectSentence(){
+            console.log("start index ==>", this.$store.state.userAction.sentenceIndex)
             this.counting = this.$store.state.userAction.sentenceIndex;
+            // console.log(this.counting);
             this.content = this.arrayOfSentence[this.counting];
 
-            if(this.content ===  this.rangeOfArray){
+            if(this.counting ===  this.rangeOfArray){
+                console.log('end of range')
+                this.$store.state.userAction.sentenceIndex = 0;
+                console.log("index reset",this.$store.state.userAction.sentenceIndex)
                 this.$store.state.userAction.dialogueNow = "Dialogue3"
             }
   
@@ -87,8 +90,8 @@ export default {
         }
 
         this.rangeOfArray = this.arrayOfSentence.length
-        console.log(this.arrayOfSentence)
-        console.log('range array', this.rangeOfArray);
+        // console.log(this.arrayOfSentence)
+        // console.log('range array', this.rangeOfArray);
     },
     updated(){
         this.objectSentence()

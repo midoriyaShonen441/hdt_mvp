@@ -13,17 +13,17 @@ export default {
             isFirstTime: false,
             content:"",
             counting:0,
-            
+            rangeOfArray:0,
             selectionMood: ""
         }
     },
     methods:{
 
         findEmotionMode(){ 
-            // console.log("component Dialogue3 !!")
+            console.log("component Dialogue3 !!")
             const countsDup = {};
             const setMood = this.$store.state.storeUserArray.arrayMood
- 
+
             const convertArray = [].concat.apply([], setMood);
             convertArray.forEach(function (x) { countsDup[x] = (countsDup[x] || 0) + 1; });
             
@@ -74,19 +74,44 @@ export default {
                         this.arrayOfSentence.push(element.topic)     
                     });
                 }
-            }else if(this.selectionMood === 'relax' || this.selectionMood === 'joy'){
+            }else if(this.selectionMood === 'relax'){
                 this.$store.state.objective3.motivationInterview.forEach((element) => {
                     this.arrayOfSentence.push(element.topic);
                 })
+            }else if(this.selectionMood === 'joy'){
+                const ranInt = Math.floor(Math.random() * 4);
+                if(ranInt === 1){
+                    this.$store.state.objective3.selfAwareness.forEach((element) => {
+                        this.arrayOfSentence.push(element.topic)     
+                    });  
+                }else if(ranInt === 2){
+                    this.$store.state.objective3.resilience.forEach((element) => {
+                        this.arrayOfSentence.push(element.topic)     
+                    });  
+                }else if(ranInt === 3){
+                    this.$store.state.objective3.problemSolving.forEach((element) => {
+                        this.arrayOfSentence.push(element.topic)     
+                    });
+                }else if(ranInt === 4){
+                    this.$store.state.objective3.motivationInterview.forEach((element) => {
+                    this.arrayOfSentence.push(element.topic);
+                })
+                }
             }
-            // console.log(wrapingEmotion,  this.selectionMood);
-            // console.log(this.arrayOfSentence);
+ 
+            this.rangeOfArray = this.arrayOfSentence.length
             this.content = this.arrayOfSentence[this.counting];
         },
         
         objectSentence(){
+    
             this.counting = this.$store.state.userAction.sentenceIndex;
             this.content = this.arrayOfSentence[this.counting];
+
+            if(this.counting === this.rangeOfArray){
+                this.$store.state.userAction.sentenceIndex = 0;
+                this.$store.state.userAction.dialogueNow = "Dialogue4"
+            }
         }
 
     },

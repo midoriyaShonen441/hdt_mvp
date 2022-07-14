@@ -3,6 +3,8 @@ import StarterDesc from '../components/StarterDesc.vue';
 import Dialogue1and2 from '../components/dialogue/object1/Dialogue1and2.vue';
 import Dialogue3 from '../components/dialogue/object2/Dialogue3.vue';
 import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
+import EndDialogue from '../components/EndDialogue.vue';
+
 
     const builder = CY.loader()
         .licenseKey("dad9b5df5ffd65750e82018b4286e6ce96c1d0dfd868")
@@ -19,7 +21,8 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
             StarterDesc,
             Dialogue1and2,
             Dialogue3,
-            Dialogue4
+            Dialogue4,
+            EndDialogue
             // GoalSetting
             // VoiceDetect
             
@@ -42,9 +45,10 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
         methods:{
             
             testing(){
+                this.$store.state.userAction.sentenceIndex = 0;
                 console.log(this.$store.state.storeUserArray);
                 console.log("before title ==> ",this.$store.state.userAction.dialogueNow)
-                this.$store.state.userAction.dialogueNow = "Dialogue3";
+                this.$store.state.userAction.dialogueNow = "end";
                 console.log("after title ==> ",this.$store.state.userAction.dialogueNow)
             },
 
@@ -133,6 +137,10 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
                         this.isRecord = true;
                 }
             },  
+
+            haddleToHomePage(){
+                this.$router.push('/')
+            }
         },
 
         updated(){
@@ -155,9 +163,11 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
                     <Dialogue1and2 v-if="this.$store.state.userAction.dialogueNow === 'Dialogue1and2'"/>
                     <Dialogue3 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue3'"/>
                     <Dialogue4 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue4'"/>
+                    <EndDialogue  v-if="this.$store.state.userAction.dialogueNow  === 'end'"/>
                     <!-- <GoalSetting v-if="titleObject === 'goalSetting'"/> -->
                     <div class="voice-btn">
-                        <div >
+                        <div v-if="this.$store.state.userAction.dialogueNow !== 'end'">
+
                             <div  v-if="!(isActionBtn)" @click="ToggleMic">
                                 <button 
                                 class="mic" 
@@ -175,8 +185,12 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
                                 Next
                             </button>
                             </div>
-                            
-                        </div>             
+                        </div>  
+
+                        <div class="finish-dialogue" v-if="this.$store.state.userAction.dialogueNow === 'end'">
+                            <button class="mic" @click="haddleToHomePage" >Home</button>
+                        </div>  
+ 
                     </div>
 
             </div>
