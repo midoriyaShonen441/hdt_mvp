@@ -13,7 +13,8 @@ export default {
             isFirstTime: false,
             content:"",
             counting:0,
-            rangeOfArray:0
+            rangeOfArray:0,
+            mySentenceNow: []
 
         }
     },
@@ -21,71 +22,87 @@ export default {
  
         
         objectSentence(){
-            console.log("start index ==>", this.$store.state.userAction.sentenceIndex)
-            this.counting = this.$store.state.userAction.sentenceIndex;
-            // console.log(this.counting);
-            this.content = this.arrayOfSentence[this.counting];
 
-            if(this.counting ===  this.rangeOfArray){
-                console.log('end of range')
+            // console.log("start index ==>", this.$store.state.userAction.sentenceIndex)
+            this.counting = this.$store.state.userAction.sentenceIndex;
+
+            // console.log(this.counting);
+         
+                this.content = this.arrayOfSentence[this.counting];
+                this.$store.state.userAction.setSentence = this.mySentenceNow[this.counting];     
+                this.$store.state.userAction.setQuestion = this.content;
+ 
+    
+                if(this.rangeOfArray ===this.counting){
+                // console.log('end of range')
                 this.$store.state.userAction.sentenceIndex = 0;
-                console.log("index reset",this.$store.state.userAction.sentenceIndex)
+                // console.log("index reset",this.$store.state.userAction.sentenceIndex)
                 this.$store.state.userAction.dialogueNow = "Dialogue3"
-            }
-  
+                // console.log(this.$store.state.userAction.dialogueNow)
+                }
+            
         }
 
     },
     beforeMount(){
-   
         const ranInt = Math.floor(Math.random() * 2);
 
         if(this.isFirstTime === false){
 
             this.$store.state.objective1.firstTimeGreeting.forEach((element) => {
                 this.arrayOfSentence.push(element)
+                this.mySentenceNow.push("firstTimeGreeting")
             })
 
             this.$store.state.objective1.goalSetting.forEach((element) => {
                 this.arrayOfSentence.push(element)
+                this.mySentenceNow.push("goalSetting")
             })
 
             this.$store.state.objective2.moodCheck.forEach((element) => {
                 this.arrayOfSentence.push(element)
+                this.mySentenceNow.push("moodCheck")
             })
 
             if(ranInt === 0){
                 this.$store.state.objective2.askForUpdate.forEach((element) => {
                     this.arrayOfSentence.push(element)
+                    this.mySentenceNow.push("askForUpdate")
                 })
             }else{
                 this.$store.state.objective2.reviewTheHomework.forEach((element) => {
                     this.arrayOfSentence.push(element)
+                    this.mySentenceNow.push("reviewTheHomework")
                 })
             }
 
             this.$store.state.objective2.identifyIssuesOrGoalsForTheSession.forEach((element) => {
                 this.arrayOfSentence.push(element)
+                this.mySentenceNow.push("identifyIssuesOrGoalsForTheSession")
             })
         }
         else{
             
             this.$store.state.objective2.moodCheck.forEach((element) => {
                 this.arrayOfSentence.push(element)
+                this.mySentenceNow.push("moodCheck")
             })
 
             if(ranInt === 0){
                 this.$store.state.objective2.askForUpdate.forEach((element) => {
                     this.arrayOfSentence.push(element)
+                    this.mySentenceNow.push("askForUpdate")
                 })
             }else{
                 this.$store.state.objective2.reviewTheHomework.forEach((element) => {
                     this.arrayOfSentence.push(element)
+                    this.mySentenceNow.push("reviewTheHomework")
                 })
             }
 
             this.$store.state.objective2.identifyIssuesOrGoalsForTheSession.forEach((element) => {
                 this.arrayOfSentence.push(element)
+                this.mySentenceNow.push("identifyIssuesOrGoalsForTheSession")
             })
         }
 

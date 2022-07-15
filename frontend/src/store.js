@@ -202,6 +202,8 @@ export default createStore({
             sentenceIndex:0,
             dialogueNow:"Dialogue1and2",
             isStartRec: false,
+            setSentence:"",
+            setQuestion:""
         },
         storeUserArray: [],
         isMicRec: false

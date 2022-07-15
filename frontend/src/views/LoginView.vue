@@ -1,11 +1,15 @@
 <script>
 import axios from "axios";
+import {httpAPI} from '../APIsetting'
+
+const httpAPIs = httpAPI()
 
 export default {
     data(){
         return{
             isEmail:"",
-            invalidUser:""
+            invalidUser:"",
+            saveEmail: ""
         }
     },
     methods:{
@@ -14,10 +18,17 @@ export default {
                 email: this.isEmail
             }
             try{
-                const userLogin = axios.post("http://localhost:8888/login",payload);
-                localStorage.setItem("nexter_living_user", userLogin);
-                this.$router.push("/intervention");
+                const userLogin = await axios.post(`${httpAPIs}/login`,payload);
+                if(userLogin.data.isError === false){
+                    const convertDataToString = JSON.stringify(userLogin.data)
+                    localStorage.setItem("nexter_living_user", convertDataToString);
+                    this.$router.push('/intervention')
+                }else{
+                    this.invalidUser = userLogin.data.text
+                }
+
             }catch(err){
+
                 this.invalidUser = err
             }
         },
@@ -25,7 +36,16 @@ export default {
             this.$router.push("/register");
         }
     },mounted(){
+        const stringJson = localStorage.getItem("nexter_living_user");
+        const convertStingJson = JSON.parse(stringJson);
+        if(convertStingJson.email){
+            this.saveEmail = convertStingJson.email
+        }
+    },
+    updated(){
 
+   
+                
     }
 }
 </script>
@@ -36,9 +56,9 @@ export default {
         <div class="page-title">
             <h2><b>Login</b></h2>
         </div>
-        <div class="login-box-content">
+        <div class="login-box-content" v-if="saveEmail ===''">
                 <div class="login-user-email">
-                    <input class="input-email" type="email" placeholder='Enter your email.' required/>
+                    <input class="input-email" type="email" placeholder='Enter your email.' v-model="isEmail" required/>
                 </div>
                 <div class="error-user"   v-if="invalidUser !== ''">
                     <h3>{{invalidUser}}</h3>
@@ -47,6 +67,11 @@ export default {
                     <button class="login-btn-email" @click="haddleLogin">login</button>
                     <button class="login-btn-email" @click="haddleToRegister">register</button>
                 </div>
+        </div>
+        <div class="login-box-content" v-if="saveEmail !==''">
+            <div class="welcome-text">
+                <h5>Welcome user {{saveEmail}}</h5>
+            </div>
         </div>
     </div>
 </template>
@@ -99,4 +124,7 @@ export default {
     padding-top: 3vh;
 }
 
+.welcome-text{
+    padding-top: 35%;
+}
 </style>

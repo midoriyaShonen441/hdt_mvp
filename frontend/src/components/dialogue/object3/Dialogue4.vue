@@ -14,14 +14,16 @@ export default {
             content:"",
             counting:0,
             rangeOfArray:0,
-            selectionMood: ""
+            selectionMood: "",
+            mySentenceNow: []
         }
     },
     methods:{
         findEmotionMode(){ 
             console.log(this.$store.state.userAction.dialogueNow)
             this.$store.state.objective4.summary.forEach((element) => {
-                        this.arrayOfSentence.push(element)     
+                this.arrayOfSentence.push(element);
+                this.mySentenceNow.push("summary");
             });    
 
             // console.log(this.arrayOfSentence)
@@ -31,13 +33,19 @@ export default {
         },
         
         objectSentence(){
+
             this.counting = this.$store.state.userAction.sentenceIndex;
-            console.log(this.counting);
+            
+            // console.log(this.counting);
             this.content = this.arrayOfSentence[this.counting];
+            this.$store.state.userAction.setSentence = this.mySentenceNow[this.counting];     
+            this.$store.state.userAction.setQuestion = this.content;
 
             if(this.counting === this.rangeOfArray){
+                
                 this.$store.state.userAction.sentenceIndex = 0;
-                this.$store.state.userAction.dialogueNow = "end"
+                this.$store.state.userAction.dialogueNow = "end";
+
             }
         }
 

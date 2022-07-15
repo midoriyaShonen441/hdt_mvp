@@ -4,17 +4,21 @@ import Dialogue1and2 from '../components/dialogue/object1/Dialogue1and2.vue';
 import Dialogue3 from '../components/dialogue/object2/Dialogue3.vue';
 import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
 import EndDialogue from '../components/EndDialogue.vue';
+import axios  from 'axios';
+import { httpAPI } from '../APIsetting';
+
+const httpAPIs = httpAPI();
 
 
-    const builder = CY.loader()
-        .licenseKey("dad9b5df5ffd65750e82018b4286e6ce96c1d0dfd868")
-        .addModule(CY.modules().FACE_EMOTION.name)
-        .load()
+const builder = CY.loader()
+    .licenseKey("dad9b5df5ffd65750e82018b4286e6ce96c1d0dfd868")
+    .addModule(CY.modules().FACE_EMOTION.name)
+    .load()
 
-    window.SpeechRecognition = window.SpeechRecognition ||  window.webkitSpeechRecognition;
-    const recognition = new window.SpeechRecognition();
-    recognition.interimResults = true;
-    recognition.continuous = true;
+window.SpeechRecognition = window.SpeechRecognition ||  window.webkitSpeechRecognition;
+const recognition = new window.SpeechRecognition();
+recognition.interimResults = true;
+recognition.continuous = true;
 
     export default {
         components:{
@@ -23,9 +27,7 @@ import EndDialogue from '../components/EndDialogue.vue';
             Dialogue3,
             Dialogue4,
             EndDialogue
-            // GoalSetting
-            // VoiceDetect
-            
+
         },
         data(){
             return{
@@ -40,6 +42,10 @@ import EndDialogue from '../components/EndDialogue.vue';
                 setArrayMood: [],   
                 arrayMood: [],
                 isWord: [],
+                myEmail:"",
+
+                isError:"",
+                isLoading:false
             }
         },
         methods:{
@@ -52,30 +58,68 @@ import EndDialogue from '../components/EndDialogue.vue';
             //     console.log("after title ==> ",this.$store.state.userAction.dialogueNow)
             // },
 
-            cameraAction(){
+            checkUserIn(){
+
+                const stringJson = localStorage.getItem("nexter_living_user");
+                const convertStingJson = JSON.parse(stringJson);
+
+                const isEmail = convertStingJson.email;
+                this.myEmail = isEmail
+
+                if(!isEmail){
+                    this.$router.push("/login")
+                }
+            },
+            async cameraAction(){
                 if(!(this.isActionBtn)){
+
                     this.isStarter = false
                     this.isCamera = true;
                     this.isActionBtn = true;
                     this.isShowReset = true;
                     this.$store.state.userAction.isStartRec = true;
-
                     this.recordFunction();
+
                 }else{
+
                     this.isCamera = false;
                     this.isActionBtn = false;
                     this.isShowReset = false;
                     this.$store.state.userAction.isStartRec = false;
-                    console.log(this.$store.state.userAction.dialogueNow)
                     this.$store.state.userAction.sentenceIndex += 1;
-                    
 
-                    this.arrayMood.push(this.setArrayMood)
+                    this.arrayMood.push(this.setArrayMood);
+
                     const wraping = {
-                            arrayMood: this.arrayMood,
-                            word: this.isWord
+                        arrayMood: this.arrayMood,
+                        word: this.isWord
+                    }
+
+                    const warpingPayload = {
+                        email: this.myEmail,
+                        objective: this.$store.state.userAction.dialogueNow,
+                        sentence: this.$store.state.userAction.setSentence,
+                        question: this.$store.state.userAction.setQuestion,
+                        facial: this.setArrayMood,
+                        answer: this.runtimeTranscription_
+                    }
+
+                    this.isLoading = true;
+
+                    try{
+
+                        const responseReturn = await axios.post(`${httpAPIs}/writeEmotion`,warpingPayload);
+                        if(responseReturn.data !== "OK"){
+                            this.isError = "Cannot connect to server!";
+                            this.isLoading = false;
+                        }else{
+                            this.isLoading = false;
                         }
 
+                    }catch(err){
+
+                    }
+                    // console.log(warpingPayload);
                     this.$store.state.storeUserArray = wraping;
                     this.setArrayMood = []
 
@@ -96,20 +140,18 @@ import EndDialogue from '../components/EndDialogue.vue';
                 window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
                     if(evt.detail.output.dominantEmotion !== undefined){
 
-                        console.log(evt.detail.output.dominantEmotion);
+                        // console.log(evt.detail.output.dominantEmotion);
                         this.setArrayMood.push(evt.detail.output.dominantEmotion);
 
                     }else{
-
-                        console.log("passing");
-
+                        // console.log("passing");
                     }
                 });
 
                 if(this.isRecord === true){
                     this.isWord.push(this.runtimeTranscription_);
 
-                    console.log("this.isRecord true ==> ",this.isRecord);
+                    // console.log("this.isRecord true ==> ",this.isRecord);
                     recognition.stop();
                     this.runtimeTranscription_ = "";
                     this.isRecord = false;
@@ -124,7 +166,7 @@ import EndDialogue from '../components/EndDialogue.vue';
 
                 }else{
                     // event current voice reco word
-                    console.log("this.isRecord false ==> ",this.isRecord)
+                    // console.log("this.isRecord false ==> ",this.isRecord)
                     recognition.addEventListener("result", event => {      
                     var text = Array.from(event.results)
                         .map(result => result[0])
@@ -133,7 +175,7 @@ import EndDialogue from '../components/EndDialogue.vue';
                     
                         this.runtimeTranscription_ = text;
                         this.runtimeTranscription_ = this.runtimeTranscription_ + text;
-                        console.log(this.runtimeTranscription_);
+                        // console.log(this.runtimeTranscription_);
                     });
                         recognition.start();
                         this.isRecord = true;
@@ -151,7 +193,10 @@ import EndDialogue from '../components/EndDialogue.vue';
                 alert("Reset!")
             }
         },
-
+        created(){
+            this.checkUserIn();
+        },
+        
         updated(){
  
 
@@ -162,12 +207,16 @@ import EndDialogue from '../components/EndDialogue.vue';
 <template>
     <div>
         <div class="home-component">
+            <div class="warping-loading-container" v-if="isLoading">
+                <div class="is-loading"></div>
+                <div class="loading-content">Loading...</div>
+            </div>
             <div class="page-title">
                 <h1>AnotherMe</h1>
                 <!-- <button @click="testing">Debug</button> -->
             </div>
 
-            <div class="main-frame">
+            <div class="main-frame" v-if="isError === ''">
                     <StarterDesc v-if="isStarter"/>
                     <Dialogue1and2 v-if="this.$store.state.userAction.dialogueNow === 'Dialogue1and2'"/>
                     <Dialogue3 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue3'"/>
@@ -202,15 +251,41 @@ import EndDialogue from '../components/EndDialogue.vue';
                         <div class="finish-dialogue" v-if="this.$store.state.userAction.dialogueNow === 'end'">
                             <button class="mic" @click="haddleToHomePage" >Home</button>
                         </div>  
- 
                     </div>
-
+            </div>
+            <div class="main-frame" v-if="isError !==''">
+                <div>Cannot connect to server!</div>
             </div>
         </div>
     </div>
 </template>
 
 <style scoed>
+
+.is-loading{
+    position: fixed;
+    left:0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    background: gray;
+    opacity: 0.7;
+
+    
+}
+
+.loading-content{
+    position: fixed;
+    z-index: 999;
+    margin-top: 50%;
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+ 
+}
 
 .page-title{
     color: white;
@@ -233,9 +308,7 @@ import EndDialogue from '../components/EndDialogue.vue';
 
 
 .voice-btn{
-    position: absolute;
-    width: 85%;
-    bottom: 140px;
+    margin-top: 10%;
     text-align: center;
 }
 

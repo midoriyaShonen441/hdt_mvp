@@ -14,7 +14,8 @@ export default {
             content:"",
             counting:0,
             rangeOfArray:0,
-            selectionMood: ""
+            selectionMood: "",
+            mySentenceNow: []
         }
     },
     methods:{
@@ -56,11 +57,14 @@ export default {
                 const ranInt = Math.floor(Math.random() * 2);
                 if(ranInt === 0){
                     this.$store.state.objective3.selfAwareness.forEach((element) => {
-                        this.arrayOfSentence.push(element.topic)     
+                        // {sentence:"firstTimeGreeting" ,topic:element} //
+                        this.arrayOfSentence.push(element.topic)    
+                        this.mySentenceNow.push("selfAwareness") 
                     });                 
                 }else{
                     this.$store.state.objective3.resilience.forEach((element) => {
                         this.arrayOfSentence.push(element.topic)     
+                        this.mySentenceNow.push("resilience") 
                     });                        
                 }
             }else if(this.selectionMood === 'anxiety'){
@@ -68,45 +72,59 @@ export default {
                 if(ranInt === 0){
                     this.$store.state.objective3.problemSolving.forEach((element) => {
                         this.arrayOfSentence.push(element.topic)     
+                        this.mySentenceNow.push("problemSolving") 
                     });
                 }else{
                     this.$store.state.objective3.motivationInterview.forEach((element) => {
-                        this.arrayOfSentence.push(element.topic)     
+                        this.arrayOfSentence.push(element.topic)    
+                        this.mySentenceNow.push("motivationInterview")  
                     });
                 }
             }else if(this.selectionMood === 'relax'){
                 this.$store.state.objective3.motivationInterview.forEach((element) => {
                     this.arrayOfSentence.push(element.topic);
+                    this.mySentenceNow.push("motivationInterview") 
                 })
             }else if(this.selectionMood === 'joy'){
                 const ranInt = Math.floor(Math.random() * 4);
                 if(ranInt === 1){
                     this.$store.state.objective3.selfAwareness.forEach((element) => {
-                        this.arrayOfSentence.push(element.topic)     
+                        this.arrayOfSentence.push(element.topic)    
+                        this.mySentenceNow.push("selfAwareness")  
                     });  
                 }else if(ranInt === 2){
                     this.$store.state.objective3.resilience.forEach((element) => {
-                        this.arrayOfSentence.push(element.topic)     
+                        this.arrayOfSentence.push(element.topic)    
+                        this.mySentenceNow.push("resilience") 
                     });  
                 }else if(ranInt === 3){
                     this.$store.state.objective3.problemSolving.forEach((element) => {
-                        this.arrayOfSentence.push(element.topic)     
+                        this.arrayOfSentence.push(element.topic) 
+                        this.mySentenceNow.push("problemSolving")     
                     });
                 }else if(ranInt === 4){
                     this.$store.state.objective3.motivationInterview.forEach((element) => {
                     this.arrayOfSentence.push(element.topic);
+                    this.mySentenceNow.push("motivationInterview")  
                 })
                 }
             }
- 
-            this.rangeOfArray = this.arrayOfSentence.length
+
+            this.rangeOfArray = this.arrayOfSentence.length;
             this.content = this.arrayOfSentence[this.counting];
+
         },
         
         objectSentence(){
-    
+            
+            // 
             this.counting = this.$store.state.userAction.sentenceIndex;
+
+            // console.log(this.counting);
             this.content = this.arrayOfSentence[this.counting];
+            this.$store.state.userAction.setSentence = this.mySentenceNow[this.counting];     
+            this.$store.state.userAction.setQuestion = this.content;
+            
 
             if(this.counting === this.rangeOfArray){
                 this.$store.state.userAction.sentenceIndex = 0;
