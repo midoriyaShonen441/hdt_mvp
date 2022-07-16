@@ -137,7 +137,11 @@ recognition.continuous = true;
                 builder.then(({start, stop}) => {
                     if(this.isCamera){
                         start();
+                        setTimeout(() => {
+                            stop();
+                        }, 10000)
                     }else{
+                        // clearTimeout(settingTime)
                         stop();
                     }
                 });
