@@ -7,7 +7,7 @@ import EndDialogue from '../components/EndDialogue.vue';
 import axios  from 'axios';
 
 import { httpAPI } from '../APIsetting';
-import sizeof from 'object-sizeof';
+// import sizeof from 'object-sizeof';
 
 const httpAPIs = httpAPI();
 
@@ -112,8 +112,8 @@ recognition.continuous = true;
 
                         const responseReturn = await axios.post(`${httpAPIs}/writeEmotion`,warpingPayload);
 
-                        console.log("responseReturn ==> ", warpingPayload); 
-                        console.log("sizeof ===> ", sizeof(responseReturn))
+                        // console.log("responseReturn ==> ", warpingPayload); 
+                        // console.log("sizeof ===> ", sizeof(responseReturn))
                         if(responseReturn.data !== "OK"){
                             this.isError = "Cannot connect to server!";
                             this.isLoading = false;
