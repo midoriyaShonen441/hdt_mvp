@@ -10,6 +10,7 @@
     "axios": "^0.27.2",
     "bootstrap-icons": "^1.8.3",
     "cors": "^2.8.5",
+    "object-sizeof": "^1.6.3",
     "vue": "^3.2.37",
     "vue-burger-menu": "^2.0.5",
     "vue-router": "^4.0.16",

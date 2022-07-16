@@ -5,7 +5,9 @@ import Dialogue3 from '../components/dialogue/object2/Dialogue3.vue';
 import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
 import EndDialogue from '../components/EndDialogue.vue';
 import axios  from 'axios';
+
 import { httpAPI } from '../APIsetting';
+import sizeof from 'object-sizeof';
 
 const httpAPIs = httpAPI();
 
@@ -109,6 +111,9 @@ recognition.continuous = true;
                     try{
 
                         const responseReturn = await axios.post(`${httpAPIs}/writeEmotion`,warpingPayload);
+
+                        console.log("responseReturn ==> ", warpingPayload); 
+                        console.log("sizeof ===> ", sizeof(responseReturn))
                         if(responseReturn.data !== "OK"){
                             this.isError = "Cannot connect to server!";
                             this.isLoading = false;
