@@ -36,11 +36,18 @@ export default {
             this.$router.push("/register");
         }
     },mounted(){
-        const stringJson = localStorage.getItem("nexter_living_user");
-        const convertStingJson = JSON.parse(stringJson);
-        if(convertStingJson.email){
-            this.saveEmail = convertStingJson.email
+
+        
+        try{
+            const stringJson = localStorage.getItem("nexter_living_user");
+            const convertStingJson = JSON.parse(stringJson);
+            if(convertStingJson.email){
+                this.saveEmail = convertStingJson.email
+            }
+        }catch(err){
+            
         }
+
     },
     updated(){
 

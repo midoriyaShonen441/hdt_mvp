@@ -61,16 +61,22 @@ recognition.continuous = true;
             },
 
             checkUserIn(){
+                
+                try{
+                    const stringJson = localStorage.getItem("nexter_living_user");
+                    const convertStingJson = JSON.parse(stringJson);
 
-                const stringJson = localStorage.getItem("nexter_living_user");
-                const convertStingJson = JSON.parse(stringJson);
+                    const isEmail = convertStingJson.email;
+                    this.myEmail = isEmail
 
-                const isEmail = convertStingJson.email;
-                this.myEmail = isEmail
+                    if(!isEmail){
+                        this.$router.push("/login")
+                    }
 
-                if(!isEmail){
+                }catch(err){
                     this.$router.push("/login")
                 }
+                
             },
             async cameraAction(){
                 if(!(this.isActionBtn)){

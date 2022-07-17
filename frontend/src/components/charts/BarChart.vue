@@ -43,7 +43,8 @@ data() {
     return {
         chartData: {
         labels: [ 'Angry', 'Disgust', 'Fear','Happy','Neutral','Sad','Suprise'],
-        datasets: [ { data: this.isCounting } ]
+        datasets: [ { data: this.isCounting } ],
+  
       },
       chartOptions: {
         responsive: true
