@@ -67,7 +67,7 @@ export default {
                 }
 
                 try{
-                    const returnStatus = await axios.post(`${httpAPI}/register`, payload);
+                    const returnStatus = await axios.post(`${httpAPIs}/register`, payload);
                     if(returnStatus.data.isError === false){
                         alert(returnStatus.data.text);
                         this.$router.push("/login");
