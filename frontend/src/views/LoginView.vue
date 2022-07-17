@@ -91,7 +91,7 @@ export default {
 }
 .page-title{
     color: white;
-    margin-top: 15vh;
+    margin-top: 5vh;
     text-align: center;
     margin-bottom: 4vh;
 }

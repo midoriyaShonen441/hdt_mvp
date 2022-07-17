@@ -6,12 +6,10 @@ import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
 import EndDialogue from '../components/EndDialogue.vue';
 import axios  from 'axios';
 import VoiceAnimation from '../components/VoiceAnimation.vue'
-
 import { httpAPI } from '../APIsetting';
-// import sizeof from 'object-sizeof';
+
 
 const httpAPIs = httpAPI();
-
 
 const builder = CY.loader()
     .licenseKey("dad9b5df5ffd65750e82018b4286e6ce96c1d0dfd868")
@@ -31,7 +29,6 @@ recognition.continuous = true;
             Dialogue4,
             EndDialogue,
             VoiceAnimation
-
         },
         data(){
             return{
@@ -117,8 +114,6 @@ recognition.continuous = true;
 
                         const responseReturn = await axios.post(`${httpAPIs}/writeEmotion`,warpingPayload);
 
-                        // console.log("responseReturn ==> ", warpingPayload); 
-                        // console.log("sizeof ===> ", sizeof(responseReturn))
                         if(responseReturn.data.status !== "OK"){
                             this.isError = "Cannot connect to server!";
                             this.isLoading = false;
@@ -255,7 +250,7 @@ recognition.continuous = true;
             </div>
             <div class="page-title">
                 <h1>AnotherMe</h1>
-                <button @click="testing">Debug</button>
+                <!-- <button @click="testing">Debug</button> -->
             </div>
 
             <div class="main-frame" v-if="isError === ''">
@@ -271,8 +266,6 @@ recognition.continuous = true;
                     <div class="set-animation" v-if="this.$store.state.userAction.isStartRec === true">
                         <VoiceAnimation/>
                     </div>
-   
-                    <!-- <GoalSetting v-if="titleObject === 'goalSetting'"/> -->
 
                     <div class="voice-btn">
                         <div class="set-btn-line" v-if="this.$store.state.userAction.dialogueNow !== 'end'">
