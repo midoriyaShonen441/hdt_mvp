@@ -1,9 +1,9 @@
 <script>
-import VoiceAnimation from '../../VoiceAnimation.vue'
+// import VoiceAnimation from '../../VoiceAnimation.vue'
 
 export default {
     components:{
-        VoiceAnimation
+        // VoiceAnimation
     },
     data(){
         return{
@@ -106,9 +106,7 @@ export default {
             })
         }
 
-        this.rangeOfArray = this.arrayOfSentence.length
-        // console.log(this.arrayOfSentence)
-        // console.log('range array', this.rangeOfArray);
+        this.rangeOfArray = this.arrayOfSentence.length;
     },
     updated(){
         this.objectSentence()
@@ -124,7 +122,7 @@ export default {
         </div>
 
         <div class="set-animation" v-if="this.$store.state.userAction.isStartRec === true">
-            <VoiceAnimation/>
+            <!-- <VoiceAnimation/> -->
         </div>
 
     </div>

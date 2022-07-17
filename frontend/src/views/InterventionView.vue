@@ -5,6 +5,7 @@ import Dialogue3 from '../components/dialogue/object2/Dialogue3.vue';
 import Dialogue4 from '../components/dialogue/object3/Dialogue4.vue';
 import EndDialogue from '../components/EndDialogue.vue';
 import axios  from 'axios';
+import VoiceAnimation from '../components/VoiceAnimation.vue'
 
 import { httpAPI } from '../APIsetting';
 // import sizeof from 'object-sizeof';
@@ -28,7 +29,8 @@ recognition.continuous = true;
             Dialogue1and2,
             Dialogue3,
             Dialogue4,
-            EndDialogue
+            EndDialogue,
+            VoiceAnimation
 
         },
         data(){
@@ -257,14 +259,19 @@ recognition.continuous = true;
             </div>
 
             <div class="main-frame" v-if="isError === ''">
-                    <div class="user-text-in">
-                        {{runtimeTranscription_}}
-                    </div>
+                    
                     <StarterDesc v-if="isStarter"/>
                     <Dialogue1and2 v-if="this.$store.state.userAction.dialogueNow === 'Dialogue1and2'"/>
                     <Dialogue3 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue3'"/>
                     <Dialogue4 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue4'"/>
                     <EndDialogue  v-if="this.$store.state.userAction.dialogueNow  === 'end'"/>
+                    <div class="user-text-in">
+                        {{runtimeTranscription_}}
+                    </div>
+                    <div class="set-animation" v-if="this.$store.state.userAction.isStartRec === true">
+                        <VoiceAnimation/>
+                    </div>
+   
                     <!-- <GoalSetting v-if="titleObject === 'goalSetting'"/> -->
 
                     <div class="voice-btn">
@@ -379,7 +386,7 @@ recognition.continuous = true;
     width: 85%;
     margin: auto;
     text-align: left;
-    margin-top: 10px;
+    margin-top: 30px;
 }
 
 .btn-switch-result{

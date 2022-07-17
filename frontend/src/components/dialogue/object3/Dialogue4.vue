@@ -1,9 +1,9 @@
 <script>
-import VoiceAnimation from '../../VoiceAnimation.vue'
+// import VoiceAnimation from '../../VoiceAnimation.vue'
 
 export default {
     components:{
-        VoiceAnimation
+        // VoiceAnimation
     },
     data(){
         return{
@@ -66,7 +66,7 @@ export default {
         </div>
 
         <div class="set-animation" v-if="this.$store.state.userAction.isStartRec === true">
-            <VoiceAnimation/>
+            <!-- <VoiceAnimation/> -->
         </div>
 
     </div>
