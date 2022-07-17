@@ -206,6 +206,9 @@ export default createStore({
             setQuestion:""
         },
         storeUserArray: [],
+        isChangePages: 0,
+        // arrayOfMood: [],
+        // groupOfEmotion: [],
         isMicRec: false
 
     }

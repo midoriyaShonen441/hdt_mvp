@@ -43,6 +43,8 @@ export default {
             const Relax = wrapingEmotion.Neutral;
             const Depress = wrapingEmotion.Sad;
 
+            
+
             if(anxiety >= joy && anxiety >= Relax && anxiety >= Depress){
                 this.selectionMood = "anxiety"
             }else if(Depress > anxiety && Depress > joy && Depress > Relax){
@@ -52,6 +54,11 @@ export default {
             }else if(Relax > anxiety && Relax > joy && Relax > Depress ){
                 this.selectionMood = "relax"
             }
+
+            // this.$store.state.arrayOfMood.push({
+            //     morphcastEmotion: wrapingEmotion,
+            //     groupEmotion: this.selectionMood
+            // })
 
             if(this.selectionMood === 'depress'){
                 const ranInt = Math.floor(Math.random() * 2);

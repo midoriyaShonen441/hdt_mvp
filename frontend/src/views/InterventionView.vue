@@ -44,6 +44,8 @@ recognition.continuous = true;
                 setArrayMood: [],   
                 arrayMood: [],
                 isWord: [],
+                isObject: [],
+                isSentimentScore: [],
                 myEmail:"",
 
                 isError:"",
@@ -52,13 +54,11 @@ recognition.continuous = true;
         },
         methods:{
             
-            // testing(){
-            //     this.$store.state.userAction.sentenceIndex = 0;
-            //     console.log(this.$store.state.storeUserArray);
-            //     console.log("before title ==> ",this.$store.state.userAction.dialogueNow)
-            //     this.$store.state.userAction.dialogueNow = "end";
-            //     console.log("after title ==> ",this.$store.state.userAction.dialogueNow)
-            // },
+            testing(){
+                this.$store.state.userAction.sentenceIndex = 0;
+                console.log(this.$store.state.storeUserArray);
+                this.$store.state.userAction.dialogueNow = "end";
+            },
 
             checkUserIn(){
 
@@ -92,10 +92,7 @@ recognition.continuous = true;
 
                     this.arrayMood.push(this.setArrayMood);
 
-                    const wraping = {
-                        arrayMood: this.arrayMood,
-                        word: this.isWord
-                    }
+                    
 
                     const warpingPayload = {
                         email: this.myEmail,
@@ -114,18 +111,35 @@ recognition.continuous = true;
 
                         // console.log("responseReturn ==> ", warpingPayload); 
                         // console.log("sizeof ===> ", sizeof(responseReturn))
-                        if(responseReturn.data !== "OK"){
+                        if(responseReturn.data.status !== "OK"){
                             this.isError = "Cannot connect to server!";
                             this.isLoading = false;
                         }else{
+                            this.sentimentScore = responseReturn.data.sentimentScore
                             this.isLoading = false;
                         }
 
                     }catch(err){
-
+                        this.isError = "Cannot connect to server!";
+                        this.isLoading = false;
                     }
-                    // console.log(warpingPayload);
+
+                    
+                    this.isObject.push(this.$store.state.userAction.dialogueNow);
+                    this.isSentimentScore.push(this.sentimentScore) 
+                    console.log(this.$store.state.userAction.dialogueNow);
+                    
+
+                    const wraping = {
+                        objective:  this.isObject,
+                        arrayMood: this.arrayMood,
+                        word: this.isWord,
+                        sentimentScore: this.isSentimentScore
+                    }                    
+
                     this.$store.state.storeUserArray = wraping;
+                    console.log("wraping ===> ",this.$store.state.storeUserArray);
+                    console.log("wraping ===> ",this.$store.state.storeUserArray.objective[0]);
                     this.setArrayMood = []
 
                     this.recordFunction();
@@ -137,9 +151,9 @@ recognition.continuous = true;
                 builder.then(({start, stop}) => {
                     if(this.isCamera){
                         start();
-                        setTimeout(() => {
-                            stop();
-                        }, 10000)
+                        // setTimeout(() => {
+                        //     stop();
+                        // }, 30000)
                     }else{
                         // clearTimeout(settingTime)
                         stop();
@@ -149,7 +163,8 @@ recognition.continuous = true;
                 window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
                     if(evt.detail.output.dominantEmotion !== undefined){
 
-                        // console.log(evt.detail.output.dominantEmotion);
+                        console.log(evt.detail.output.dominantEmotion);
+                
                         this.setArrayMood.push(evt.detail.output.dominantEmotion);
 
                     }else{
@@ -200,7 +215,17 @@ recognition.continuous = true;
                 this.arrayMood = [];
                 this.setArrayMood = [];
                 alert("Reset!")
-            }
+            },
+
+            haddleSwitch(switchs){
+                if(switchs === 0){
+                    this.$store.state.isChangePages = 0
+                }else if(switchs === 1){
+                    this.$store.state.isChangePages = 1
+                }else if(switchs === 2){
+                    this.$store.state.isChangePages = 2
+                }
+            },
         },
         created(){
             this.checkUserIn();
@@ -222,18 +247,23 @@ recognition.continuous = true;
             </div>
             <div class="page-title">
                 <h1>AnotherMe</h1>
-                <!-- <button @click="testing">Debug</button> -->
+                <button @click="testing">Debug</button>
             </div>
 
             <div class="main-frame" v-if="isError === ''">
+                    <div class="user-text-in">
+                        {{runtimeTranscription_}}
+                    </div>
                     <StarterDesc v-if="isStarter"/>
                     <Dialogue1and2 v-if="this.$store.state.userAction.dialogueNow === 'Dialogue1and2'"/>
                     <Dialogue3 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue3'"/>
                     <Dialogue4 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue4'"/>
                     <EndDialogue  v-if="this.$store.state.userAction.dialogueNow  === 'end'"/>
                     <!-- <GoalSetting v-if="titleObject === 'goalSetting'"/> -->
+
                     <div class="voice-btn">
                         <div class="set-btn-line" v-if="this.$store.state.userAction.dialogueNow !== 'end'">
+
                             <div v-if="isShowReset">
                                 <button class="mic" @click="haddleReset">Reset</button>
                             </div>
@@ -254,12 +284,19 @@ recognition.continuous = true;
                                 Next
                             </button>
                             </div>
-                            
-                        </div>  
+
+                        </div>
+                        <div class="btn-switch-result" v-if="this.$store.state.userAction.dialogueNow === 'end'">
+                            <button class="btn-switch" @click="haddleSwitch(0)"></button>
+                            <button class="btn-switch" @click="haddleSwitch(1)"></button>
+                            <button class="btn-switch" @click="haddleSwitch(2)"></button>
+                        </div>
 
                         <div class="finish-dialogue" v-if="this.$store.state.userAction.dialogueNow === 'end'">
                             <button class="mic" @click="haddleToHomePage" >Home</button>
                         </div>  
+
+                        
                     </div>
             </div>
             <div class="main-frame" v-if="isError !==''">
@@ -279,9 +316,7 @@ recognition.continuous = true;
     height: 100%;
     z-index: 99;
     background: gray;
-    opacity: 0.7;
-
-    
+    opacity: 0.7;    
 }
 
 .loading-content{
@@ -303,13 +338,13 @@ recognition.continuous = true;
 
 .page-title > h1{
     margin-top: 5vh;
-    margin-bottom: 5vh;
+    margin-bottom: 3vh;
 }
 
 .main-frame{
     border: 1px solid rgb(249, 249, 249);
     width: 85%;
-    height: 70vh;
+    height: 75vh;
     background: white;
     margin: auto;
     border-radius: 20px;
@@ -332,5 +367,29 @@ recognition.continuous = true;
 .set-btn-line{
     display: flex;
     justify-content: space-around;
+}
+
+.user-text-in{
+    width: 85%;
+    margin: auto;
+    text-align: left;
+    margin-top: 10px;
+}
+
+.btn-switch-result{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.btn-switch{
+    border: 1px solid rgb(78, 78, 78);
+    background: rgb(222, 222, 222);
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 </style>

@@ -102,7 +102,7 @@ app.post("/writeEmotion", async (req, res) => {
     */
 
     const payload = req.body;
-    console.log("payload ===> ",payload)
+    // console.log("payload ===> ",payload)
     const emotion = require("./model/emotion");
     try {
         const processSentiment = require("./modules/processSentiment")
@@ -130,9 +130,9 @@ app.post("/writeEmotion", async (req, res) => {
                 }
         
             })
-        res.send("OK")
+        res.send({status:"OK", sentimentScore: sentimentScore})
     } catch (err) {
-        // console.log(err);
+        console.log(err);
         res.send(err);
     };
 })
