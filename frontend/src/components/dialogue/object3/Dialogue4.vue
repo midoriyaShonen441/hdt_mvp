@@ -20,7 +20,7 @@ export default {
     },
     methods:{
         findEmotionMode(){ 
-            console.log(this.$store.state.userAction.dialogueNow)
+            // console.log(this.$store.state.userAction.dialogueNow)
             this.$store.state.objective4.summary.forEach((element) => {
                 this.arrayOfSentence.push(element);
                 this.mySentenceNow.push("summary");

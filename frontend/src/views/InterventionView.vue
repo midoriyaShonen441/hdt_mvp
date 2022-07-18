@@ -55,7 +55,7 @@ recognition.continuous = true;
             
             testing(){
                 this.$store.state.userAction.sentenceIndex = 0;
-                console.log(this.$store.state.storeUserArray);
+                // console.log(this.$store.state.storeUserArray);
                 this.$store.state.userAction.dialogueNow = "end";
             },
 
@@ -130,7 +130,7 @@ recognition.continuous = true;
                     
                     this.isObject.push(this.$store.state.userAction.dialogueNow);
                     this.isSentimentScore.push(this.sentimentScore) 
-                    console.log(this.$store.state.userAction.dialogueNow);
+                    // console.log(this.$store.state.userAction.dialogueNow);
                     
 
                     const wraping = {
@@ -141,8 +141,8 @@ recognition.continuous = true;
                     }                    
 
                     this.$store.state.storeUserArray = wraping;
-                    console.log("wraping ===> ",this.$store.state.storeUserArray);
-                    console.log("wraping ===> ",this.$store.state.storeUserArray.objective[0]);
+                    // console.log("wraping ===> ",this.$store.state.storeUserArray);
+                    // console.log("wraping ===> ",this.$store.state.storeUserArray.objective[0]);
                     this.setArrayMood = []
 
                     this.recordFunction();
@@ -250,7 +250,7 @@ recognition.continuous = true;
             </div>
             <div class="page-title">
                 <h1>AnotherMe</h1>
-                <!-- <button @click="testing">Debug</button> -->
+                <button @click="testing">Debug</button>
             </div>
 
             <div class="main-frame" v-if="isError === ''">

@@ -15,7 +15,7 @@ export default {
     methods:{
 
         findMean(arrayOfScore){
-            console.log("moodArray ===> ",arrayOfScore);
+            // console.log("moodArray ===> ",arrayOfScore);
             const rangeOfScore = arrayOfScore.length
             let score = 0
             arrayOfScore.forEach((element) => {
@@ -38,7 +38,7 @@ export default {
                 setScore.push(element.sentimentScore);
             })
 
-            console.log("setMood ===> ", setMood , "setScore ====>", setScore);
+            // console.log("setMood ===> ", setMood , "setScore ====>", setScore);
             
             const convertArray = [].concat.apply([], setMood);
             convertArray.forEach(function (x) { countsDup[x] = (countsDup[x] || 0) + 1; });
@@ -67,7 +67,7 @@ export default {
             }else if(Relax > anxiety && Relax > joy && Relax > Depress ){
                 this.selectionMood = "relax"
             }
-            console.log("setScore ===> ", setScore)
+            // console.log("setScore ===> ", setScore)
 
             const mySentimentMean = this.findMean(setScore);
             // let resultSentiment = ''
@@ -78,7 +78,7 @@ export default {
             }else if(mySentimentMean <= -0.25){
                 this.resultSentiment = "Negtive";
             }
-            console.log("mySentimentMean ===> ", mySentimentMean);
+            // console.log("mySentimentMean ===> ", mySentimentMean);
 
             const warpingContent = {
                 morphcastEmotion: [
@@ -105,19 +105,19 @@ export default {
             let scoreDialogue3 = [];
             let scoreDialogue4 = [];
 
-            console.log("settingArray start ===> ",this.$store.state.storeUserArray);
+            // console.log("settingArray start ===> ",this.$store.state.storeUserArray);
 
             for(let i = 0; i < this.$store.state.storeUserArray.objective.length; i ++){
-                console.log("interation ==> ",i)
+                // console.log("interation ==> ",i)
 
                 if(this.$store.state.storeUserArray.objective[i] === 'Dialogue1and2'){
-                    console.log(this.$store.state.storeUserArray.objective[i])
+                    // console.log(this.$store.state.storeUserArray.objective[i])
                     scoreDialogue1and2.push({
                         mood: this.$store.state.storeUserArray.arrayMood[i],
                         sentimentScore: this.$store.state.storeUserArray.sentimentScore[i]
                         })
 
-                    console.log("scoreDialogue1and2 ===>", scoreDialogue1and2)
+                    // console.log("scoreDialogue1and2 ===>", scoreDialogue1and2)
                 }else if(this.$store.state.storeUserArray.objective[i] === 'Dialogue3'){
                     scoreDialogue3.push({
                         mood: this.$store.state.storeUserArray.arrayMood[i],
@@ -138,7 +138,7 @@ export default {
     },
     created(){
         this.settingArray();
-        console.log(this.mySummaryData);
+        // console.log(this.mySummaryData);
     }
 }
 </script>

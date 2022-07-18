@@ -21,7 +21,7 @@ export default {
     methods:{
 
         findEmotionMode(){ 
-            console.log("component Dialogue3 !!")
+            // console.log("component Dialogue3 !!")
             const countsDup = {};
             const setMood = this.$store.state.storeUserArray.arrayMood
 
