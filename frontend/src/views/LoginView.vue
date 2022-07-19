@@ -99,7 +99,7 @@ export default {
     margin: auto;
     text-align: center;
     width: 85%;
-    height: 40vh;
+    height: calc(30vh + 10vh);
     background: white;
     border-radius: 30px;
 }

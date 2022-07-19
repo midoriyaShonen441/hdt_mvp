@@ -250,11 +250,10 @@ recognition.continuous = true;
             </div>
             <div class="page-title">
                 <h1>AnotherMe</h1>
-                <button @click="testing">Debug</button>
+                <!-- <button @click="testing">Debug</button> -->
             </div>
 
             <div class="main-frame" v-if="isError === ''">
-                    
                     <StarterDesc v-if="isStarter"/>
                     <Dialogue1and2 v-if="this.$store.state.userAction.dialogueNow === 'Dialogue1and2'"/>
                     <Dialogue3 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue3'"/>
