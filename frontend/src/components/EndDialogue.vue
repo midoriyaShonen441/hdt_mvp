@@ -13,7 +13,6 @@ export default {
         }
     },
     methods:{
-
         findMean(arrayOfScore){
             // console.log("moodArray ===> ",arrayOfScore);
             const rangeOfScore = arrayOfScore.length
@@ -21,12 +20,9 @@ export default {
             arrayOfScore.forEach((element) => {
                 score  = score + element
             });
-
             const sentimentMean = score / rangeOfScore;
             return sentimentMean;
-
         },
-
             funcConvetMood(moodArray){
             // console.log("funcConvetMood ===> ", moodArray);
             const countsDup = {};
@@ -148,7 +144,10 @@ export default {
         <div class="text-end-container" >
             <div v-for="(element, index) in mySummaryData" :key="index">
                 <div class="title-continer"  v-if="index === $store.state.isChangePages">
-                    <h3>Phase: {{index + 1}}</h3>
+                    <h3 v-if="index === 0">Daily</h3>
+                    <h3 v-if="index === 1">Dialogue</h3>
+                    <h3 v-if="index === 2">Dashboard</h3>
+                    <!-- <h3>Phase: {{index + 1}}</h3> -->
                 </div>
                 <BarChart :isCounting="element.morphcastEmotion" v-if="index === $store.state.isChangePages"/>
                 <div class="mood-explian-contianer" v-if="index === $store.state.isChangePages">
@@ -185,5 +184,17 @@ export default {
     text-align: center;
     margin: auto;
     margin-top: 20px;
+}
+
+.content-sentiment{
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 10px;
+}
+
+.content-emotion{
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 10px;
 }
 </style>

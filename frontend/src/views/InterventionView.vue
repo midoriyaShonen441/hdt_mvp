@@ -21,8 +21,10 @@ const recognition = new window.SpeechRecognition();
 
 recognition.interimResults = true;
 recognition.continuous = true;
-recognition.lang = 'th-TH';
+
 // th-TH
+recognition.lang = 'th-TH'; 
+
 
     export default {
         components:{
@@ -253,7 +255,7 @@ recognition.lang = 'th-TH';
             </div>
             <div class="page-title">
                 <h1>AnotherMe</h1>
-                <!-- <button @click="testing">Debug</button> -->
+                <button class="analyzing" @click="testing">Analyzing</button>
             </div>
 
             <div class="main-frame" v-if="isError === ''">
@@ -315,6 +317,15 @@ recognition.lang = 'th-TH';
 </template>
 
 <style scoed>
+
+.analyzing{
+    margin-top: 10px; 
+    margin-bottom: 10px;
+    border: none;
+    background: rgb(199, 199, 199);
+    border-radius: 10px;
+}
+
 
 .is-loading{
     position: fixed;
