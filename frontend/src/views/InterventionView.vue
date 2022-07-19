@@ -18,8 +18,11 @@ const builder = CY.loader()
 
 window.SpeechRecognition = window.SpeechRecognition ||  window.webkitSpeechRecognition;
 const recognition = new window.SpeechRecognition();
+
 recognition.interimResults = true;
 recognition.continuous = true;
+recognition.lang = 'th-TH';
+// th-TH
 
     export default {
         components:{
