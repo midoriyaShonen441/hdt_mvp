@@ -187,13 +187,13 @@ export default {
 }
 
 .content-sentiment{
-    padding: 5px;
+    padding: 10px;
     border: 1px solid gray;
     border-radius: 10px;
 }
 
 .content-emotion{
-    padding: 5px;
+    padding: 15px;
     border: 1px solid gray;
     border-radius: 10px;
 }
