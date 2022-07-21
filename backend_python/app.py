@@ -50,13 +50,13 @@ def send_word_cloud():
         plt.savefig(image, format='png')
         base64_img = base64.encodestring(image.getvalue())
 
-        mydata = {
-            "arrayImg": str(base64_img)
-        }
+        # mydata = {
+        #     "arrayImg": str(base64_img)
+        # }
 
-        base64_array.append(mydata)
+        # base64_array.append(mydata)
  
-        return  base64_array
+        return  base64_img
 
 
 if __name__ == '__main__':

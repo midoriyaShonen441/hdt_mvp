@@ -1,15 +1,28 @@
 <script>
+import axios from 'axios';
+
 export default {
     components:{
 
     },
     data(){
         return{
-
+            imageBase64:""
         }
     },
     methods:{
-        
+        async fetchWordCloud(){
+            
+            const payload = {
+                testText:"อะไรก็ได้"
+            }
+            const wordCloud = await axios.post("http://127.0.0.1:8773/faskapi/wordcloud", payload);
+            console.log(wordCloud.data)
+            this.imageBase64 = wordCloud.data         
+        }
+    },
+    mounted(){
+        this.fetchWordCloud()
     }
 }
 </script>
@@ -23,6 +36,7 @@ export default {
             <div class="body-content">
                 <div class="setting-img">
                     <img width="300" height="300" src="../components/img/homepage.jpg"/>
+                    <img width="300" height="300" :src="`data:image/png;base64, ${imageBase64}`"/>
                 </div>
             </div>
             <div class="footer-container">
