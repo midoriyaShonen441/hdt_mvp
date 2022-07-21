@@ -8,8 +8,8 @@ import axios  from 'axios';
 import VoiceAnimation from '../components/VoiceAnimation.vue'
 import { httpAPI } from '../APIsetting';
 
-
 const httpAPIs = httpAPI();
+console.log(httpAPIs);
 
 const builder = CY.loader()
     .licenseKey("dad9b5df5ffd65750e82018b4286e6ce96c1d0dfd868")
@@ -18,8 +18,13 @@ const builder = CY.loader()
 
 window.SpeechRecognition = window.SpeechRecognition ||  window.webkitSpeechRecognition;
 const recognition = new window.SpeechRecognition();
+
 recognition.interimResults = true;
 recognition.continuous = true;
+
+// th-TH
+recognition.lang = 'th-TH'; 
+
 
     export default {
         components:{
@@ -123,6 +128,7 @@ recognition.continuous = true;
                         }
 
                     }catch(err){
+                        console.log(err);
                         this.isError = "Cannot connect to server!";
                         this.isLoading = false;
                     }
@@ -199,7 +205,7 @@ recognition.continuous = true;
                         .map(result => result[0])
                         .map(result => result.transcript)
                         .join("");
-                    
+                        // console.log("text ====> ",event.results)
                         this.runtimeTranscription_ = text;
                         this.runtimeTranscription_ = this.runtimeTranscription_ + text;
                         // console.log(this.runtimeTranscription_);
@@ -210,10 +216,13 @@ recognition.continuous = true;
             },  
 
             haddleToHomePage(){
-                this.$router.push('/')
+                this.isStarter = true;
+                this.$store.state.userAction.dialogueNow = "Dialogue1and2";
+                this.$router.push('/');
             },
 
             haddleReset(){
+                this.runtimeTranscription_ = "";
                 this.isWord = [];
                 this.arrayMood = [];
                 this.setArrayMood = [];
@@ -232,6 +241,7 @@ recognition.continuous = true;
         },
         created(){
             this.checkUserIn();
+            
         },
         
         updated(){
@@ -244,16 +254,19 @@ recognition.continuous = true;
 <template>
     <div>
         <div class="home-component">
+
             <div class="warping-loading-container" v-if="isLoading">
                 <div class="is-loading"></div>
                 <div class="loading-content">Loading...</div>
             </div>
+
             <div class="page-title">
                 <h1>AnotherMe</h1>
-                <!-- <button @click="testing">Debug</button> -->
+                <button class="analyzing" @click="testing">Analyzing</button>
             </div>
 
             <div class="main-frame" v-if="isError === ''">
+
                     <StarterDesc v-if="isStarter"/>
                     <Dialogue1and2 v-if="this.$store.state.userAction.dialogueNow === 'Dialogue1and2'"/>
                     <Dialogue3 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue3'"/>
@@ -270,7 +283,7 @@ recognition.continuous = true;
                         <div class="set-btn-line" v-if="this.$store.state.userAction.dialogueNow !== 'end'">
 
                             <div v-if="isShowReset">
-                                <button class="mic" @click="haddleReset">Reset</button>
+                                <button class="mic" @click="haddleReset">Recover</button>
                             </div>
                             <div  v-if="!(isActionBtn)" @click="ToggleMic">
                                 <button 
@@ -313,6 +326,15 @@ recognition.continuous = true;
 
 <style scoed>
 
+.analyzing{
+    margin-top: 10px; 
+    margin-bottom: 10px;
+    border: none;
+    background: rgb(199, 199, 199);
+    border-radius: 10px;
+}
+
+
 .is-loading{
     position: fixed;
     left:0;
@@ -349,12 +371,12 @@ recognition.continuous = true;
 .main-frame{
     border: 1px solid rgb(249, 249, 249);
     width: 85%;
-    height: 75vh;
+    height: 100%;
     background: white;
     margin: auto;
     border-radius: 20px;
 }
-
+ 
 
 .voice-btn{
     margin-top: 10%;
