@@ -1,5 +1,5 @@
 from pythainlp import word_tokenize
-from flask import Flask , request
+from flask import Flask , request, jsonify
 from flask_cors import CORS
 
 from pythainlp.corpus import thai_stopwords
@@ -47,14 +47,15 @@ def send_word_cloud():
         plt.tight_layout(pad=0)
         plt.savefig(image, format='png')
         base64_img = base64.encodestring(image.getvalue())
+        
+        mydata = {
+                    "arrayImg": str(base64_img)
+                }
 
-        # mydata = {
-        #     "arrayImg": str(base64_img)
-        # }
-
-        # base64_array.append(mydata)
+        base64_array.append(mydata)
+        replyData =  jsonify(base64_array)
  
-        return  base64_img
+        return  replyData
 
 
 if __name__ == '__main__':
