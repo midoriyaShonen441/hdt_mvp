@@ -1,5 +1,5 @@
 from pythainlp import word_tokenize
-from flask import Flask , request
+from flask import Flask , request, jsonify
 from flask_cors import CORS
 
 from pythainlp.corpus import thai_stopwords
@@ -7,8 +7,10 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
-import json
-
+import matplotlib     
+matplotlib.use('Agg')    # And this line , It won't be wrong 
+ 
+ 
 
 app = Flask(__name__) 
 CORS(app)
@@ -19,8 +21,9 @@ is_font_path = "./THSarabunNew.ttf"
 def send_word_cloud():
     image = BytesIO()
     set_stop_word =  thai_stopwords()
-    base64_array = []
+    
     if request.method == 'POST':
+        base64_array = []
         req = request.get_json(force=True)
         print(req)
 
@@ -30,6 +33,7 @@ def send_word_cloud():
                 ที่มา - Facebook ของ สสส."""
 
         words = word_tokenize(text)
+        print(words)
         all_words = ' '.join(words).lower().strip()
         
         wordcloud = WordCloud(
@@ -45,23 +49,24 @@ def send_word_cloud():
 
         # print("wordcloud ===> ",wordcloud)
 
-        # plt.figure(figsize = (10, 9))
+        plt.figure(figsize = (10, 9))
         plt.imshow(wordcloud)
         plt.axis('off')
         plt.tight_layout(pad=0)
         plt.savefig(image, format='png')
+
         base64_img = base64.encodestring(image.getvalue())
 
         mydata = {
-            "arrayImg": base64_array
+            "arrayImg": str(base64_img)
         }
 
         base64_array.append(mydata)
+        replyData =  jsonify(base64_array)
 
-        replyData = json.dumps(base64_array)
-        print(replyData)
-        return  "ok"
+        return  replyData
 
 
 if __name__ == '__main__':
+    app.debug = True
     app.run(port=8773)
