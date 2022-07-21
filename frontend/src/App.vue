@@ -71,6 +71,7 @@ body{
   margin:0;
   padding: 0;
   background-color: rgb(52, 51, 51);
+ 
 }
  
 .menu-side-bar{

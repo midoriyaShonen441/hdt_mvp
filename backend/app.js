@@ -14,12 +14,12 @@ app.use(express.urlencoded({limit: '50mb'}));
 db.connect()
 
 ////////////////// Test Debug //////////////////////////////
-app.get("/", async (req, res) => {
+app.get("/backend", async (req, res) => {
     res.end("OK")
 })
 
 ////////////////// User Register API //////////////////////////////
-app.post("/register", async (req, res) => {
+app.post("/backend/register", async (req, res) => {
     const payload = req.body;
     // console.log(payload)
     const userProfile = require("./model/userProfile");
@@ -55,7 +55,7 @@ app.post("/register", async (req, res) => {
 })
 
 ////////////////// User Login API //////////////////////////////
-app.post("/login", async (req, res) => {
+app.post("/backend/login", async (req, res) => {
     const payload = req.body;
     // console.log("login payload ==> ",payload.email);
     const userProfile = require("./model/userProfile");
@@ -87,7 +87,7 @@ app.post("/login", async (req, res) => {
     };
 })
 
-app.post("/writeEmotion", async (req, res) => {
+app.post("/backend/writeEmotion", async (req, res) => {
 
     
     /*
