@@ -7,7 +7,9 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
-import json
+import matplotlib
+matplotlib.use('Agg')
+
 
 
 app = Flask(__name__) 
@@ -42,9 +44,6 @@ def send_word_cloud():
             colormap='tab20c',
             background_color = 'white').generate(all_words)
 
-        # print("wordcloud ===> ",wordcloud)
-
-        # plt.figure(figsize = (10, 9))
         plt.imshow(wordcloud)
         plt.axis('off')
         plt.tight_layout(pad=0)
@@ -52,14 +51,12 @@ def send_word_cloud():
         base64_img = base64.encodestring(image.getvalue())
 
         mydata = {
-            "arrayImg": base64_array
+            "arrayImg": str(base64_img)
         }
 
         base64_array.append(mydata)
-
-        replyData = json.dumps(base64_array)
-        print(replyData)
-        return  "ok"
+ 
+        return  base64_array
 
 
 if __name__ == '__main__':
