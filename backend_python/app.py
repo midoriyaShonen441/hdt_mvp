@@ -10,8 +10,6 @@ import base64
 import matplotlib
 matplotlib.use('Agg')
 
-
-
 app = Flask(__name__) 
 CORS(app)
 
