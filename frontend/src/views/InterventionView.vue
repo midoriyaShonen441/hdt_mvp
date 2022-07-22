@@ -137,7 +137,6 @@ recognition.lang = 'th-TH';
                     this.isObject.push(this.$store.state.userAction.dialogueNow);
                     this.isSentimentScore.push(this.sentimentScore) 
                     // console.log(this.$store.state.userAction.dialogueNow);
-                    
 
                     const wraping = {
                         objective:  this.isObject,
@@ -172,7 +171,7 @@ recognition.lang = 'th-TH';
                 window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
                     if(evt.detail.output.dominantEmotion !== undefined){
 
-                        console.log(evt.detail.output.dominantEmotion);
+                        // console.log(evt.detail.output.dominantEmotion);
                 
                         this.setArrayMood.push(evt.detail.output.dominantEmotion);
 
