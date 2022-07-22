@@ -1,5 +1,9 @@
 <script>
-import BarChart from '../components/charts/BarChart.vue'
+import BarChart from '../components/charts/BarChart.vue';
+import axios from 'axios';
+import {httpAPIWordCloud} from '../APIsetting';
+
+const faskAPI = httpAPIWordCloud();
 
 export default {
     components:{
@@ -8,12 +12,15 @@ export default {
     data(){
         return{
             mySummaryData: [],
+            imgBase64:[],
             selectionMood: '',
-            resultSentiment: ''
+            resultSentiment: '',
+            base64Dialogue1: '',
+            base64Dialogue2: '',
+            base64Dialogue3: ''
         }
     },
     methods:{
-
         findMean(arrayOfScore){
             // console.log("moodArray ===> ",arrayOfScore);
             const rangeOfScore = arrayOfScore.length
@@ -21,13 +28,10 @@ export default {
             arrayOfScore.forEach((element) => {
                 score  = score + element
             });
-
             const sentimentMean = score / rangeOfScore;
             return sentimentMean;
-
         },
-
-            funcConvetMood(moodArray){
+        funcConvetMood(moodArray){
             // console.log("funcConvetMood ===> ", moodArray);
             const countsDup = {};
             const setMood = []
@@ -100,10 +104,17 @@ export default {
         },
 
 
-        settingArray(){
+        async settingArray(){
             let scoreDialogue1and2 = [];
             let scoreDialogue3 = [];
             let scoreDialogue4 = [];
+
+            let wordDialogue1and2 = [];
+            let wordDialogue3 = [];
+            let wordDialogue4 = [];
+
+            let wrapingWord = [];
+            // let stringToBase64 = [];
 
             // console.log("settingArray start ===> ",this.$store.state.storeUserArray);
 
@@ -114,8 +125,9 @@ export default {
                     // console.log(this.$store.state.storeUserArray.objective[i])
                     scoreDialogue1and2.push({
                         mood: this.$store.state.storeUserArray.arrayMood[i],
-                        sentimentScore: this.$store.state.storeUserArray.sentimentScore[i]
+                        sentimentScore: this.$store.state.storeUserArray.sentimentScore[i],
                         })
+                    wordDialogue1and2.push(this.$store.state.storeUserArray.word[i])
 
                     // console.log("scoreDialogue1and2 ===>", scoreDialogue1and2)
                 }else if(this.$store.state.storeUserArray.objective[i] === 'Dialogue3'){
@@ -123,13 +135,58 @@ export default {
                         mood: this.$store.state.storeUserArray.arrayMood[i],
                         sentimentScore: this.$store.state.storeUserArray.sentimentScore[i]
                         })
+                    wordDialogue3.push(this.$store.state.storeUserArray.word[i])
                 }else if(this.$store.state.storeUserArray.objective[i] === 'Dialogue4'){
                     scoreDialogue4.push({
                         mood: this.$store.state.storeUserArray.arrayMood[i],
                         sentimentScore: this.$store.state.storeUserArray.sentimentScore[i]
                         })
+                    wordDialogue4.push(this.$store.state.storeUserArray.word[i])
                 }
             }
+
+            
+            // wrapingWord.push(wordDialogue1and2.join(''))
+            // wrapingWord.push(wordDialogue3.join(''))
+            // wrapingWord.push(wordDialogue4.join(''))
+
+            const setSending1 = wordDialogue1and2.join('');
+            const settingSend1 = {
+                text: setSending1
+            }
+
+            const setSending2 = wordDialogue3.join('');
+            const settingSend2 = {
+                text: setSending2
+            }
+
+            const setSending3 = wordDialogue4.join('');
+            const settingSend3 = {
+                text: setSending3
+            }
+
+            try{
+                const dataImg1 = await axios.post(`${faskAPI}/wordcloud`,settingSend1);
+                this.base64Dialogue1 = dataImg1.data; 
+
+                const dataImg2 = await axios.post(`${faskAPI}/wordcloud`,settingSend2);
+                this.base64Dialogue2 = dataImg2.data; 
+
+                const dataImg3 = await axios.post(`${faskAPI}/wordcloud`,settingSend3);
+                this.base64Dialogue3 = dataImg3.data; 
+                // console.log(dataImg.data);
+                
+                // dataImg.data.forEach((element) => { 
+                //     this.imgBase64.push(window.btoa(element))
+                // })
+
+ 
+                
+            }catch(err){
+                console.log(err);
+                this.imgBase64 = ["","",""]
+            }
+            
             this.funcConvetMood(scoreDialogue1and2);
             this.funcConvetMood(scoreDialogue3);
             this.funcConvetMood(scoreDialogue4);
@@ -148,9 +205,13 @@ export default {
         <div class="text-end-container" >
             <div v-for="(element, index) in mySummaryData" :key="index">
                 <div class="title-continer"  v-if="index === $store.state.isChangePages">
-                    <h3>Phase: {{index + 1}}</h3>
+                    <h3 v-if="index === 0">Daily</h3>
+                    <h3 v-if="index === 1">Dialogue</h3>
+                    <h3 v-if="index === 2">Dashboard</h3>
+                    <!-- <h3>Phase: {{index + 1}}</h3> -->
                 </div>
                 <BarChart :isCounting="element.morphcastEmotion" v-if="index === $store.state.isChangePages"/>
+
                 <div class="mood-explian-contianer" v-if="index === $store.state.isChangePages">
                     <div class="content-sentiment">
                         <h4>Sentiment</h4>
@@ -159,8 +220,15 @@ export default {
                     <div class="content-emotion">
                         <h4>Emotion</h4>
                         <h4>{{element.groupEmotion}}</h4>
-                    </div>
-                    
+                    </div>    
+                </div>
+
+                <div class="wordcloud-continaer" v-if="index === $store.state.isChangePages">
+                    <h3>My answer</h3>
+                    <!-- <img height="300" width="300" :src="`data:image/png;base64, ${this.imgBase64[index]}`"/> -->
+                    <img class="border-word-cloud" height="300" width="300" v-if="index === 0" :src="`data:image/png;base64, ${base64Dialogue1}`"/>
+                    <img class="border-word-cloud" height="300" width="300" v-if="index === 1" :src="`data:image/png;base64, ${base64Dialogue2}`"/>
+                    <img class="border-word-cloud" height="300" width="300" v-if="index === 2" :src="`data:image/png;base64, ${base64Dialogue3}`"/>
                 </div>
             </div>
         </div>
@@ -178,12 +246,31 @@ export default {
     font-size: 25px;
 }
 
- 
+.border-word-cloud{
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+    border-radius: 10px;
+}
 .mood-explian-contianer{
     display: flex;
     justify-content: space-around;
     text-align: center;
     margin: auto;
     margin-top: 20px;
+}
+
+.content-sentiment{
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 10px;
+}
+
+.content-emotion{
+    padding: 15px;
+    border: 1px solid gray;
+    border-radius: 10px;
+}
+
+.wordcloud-continaer{
+    margin-top: 50px;
 }
 </style>

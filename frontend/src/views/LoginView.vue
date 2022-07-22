@@ -1,6 +1,6 @@
 <script>
 import axios from "axios";
-import {httpAPI} from '../APIsetting'
+import {httpAPI} from '../APIsetting';
 
 const httpAPIs = httpAPI()
 
@@ -26,9 +26,7 @@ export default {
                 }else{
                     this.invalidUser = userLogin.data.text
                 }
-
             }catch(err){
-
                 this.invalidUser = err
             }
         },
@@ -36,8 +34,6 @@ export default {
             this.$router.push("/register");
         }
     },mounted(){
-
-        
         try{
             const stringJson = localStorage.getItem("nexter_living_user");
             const convertStingJson = JSON.parse(stringJson);
@@ -47,14 +43,12 @@ export default {
         }catch(err){
             
         }
-
     },
     updated(){
 
-   
-                
     }
 }
+
 </script>
 
 <template>
@@ -99,7 +93,7 @@ export default {
     margin: auto;
     text-align: center;
     width: 85%;
-    height: 40vh;
+    height: calc(30vh + 10vh);
     background: white;
     border-radius: 30px;
 }

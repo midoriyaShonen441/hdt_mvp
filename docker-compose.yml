@@ -32,6 +32,18 @@ services:
       - ./backend:/usr/src/app:cached
     networks:
       - net
+  
+  backend_wordcloud:
+    container_name: hdt_backend_wordcloud
+    restart: always
+    build:
+      context: ./backend_python
+    ports:
+      - 8773:8773
+    volumes:
+      - ./backend_python:/usr/src/app:cached
+    networks:
+      - net
 
   database:
     container_name: hdt_database
@@ -72,7 +84,6 @@ services:
       - ./certbot/conf/:/etc/nginx/ssl/:ro
     ports:
       - 80:80
-      - 443:443
     networks:
       - net
 

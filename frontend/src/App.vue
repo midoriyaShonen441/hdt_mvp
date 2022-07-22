@@ -37,16 +37,17 @@ export default {
           <div class="menu-side-bar">
             <div style="text-align: center;" @click="haddleRouter('login')">
               <i class="fa fa-sign-in" style="font-size:36px; color:white"></i>
-              <p style="color:white; text-align: center;">login</p>
+              <p style="color:white; text-align: center;">Login</p>
             </div>
             <div style="text-align: center;"  @click="haddleRouter('home')">
               <i class='fas fa-home' style='font-size:36px;  color:white'></i>
-              <p style="color:white; ">home</p>
+              <p style="color:white; ">Home</p>
             </div>
             <div style="text-align: center;"  @click="haddleRouter('borad')">
             <i class='fas fa-chart-pie' style='font-size:36px color:white' ></i>
+            <!-- <font-awesome-icon icon="fa-light fa-coffee" /> -->
               <!-- <i class='fas fa-chart-pie' style="font-size:36px;  color:white"></i> -->
-              <p style="color:white; ">borad</p>
+              <p style="color:white; ">Board</p>
             </div>
  
           </div>
@@ -70,6 +71,7 @@ body{
   margin:0;
   padding: 0;
   background-color: rgb(52, 51, 51);
+ 
 }
  
 .menu-side-bar{

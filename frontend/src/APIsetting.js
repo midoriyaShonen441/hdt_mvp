@@ -1,7 +1,14 @@
-/////////// For Testing /////////
+/////////// ++++++++++++++ ////////////
+///////////  For Testing  ////////////
+/////////// ++++++++++++++ ////////////
 
 // const httpAPI = () => {
-//     const isAPI = "http://localhost:8888";
+//     const isAPI = "http://localhost:8888/backend";
+//     return isAPI;
+// }
+
+// const httpAPIWordCloud = () => {
+//     const isAPI = "http://127.0.0.1:8773/faskapi"
 //     return isAPI;
 // }
 
@@ -10,16 +17,27 @@
 //     return isDebug;
 // }
 
+/////////// ++++++++++++++ ////////////
 /////////// For production ////////////
+////////// +++++++++++++++ ///////////
+
 const httpAPI = () => {
     const isAPI = "http://localhost:443/backend";
     return isAPI;
 }
 
+const httpAPIWordCloud = () => {
+    const isAPI = "http://localhost:443/faskapi";
+    return isAPI;
+}
+
 const dugAPI = () => {
-    const isDebug = "http://localhost:443/backend"
+    const isDebug = "http://localhost:443/backend";
     return isDebug;
 }
 
+/////////// ++++++++++++++ ////////////
+///////////////////////////////////////
+/////////// ++++++++++++++ ////////////
 
-export {httpAPI, dugAPI}
+export {httpAPI, dugAPI, httpAPIWordCloud}
