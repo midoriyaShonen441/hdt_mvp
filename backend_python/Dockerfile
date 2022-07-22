@@ -10,6 +10,9 @@ RUN pip3 install -r requirements.txt
 
 # EXPOSE 8773
 
+ENTRYPOINT [ "python" ]
+CMD ["app.py" ]
+
 # CMD [ "python" , "./app.py" ]
-CMD ["flask", "run", "-p", "8773"]
+# CMD ["flask", "run", "-h", "0.0.0.0", "-p", "5000"]
 

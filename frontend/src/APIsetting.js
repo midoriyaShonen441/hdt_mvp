@@ -27,7 +27,7 @@ const httpAPI = () => {
 }
 
 const httpAPIWordCloud = () => {
-    const isAPI = "http://127.0.0.1:443/faskapi";
+    const isAPI = "http://localhost:443/faskapi";
     return isAPI;
 }
 

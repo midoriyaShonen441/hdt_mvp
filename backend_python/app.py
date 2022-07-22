@@ -159,5 +159,4 @@ def send_word_cloud():
 
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run(port=8773)
+    app.run(debug=True, host='0.0.0.0', port=8773)
