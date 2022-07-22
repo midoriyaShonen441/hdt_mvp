@@ -8,12 +8,18 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
 import matplotlib     
-matplotlib.use('Agg')    # And this line , It won't be wrong 
+matplotlib.use('Agg')    
 
 app = Flask(__name__) 
 CORS(app)
 
 is_font_path = "./THSarabunNew.ttf"
+
+
+@app.route('/faskapi/debug', methods = ['GET'])
+def debugging():
+    if request.method == 'GET':
+        return "OK"
 
 @app.route('/faskapi/wordcloud', methods = ['POST'])
 def send_word_cloud():
