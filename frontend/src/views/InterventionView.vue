@@ -244,9 +244,9 @@ recognition.lang = 'th-TH';
         },
         
         updated(){
-            if(this.setArrayMood.length > 0){
-                console.log(this.setArrayMood.length)
-            }
+            // if(this.setArrayMood.length > 0){
+            //     console.log(this.setArrayMood.length)
+            // }
             
         }
     }
