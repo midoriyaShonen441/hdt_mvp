@@ -5,8 +5,7 @@ export default createStore({
         emotion:"",
         objective1: {
             firstTimeGreeting:[
-                "Hi I'm your companion, your safe place or just to listen whatever you feel free to tell me. what would you like to call me?",
-                "Ok, I'm your "
+                "Hi I'm your companion, your safe place or just to listen whatever you feel free to tell me. what would you like to call me?"
             ],
             goalSetting:[
                 "How would you like to be different as a result of our daily talkingt? Or how would you like your life to be different?",
