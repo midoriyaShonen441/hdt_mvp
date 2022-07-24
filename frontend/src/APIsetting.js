@@ -22,7 +22,7 @@ const httpAPI = () => {
 }
 
 const httpAPIWordCloud = () => {
-    const isAPI = "https://anotherme.tech/faskapi";
+    const isAPI = "https://anotherme.tech/backend_wordcloud";
     return isAPI;
 }
 

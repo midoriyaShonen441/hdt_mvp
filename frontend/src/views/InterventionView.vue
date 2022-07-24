@@ -21,11 +21,8 @@ const recognition = new window.SpeechRecognition();
 
 recognition.interimResults = true;
 recognition.continuous = true;
-recognition.lang = 'th-TH'; 
+// recognition.lang = 'th-TH'; 
 // th-TH
-
-
-
     export default {
         components:{
             StarterDesc,
@@ -54,7 +51,8 @@ recognition.lang = 'th-TH';
 
                 isError:"",
                 isLoading:false,
-                selectLang: "th-TH"
+                
+                selectLang: 'th-TH'
             }
         },
         methods:{
@@ -179,8 +177,11 @@ recognition.lang = 'th-TH';
                         // console.log("passing");
                     }
                 });
+                
 
+                recognition.lang = this.selectLang;    // << control lang 
                 if(this.isRecord === true){
+                    
                     this.isWord.push(this.runtimeTranscription_);
 
                     // console.log("this.isRecord true ==> ",this.isRecord);
@@ -237,6 +238,17 @@ recognition.lang = 'th-TH';
                     this.$store.state.isChangePages = 2
                 }
             },
+
+            haddleLangChange(){
+                console.log("before click ==> ",this.selectLang)
+                if(this.selectLang === 'th-TH'){
+                    this.selectLang = 'en-US'
+                    // console.log("after click ==> ",this.selectLang)
+                }else{
+                    this.selectLang = 'th-TH'
+                    // console.log("after click ==> ",this.selectLang)
+                }
+            }
         },
         created(){
             this.checkUserIn();
@@ -263,7 +275,7 @@ recognition.lang = 'th-TH';
 
             <div class="page-title">
                 <h1>AnotherMe</h1>
-                <button class="analyzing" @click="testing">Analyzing</button>
+                
             </div>
 
             <div class="main-frame" v-if="isError === ''">
@@ -324,13 +336,30 @@ recognition.lang = 'th-TH';
                         <div class="finish-dialogue" v-if="this.$store.state.userAction.dialogueNow === 'end'">
                             <button class="mic" @click="haddleToHomePage" >Home</button>
                         </div>  
-                                    <div class="pad-main-frame">
-
-            </div>
-
-                        
+                        <div class="pad-main-frame"></div>       
                     </div>
             </div>
+            <div class="control-panel-container">
+                <div class="control-main-frame">
+                    <div class="analyzing-btn">
+                        <div class="icon-set">
+                            <i class='fas fa-chart-pie' style='font-size:36px'></i>
+                        </div>
+                        <button class="analyzing" @click="testing">Analyzing</button>
+                    </div>
+                    
+                     <div class="toggle-lang">
+                        <div class="icon-set-mic">
+                             <i class='fas fa-microphone' style='font-size:36px'></i>
+                        </div>
+                        <label for="toggle-1" class="toggle-1">
+                            <input type="checkbox" name="toggle-1" id="toggle-1" class="toggle-1__input" @click="haddleLangChange">
+                            <span class="toggle-1__button"></span> 
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             <div class="main-frame" v-if="isError !==''">
                 <div>Cannot connect to server!</div>
             </div>
@@ -340,13 +369,41 @@ recognition.lang = 'th-TH';
 </template>
 
 <style scoed>
+.icon-set{
+    margin-top: 10px;
+    text-align: center;
+ 
+}
+
+.icon-set-mic{
+    text-align: center;
+    margin-bottom: 10px;
+}
+.control-panel-container{
+    margin-top: 30px;
+}
+
+.control-main-frame{
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid rgb(249, 249, 249);
+    width: 85%;
+    height: 100%;
+    background: white;
+    margin: auto;
+    border-radius: 20px;
+}
 
 .analyzing{
+    color: white;
+    font-weight: bold;
+    height: 40px;
     margin-top: 10px; 
     margin-bottom: 10px;
     border: none;
-    background: rgb(199, 199, 199);
+    background: rgb(72, 185, 255);
     border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .pad-main-frame{
@@ -444,4 +501,74 @@ recognition.lang = 'th-TH';
     margin-left: 10px;
     margin-right: 10px;
 }
+
+
+/* toggle  */
+.toggle-lang{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.toggle-1 {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 15px 0 0;
+}
+
+    .toggle-1__input {
+        display: none;
+    }
+
+    .toggle-1__button {
+        position: relative;
+        cursor: pointer;
+        display: inline-block;
+
+        font-family: 'Roboto', sans-serif;
+        text-transform: uppercase;
+        font-size: 1rem;
+        line-height: 20px;
+
+        width: 100px;
+        height: 40px;
+        color: white;
+        background-color: #39bbf2;
+        border-radius: 30px;
+        border: solid 1px #3989f2;
+        box-shadow: 0 0 12px rgba(61, 77, 255, 0.5);
+
+        transition: all 0.3 ease;
+    }
+
+    .toggle-1__button::before {
+        position: absolute;
+        display: flex;
+        align-items: center;
+
+        top: 4px;
+        left: 50px;
+        height: 30px;
+        padding: 0 10px;
+
+        content: "TH";
+        background: white;
+        border-radius: 30px;
+        color: #39a5f2;
+        transition: all 0.3s ease;
+        
+    }
+
+    .toggle-1__input:checked + .toggle-1__button {
+        
+        background: #cfc845;
+        border: solid 1px #afcf45;
+        box-shadow: 0 2px 20px rgba(182, 207, 69, 0.5);
+
+    }
+
+    .toggle-1__input:checked + .toggle-1__button::before {
+        content: 'EN';
+        left: 5px;
+        color:#bdcf45;
+    }
 </style>
