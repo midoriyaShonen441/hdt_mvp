@@ -17,8 +17,6 @@ export default {
       haddleRouter(menu){
         if(menu === 'login'){
           this.$router.push("/login")
-        }else if(menu === 'register'){
-          this.$router.push("/register")
         }else if(menu === 'borad'){
           this.$router.push('/intervention')
         }else if(menu === 'home'){
@@ -36,15 +34,15 @@ export default {
         <div class="bg-dark p-4">
           <div class="menu-side-bar">
             <div style="text-align: center;" @click="haddleRouter('login')">
-              <i class="fa fa-sign-in" style="font-size:36px; color:white"></i>
+              <!-- <i class="fa fa-sign-in" style="font-size:36px; color:white"></i> -->
               <p style="color:white; text-align: center;">Login</p>
             </div>
             <div style="text-align: center;"  @click="haddleRouter('home')">
-              <i class='fas fa-home' style='font-size:36px;  color:white'></i>
+              <!-- <i class='fas fa-home' style='font-size:36px;  color:white'></i> -->
               <p style="color:white; ">Home</p>
             </div>
             <div style="text-align: center;"  @click="haddleRouter('borad')">
-            <i class='fas fa-chart-pie' style='font-size:36px color:white' ></i>
+            <!-- <i class='fas fa-chart-pie' style='font-size:36px color:white' ></i> -->
             <!-- <font-awesome-icon icon="fa-light fa-coffee" /> -->
               <!-- <i class='fas fa-chart-pie' style="font-size:36px;  color:white"></i> -->
               <p style="color:white; ">Board</p>
@@ -72,6 +70,10 @@ body{
   padding: 0;
   background-color: rgb(52, 51, 51);
  
+}
+
+.menu-side-bar > div > p {
+  margin-top: 20%;
 }
  
 .menu-side-bar{

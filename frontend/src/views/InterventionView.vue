@@ -21,9 +21,9 @@ const recognition = new window.SpeechRecognition();
 
 recognition.interimResults = true;
 recognition.continuous = true;
-
-// th-TH
 recognition.lang = 'th-TH'; 
+// th-TH
+
 
 
     export default {
@@ -53,7 +53,8 @@ recognition.lang = 'th-TH';
                 myEmail:"",
 
                 isError:"",
-                isLoading:false
+                isLoading:false,
+                selectLang: "th-TH"
             }
         },
         methods:{
@@ -82,6 +83,7 @@ recognition.lang = 'th-TH';
                 }
                 
             },
+
             async cameraAction(){
                 if(!(this.isActionBtn)){
 
@@ -101,9 +103,7 @@ recognition.lang = 'th-TH';
                     this.$store.state.userAction.sentenceIndex += 1;
 
                     this.arrayMood.push(this.setArrayMood);
-
                     
-
                     const warpingPayload = {
                         email: this.myEmail,
                         objective: this.$store.state.userAction.dialogueNow,
@@ -244,8 +244,10 @@ recognition.lang = 'th-TH';
         },
         
         updated(){
- 
-
+            if(this.setArrayMood.length > 0){
+                console.log(this.setArrayMood.length)
+            }
+            
         }
     }
 </script>
@@ -284,22 +286,32 @@ recognition.lang = 'th-TH';
                             <div v-if="isShowReset">
                                 <button class="mic" @click="haddleReset">Recover</button>
                             </div>
+
                             <div  v-if="!(isActionBtn)" @click="ToggleMic">
                                 <button 
                                 class="mic" 
                                 @click="cameraAction"
                                 >
                                 Record
-                            </button>
+                                </button>
                             </div>
                             
                             <div v-if="(isActionBtn)" @click="ToggleMic"> 
                                 <button 
                                 class="mic" 
                                 @click="cameraAction"
+                                v-if="setArrayMood.length > 0"
                                 >
                                 Next
-                            </button>
+                                </button>
+
+                                <button 
+                                class="mic-off" 
+                                @click="cameraAction"
+                                v-if="setArrayMood.length === 0"
+                                >
+                                Next
+                                </button>
                             </div>
 
                         </div>
@@ -312,6 +324,9 @@ recognition.lang = 'th-TH';
                         <div class="finish-dialogue" v-if="this.$store.state.userAction.dialogueNow === 'end'">
                             <button class="mic" @click="haddleToHomePage" >Home</button>
                         </div>  
+                                    <div class="pad-main-frame">
+
+            </div>
 
                         
                     </div>
@@ -319,6 +334,7 @@ recognition.lang = 'th-TH';
             <div class="main-frame" v-if="isError !==''">
                 <div>Cannot connect to server!</div>
             </div>
+
         </div>
     </div>
 </template>
@@ -333,6 +349,9 @@ recognition.lang = 'th-TH';
     border-radius: 10px;
 }
 
+.pad-main-frame{
+    padding-bottom: 60px;
+}
 
 .is-loading{
     position: fixed;
@@ -354,7 +373,6 @@ recognition.lang = 'th-TH';
     font-weight: bold;
     width: 100%;
     height: 100%;
- 
 }
 
 .page-title{
@@ -388,6 +406,14 @@ recognition.lang = 'th-TH';
     border-radius: 50%;
     border: none;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.mic-off{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 
 .set-btn-line{
