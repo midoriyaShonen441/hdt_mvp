@@ -8,7 +8,7 @@ export default createStore({
                 "Hi I'm your companion, your safe place or just to listen whatever you feel free to tell me. what would you like to call me?"
             ],
             goalSetting:[
-                "How would you like to be different as a result of our daily talkingt? Or how would you like your life to be different?",
+                "How would you like to be different as a result of our daily talking? Or how would you like your life to be different?",
                 "Put your “Goals” at the top there.",
                 "That's a very good goal. If you were…......, what might you be doing differently?",
                 "Okay. That's a good one."

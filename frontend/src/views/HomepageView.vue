@@ -6,7 +6,7 @@
     <div class="welcome-container">
         <div class="content-contianer">
             <div class="header-title">
-                <h4>Welcome to Aboutme</h4>
+                <h4>Welcome to AnotherMe</h4>
             </div>
             <div class="body-content">
                 <div class="setting-img">
@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="footer-container">
-                <h5>Create by nexter living team.</h5>
+                <h5>Created by Nexter Living team.</h5>
             </div>
         </div>
     </div>
