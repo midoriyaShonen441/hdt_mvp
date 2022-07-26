@@ -129,12 +129,9 @@ recognition.continuous = true;
                         console.log(err);
                         this.isError = "Cannot connect to server!";
                         this.isLoading = false;
-                    }
-
-                    
+                    }                   
                     this.isObject.push(this.$store.state.userAction.dialogueNow);
                     this.isSentimentScore.push(this.sentimentScore) 
-                    // console.log(this.$store.state.userAction.dialogueNow);
 
                     const wraping = {
                         objective:  this.isObject,
@@ -144,8 +141,6 @@ recognition.continuous = true;
                     }                    
 
                     this.$store.state.storeUserArray = wraping;
-                    // console.log("wraping ===> ",this.$store.state.storeUserArray);
-                    // console.log("wraping ===> ",this.$store.state.storeUserArray.objective[0]);
                     this.setArrayMood = []
 
                     this.recordFunction();
@@ -167,12 +162,8 @@ recognition.continuous = true;
                 });
 
                 window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
-                    if(evt.detail.output.dominantEmotion !== undefined){
-
-                        // console.log(evt.detail.output.dominantEmotion);
-                
+                    if(evt.detail.output.dominantEmotion !== undefined){      
                         this.setArrayMood.push(evt.detail.output.dominantEmotion);
-
                     }else{
                         // console.log("passing");
                     }
@@ -199,16 +190,14 @@ recognition.continuous = true;
 
                 }else{
                     // event current voice reco word
-                    // console.log("this.isRecord false ==> ",this.isRecord)
                     recognition.addEventListener("result", event => {      
                     var text = Array.from(event.results)
                         .map(result => result[0])
                         .map(result => result.transcript)
                         .join("");
-                        // console.log("text ====> ",event.results)
+                        // console.log("text ===> ",text)
                         this.runtimeTranscription_ = text;
-                        this.runtimeTranscription_ = this.runtimeTranscription_ + text;
-                        // console.log(this.runtimeTranscription_);
+                        // this.runtimeTranscription_ = this.runtimeTranscription_ + text;
                     });
                         recognition.start();
                         this.isRecord = true;
@@ -267,10 +256,10 @@ recognition.continuous = true;
 <template>
     <div>
         <div class="home-component">
-
-            <div class="warping-loading-container" v-if="isLoading">
+            
+            <div class="warping-loading-container"  v-if="isLoading">
                 <div class="is-loading"></div>
-                <div class="loading-content">Loading...</div>
+                <div class="loading-content"><span class="loader"></span></div>
             </div>
 
             <div class="page-title">
@@ -285,9 +274,11 @@ recognition.continuous = true;
                     <Dialogue3 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue3'"/>
                     <Dialogue4 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue4'"/>
                     <EndDialogue  v-if="this.$store.state.userAction.dialogueNow  === 'end'"/>
+
                     <div class="user-text-in">
                         {{runtimeTranscription_}}
                     </div>
+
                     <div class="set-animation" v-if="this.$store.state.userAction.isStartRec === true">
                         <VoiceAnimation/>
                     </div>
@@ -324,7 +315,9 @@ recognition.continuous = true;
                                 >
                                 Next
                                 </button>
+                                
                             </div>
+                            
 
                         </div>
                         <div class="btn-switch-result" v-if="this.$store.state.userAction.dialogueNow === 'end'">
@@ -342,20 +335,23 @@ recognition.continuous = true;
             <div class="control-panel-container">
                 <div class="control-main-frame">
                     <div class="analyzing-btn">
+
                         <div class="icon-set">
                             <i class='fas fa-chart-pie' style='font-size:36px'></i>
                         </div>
+
                         <button class="analyzing" @click="testing">Analyzing</button>
                     </div>
                     
-                     <div class="toggle-lang">
+                    <div class="toggle-lang">
                         <div class="icon-set-mic">
-                             <i class='fas fa-microphone' style='font-size:36px'></i>
+                            <i class='fas fa-microphone' style='font-size:36px'></i>
                         </div>
                         <label for="toggle-1" class="toggle-1">
                             <input type="checkbox" name="toggle-1" id="toggle-1" class="toggle-1__input" @click="haddleLangChange">
                             <span class="toggle-1__button"></span> 
                         </label>
+                        
                     </div>
                 </div>
             </div>
@@ -363,8 +359,8 @@ recognition.continuous = true;
             <div class="main-frame" v-if="isError !==''">
                 <div>Cannot connect to server!</div>
             </div>
-
         </div>
+
     </div>
 </template>
 
@@ -372,7 +368,6 @@ recognition.continuous = true;
 .icon-set{
     margin-top: 10px;
     text-align: center;
- 
 }
 
 .icon-set-mic{
@@ -417,19 +412,17 @@ recognition.continuous = true;
     width: 100%;
     height: 100%;
     z-index: 99;
-    background: gray;
-    opacity: 0.7;    
+    background: rgb(36, 36, 36);
+    opacity: 0.6;    
 }
 
 .loading-content{
     position: fixed;
+    top: 45%;
+    left: 45%;
     z-index: 999;
-    margin-top: 50%;
-    text-align: center;
-    font-size: 50px;
-    font-weight: bold;
-    width: 100%;
-    height: 100%;
+    font-size: 30px;
+    
 }
 
 .page-title{
@@ -570,5 +563,81 @@ recognition.continuous = true;
         content: 'EN';
         left: 5px;
         color:#bdcf45;
+    }
+
+/* css loading animation */
+.loader {
+    transform: rotateZ(45deg);
+    perspective: 1000px;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    color: #fff;
+    }
+    
+    .loader:before,
+    .loader:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: inherit;
+        height: inherit;
+        border-radius: 50%;
+        transform: rotateX(70deg);
+        animation: 1s spin linear infinite;
+    }
+    
+    .loader:after {
+        color: #FF3D00;
+        transform: rotateY(70deg);
+        animation-delay: .4s;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: translate(-50%, -50%) rotateZ(0deg);
+        }
+        100% {
+            transform: translate(-50%, -50%) rotateZ(360deg);
+        }
+    }
+    
+    @keyframes rotateccw {
+        0% {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+            transform: translate(-50%, -50%) rotate(-360deg);
+        }
+    }
+
+    @keyframes spin {
+        0%,
+        100% {
+            box-shadow: .2em 0px 0 0px currentcolor;
+        }
+        12% {
+            box-shadow: .2em .2em 0 0 currentcolor;
+        }
+        25% {
+            box-shadow: 0 .2em 0 0px currentcolor;
+        }
+        37% {
+            box-shadow: -.2em .2em 0 0 currentcolor;
+        }
+        50% {
+            box-shadow: -.2em 0 0 0 currentcolor;
+        }
+        62% {
+            box-shadow: -.2em -.2em 0 0 currentcolor;
+        }
+        75% {
+            box-shadow: 0px -.2em 0 0 currentcolor;
+        }
+        87% {
+            box-shadow: .2em -.2em 0 0 currentcolor;
+        }
     }
 </style>

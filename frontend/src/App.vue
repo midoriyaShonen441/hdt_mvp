@@ -5,7 +5,6 @@ import {  RouterView } from 'vue-router';
 export default {
     components:{
       RouterView,
- 
     },
     data(){
         return{
@@ -13,6 +12,7 @@ export default {
           email:""
         }
     },
+
     methods:{
       haddleRouter(menu){
         if(menu === 'login'){
@@ -24,6 +24,7 @@ export default {
         }
       }
     }
+
 }
 </script>
 
@@ -34,20 +35,14 @@ export default {
         <div class="bg-dark p-4">
           <div class="menu-side-bar">
             <div style="text-align: center;" @click="haddleRouter('login')">
-              <!-- <i class="fa fa-sign-in" style="font-size:36px; color:white"></i> -->
               <p style="color:white; text-align: center;">Login</p>
             </div>
             <div style="text-align: center;"  @click="haddleRouter('home')">
-              <!-- <i class='fas fa-home' style='font-size:36px;  color:white'></i> -->
               <p style="color:white; ">Home</p>
             </div>
             <div style="text-align: center;"  @click="haddleRouter('borad')">
-            <!-- <i class='fas fa-chart-pie' style='font-size:36px color:white' ></i> -->
-            <!-- <font-awesome-icon icon="fa-light fa-coffee" /> -->
-              <!-- <i class='fas fa-chart-pie' style="font-size:36px;  color:white"></i> -->
               <p style="color:white; ">Board</p>
             </div>
- 
           </div>
         </div>
       </div>
@@ -57,7 +52,6 @@ export default {
         </button>
       </nav>
     </div>
- 
     <RouterView />
   </div>
 </template>
@@ -69,24 +63,19 @@ body{
   margin:0;
   padding: 0;
   background-color: rgb(52, 51, 51);
- 
 }
-
 .menu-side-bar > div > p {
   margin-top: 20%;
 }
- 
 .menu-side-bar{
   display: flex;
   justify-content: space-around;
 }
-
 .menu-side-bar >div{
   width: 100px;
   border: 1px solid white;
   border-radius: 10px;
 }
-
 .menu-side-bar >div>i{
   margin-top:15px;
 }

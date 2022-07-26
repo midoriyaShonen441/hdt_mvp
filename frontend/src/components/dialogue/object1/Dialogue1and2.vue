@@ -34,11 +34,10 @@ export default {
  
     
                 if(this.rangeOfArray ===this.counting){
-                // console.log('end of range')
-                this.$store.state.userAction.sentenceIndex = 0;
-                // console.log("index reset",this.$store.state.userAction.sentenceIndex)
-                this.$store.state.userAction.dialogueNow = "Dialogue3"
-                // console.log(this.$store.state.userAction.dialogueNow)
+                    alert("You are complete 50% of dialogue.")
+                    this.$store.state.userAction.sentenceIndex = 0;
+                    this.$store.state.userAction.dialogueNow = "Dialogue3"
+                    // console.log(this.$store.state.userAction.dialogueNow)
                 }
             
         }

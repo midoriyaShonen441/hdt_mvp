@@ -145,7 +145,6 @@ export default {
                 }
             }
 
-            
             // wrapingWord.push(wordDialogue1and2.join(''))
             // wrapingWord.push(wordDialogue3.join(''))
             // wrapingWord.push(wordDialogue4.join(''))
@@ -180,8 +179,6 @@ export default {
                 //     this.imgBase64.push(window.btoa(element))
                 // })
 
- 
-                
             }catch(err){
                 console.log(err);
                 this.imgBase64 = ["","",""]
@@ -205,9 +202,17 @@ export default {
         <div class="text-end-container" >
             <div v-for="(element, index) in mySummaryData" :key="index">
                 <div class="title-continer"  v-if="index === $store.state.isChangePages">
+                <div class="path-of-result">
+                    <h5 v-if="index === 0">1/3</h5>
                     <h3 v-if="index === 0">Daily</h3>
+                    
+                    <h5 v-if="index === 1">2/3</h5>
                     <h3 v-if="index === 1">Dialogue</h3>
+
+                    <h5 v-if="index === 2">3/3</h5>
                     <h3 v-if="index === 2">Dashboard</h3>
+                </div>
+                    
                     <!-- <h3>Phase: {{index + 1}}</h3> -->
                 </div>
                 <BarChart :isCounting="element.morphcastEmotion" v-if="index === $store.state.isChangePages"/>

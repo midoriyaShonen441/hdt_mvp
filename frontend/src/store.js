@@ -5,12 +5,12 @@ export default createStore({
         emotion:"",
         objective1: {
             firstTimeGreeting:[
-                "Hi I'm your companion, your safe place or just to listen whatever you feel free to tell me. what would you like to call me?"
+                "Hi I'm your companion, your safe place, Just to listen whatever you feel free to tell me. What would you like to call me?"
             ],
             goalSetting:[
                 "How would you like to be different as a result of our daily talking? Or how would you like your life to be different?",
                 "Put your “Goals” at the top there.",
-                "That's a very good goal. If you were…......, what might you be doing differently?",
+                "That's a very good goal. If you can reach your goal, what might you be doing differently?",
                 "Okay. That's a good one."
             ]
         },
@@ -30,7 +30,7 @@ export default createStore({
                 "Good. All right, so what do you want to do for tomorrow?"
             ],
             identifyIssuesOrGoalsForTheSession: [
-                "All right. So is that something you would like to talk to, or is that something you think you can get yourself to do?",
+                "All right. So is that something you would like to talk to",
                 "Okay. So, what’s going to be different this time, then?",
             ]
         },
@@ -42,11 +42,11 @@ export default createStore({
                     canPass: true
                 },
                 {
-                    topic: "Does this question ask us to evaluate something?",
+                    topic: "Does this question ask you to evaluate something?",
                     canPass: false
                 },
                 {
-                    topic: "Do I have any evidence/proof of this?",
+                    topic: "Do you have any evidence/proof of this?",
                     canPass: false
                 },
                 {
@@ -93,7 +93,7 @@ export default createStore({
                     canPass: false
                 },
                 {
-                    topic: "We might be able to figure out how you can done it works in the areas. Can you imagine in the form of picture or the character of your life if we write down what you do when you run into difficulties with your important think to do. Can you descript?",
+                    topic: " Can you imagine in the form of picture or the character of your life if we write down what you do when you run into difficulties with your important think to do. Can you descript?",
                     canPass: false
                 },
                 {
@@ -195,6 +195,7 @@ export default createStore({
                 "What will the first thing you will do in tommorrow?"
             ]
         },
+
         userAction:{
             userAnswer: "",
             arrayCameraTrack:[],

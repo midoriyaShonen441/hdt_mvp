@@ -134,6 +134,7 @@ export default {
             
 
             if(this.counting === this.rangeOfArray){
+                alert("You are complete 75% of dialogue.")
                 this.$store.state.userAction.sentenceIndex = 0;
                 this.$store.state.userAction.dialogueNow = "Dialogue4"
             }
