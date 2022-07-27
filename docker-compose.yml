@@ -11,15 +11,15 @@ networks:
 
 services:
 
-  frontend:
-    container_name: hdt_frontend
-    restart: always
-    build: 
-      context: ./frontend
-    ports:
-      - 3333:3333
-    networks:
-      - net
+  # frontend:
+  #   container_name: hdt_frontend
+  #   restart: always
+  #   build: 
+  #     context: ./frontend
+  #   ports:
+  #     - 3333:3333
+  #   networks:
+  #     - net
 
   backend:
     container_name: hdt_backend
