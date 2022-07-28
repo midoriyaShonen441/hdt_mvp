@@ -10,7 +10,7 @@ export default {
     <div class="dialogue-container">
 
         <div class="msg-container">
-            <h2>Welcome..</h2>
+            <h2>Welcome to analysis tool</h2>
             <br/>
             <h4>Press record if you are ready.</h4>
         </div>

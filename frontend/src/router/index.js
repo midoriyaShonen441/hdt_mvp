@@ -3,6 +3,7 @@ import InterventionView from  '../views/InterventionView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import HomepageView from '../views/HomepageView.vue'
+import ToolView from '../views/ToolView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       name: 'register',
       component: RegisterView
     },
+    {
+      path: '/tool',
+      name: 'tool',
+      component: ToolView
+    }
   ]
 })
 

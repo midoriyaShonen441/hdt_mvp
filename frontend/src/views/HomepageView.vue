@@ -1,4 +1,21 @@
 <script>
+import {  RouterView } from 'vue-router';
+ 
+
+export default {
+    components:{
+      RouterView,
+    },
+
+    methods:{
+      haddleRouter(menu){
+        if(menu === 'tool'){
+          this.$router.push("/tool")
+        }
+      }
+    }
+
+}
  
 </script>
 
@@ -12,6 +29,9 @@
                 <div class="setting-img">
                     <img width="300" height="300" src="../components/img/homepage.jpg"/>
                 </div>
+                <button class="test-button" @click="haddleRouter('tool')">
+                    Using Tools
+                </button>
             </div>
             <div class="footer-container">
                 <h5>Created by Nexter Living team.</h5>
@@ -21,6 +41,15 @@
 </template>
 
 <style scoped>
+
+.test-button{ 
+    margin-top: 50px;
+    border-radius:  0.25rem;
+    background-color: rgb(54,58,63);
+    color: rgb(250,252,254);
+    border-width: 0.1rem;
+    border-color: white;
+}
 .welcome-container{
     text-align: center;
     margin: auto;
