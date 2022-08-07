@@ -52,7 +52,9 @@ recognition.continuous = true;
                 isLoading:false,
                 
                 selectLang: 'th-TH',
-                micOffText: ""
+                micOffText: "",
+
+                cssCamera: "not-detect",
             }
         },
         methods:{
@@ -163,9 +165,10 @@ recognition.continuous = true;
 
                 window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
                     if(evt.detail.output.dominantEmotion !== undefined){      
+                        this.cssCamera = "is-detect";
                         this.setArrayMood.push(evt.detail.output.dominantEmotion);
                     }else{
-                        // console.log("passing");
+                        this.cssCamera = "not-detect";
                     }
                 });
                 
@@ -271,7 +274,10 @@ recognition.continuous = true;
             </div>
 
               <div class="main-frame" v-if="isError === ''">
-
+                    
+                    <div :class="cssCamera">
+                        {{isCameraDetect}}
+                    </div>
 
                     <div class="is-mic-text" v-if="micOffText !== ''">
                         {{micOffText}}
@@ -368,6 +374,27 @@ recognition.continuous = true;
 </template>
 
 <style scoped>
+
+.not-detect{
+    margin: auto;
+    margin-top: 20px;
+    text-align: center;
+    border: 1px solid rgb(132, 23, 23);
+    background: rgb(132, 23, 23);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+.is-detect{
+    margin: auto;
+    margin-top: 20px;
+    text-align: center;
+    border: 1px solid rgb(22, 157, 29);
+    background: rgb(22, 157, 29);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
 
 .test-button{ 
     margin-top: 50px;
