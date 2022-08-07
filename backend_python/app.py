@@ -16,12 +16,12 @@ CORS(app)
 is_font_path = "./THSarabunNew.ttf"
 
 
-@app.route('/faskapi/debug', methods = ['GET'])
+@app.route('/backend_wordcloud/debug', methods = ['GET'])
 def debugging():
     if request.method == 'GET':
         return "OK"
 
-@app.route('/faskapi/wordcloud', methods = ['POST'])
+@app.route('/backend_wordcloud/wordcloud', methods = ['POST'])
 def send_word_cloud():
 
     image = BytesIO()
