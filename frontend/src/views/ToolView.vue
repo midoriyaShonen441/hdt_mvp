@@ -51,7 +51,8 @@ recognition.continuous = true;
                 isError:"",
                 isLoading:false,
                 
-                selectLang: 'th-TH'
+                selectLang: 'th-TH',
+                micOffText: ""
             }
         },
         methods:{
@@ -236,6 +237,10 @@ recognition.continuous = true;
                     this.selectLang = 'th-TH'
                     // console.log("after click ==> ",this.selectLang)
                 }
+            },
+
+            haddleMicOff(){
+                this.micOffText = "กรุณาปรับกล้องให้ตรงกับใบหน้าของท่านด้วยค่ะ"
             }
         },
         created(){
@@ -267,6 +272,10 @@ recognition.continuous = true;
 
               <div class="main-frame" v-if="isError === ''">
 
+
+                    <div class="is-mic-text" v-if="micOffText !== ''">
+                        {{micOffText}}
+                    </div>
                     <StarterTools v-if="isStarter"/>
                     <EndDialogue  v-if="endProcess"/>
 
@@ -305,7 +314,7 @@ recognition.continuous = true;
 
                                 <button 
                                 class="mic-off" 
-                                @click="cameraAction"
+                                @click="haddleMicOff"
                                 v-if="setArrayMood.length === 0"
                                 >
                                 Next
@@ -383,6 +392,15 @@ recognition.continuous = true;
     flex-direction: column;
     justify-content: space-between;
     margin: auto;
+}
+
+.is-mic-text{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    color: red;
 }
 
 .header-title{

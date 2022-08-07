@@ -52,7 +52,8 @@ recognition.continuous = true;
                 isError:"",
                 isLoading:false,
                 
-                selectLang: 'th-TH'
+                selectLang: 'th-TH',
+                micOffText: ""
             }
         },
         methods:{
@@ -237,6 +238,10 @@ recognition.continuous = true;
                     this.selectLang = 'th-TH'
                     // console.log("after click ==> ",this.selectLang)
                 }
+            },
+
+            haddleMicOff(){
+                this.micOffText = "กรุณาปรับกล้องให้ตรงกับใบหน้าของท่านด้วยค่ะ"
             }
         },
         created(){
@@ -268,13 +273,16 @@ recognition.continuous = true;
             </div>
 
             <div class="main-frame" v-if="isError === ''">
+                    <div class="is-mic-text" v-if="micOffText !== ''">
+                        {{micOffText}}
+                    </div>
 
                     <StarterDesc v-if="isStarter"/>
                     <Dialogue1and2 v-if="this.$store.state.userAction.dialogueNow === 'Dialogue1and2'"/>
                     <Dialogue3 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue3'"/>
                     <Dialogue4 v-if="this.$store.state.userAction.dialogueNow  === 'Dialogue4'"/>
                     <EndDialogue  v-if="this.$store.state.userAction.dialogueNow  === 'end'"/>
-
+                    
                     <div class="user-text-in">
                         {{runtimeTranscription_}}
                     </div>
@@ -302,7 +310,7 @@ recognition.continuous = true;
                             <div v-if="(isActionBtn)" @click="ToggleMic"> 
                                 <button 
                                 class="mic" 
-                                @click="cameraAction"
+                                @click="haddleMicOff"
                                 v-if="setArrayMood.length > 0"
                                 >
                                 Next
@@ -399,6 +407,15 @@ recognition.continuous = true;
     background: rgb(72, 185, 255);
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.is-mic-text{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    color: red;
 }
 
 .pad-main-frame{
