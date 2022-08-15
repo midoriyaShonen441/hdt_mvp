@@ -166,11 +166,11 @@ recognition.continuous = true;
 
                 window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
                     if(evt.detail.output.dominantEmotion !== undefined){   
-                        this.cssCamera = "is-detect";   
+                        // this.cssCamera = "is-detect";   
                         this.setArrayMood.push(evt.detail.output.dominantEmotion);
                     }else{
                         // console.log("passing");
-                        this.cssCamera = "not-detect";
+                        // this.cssCamera = "not-detect";
                     }
                 });
                 
@@ -254,10 +254,14 @@ recognition.continuous = true;
         },
         
         updated(){
-            // if(this.setArrayMood.length > 0){
-            //     console.log(this.setArrayMood.length)
-            // }
-            
+            window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
+                
+                    if(evt.detail.output.dominantEmotion !== undefined){      
+                        this.cssCamera = "is-detect";
+                    }else{
+                        this.cssCamera = "not-detect";
+                    }
+                });
         }
     }
 </script>
@@ -273,10 +277,17 @@ recognition.continuous = true;
 
             <div class="page-title">
                 <h1>AnotherMe</h1>
-                
             </div>
 
             <div class="main-frame" v-if="isError === ''">
+
+                    <div :class="cssCamera">
+                        <!-- <div >
+                            <i class='fas fa-eye-slash' style='font-size:36px; color: red;' v-if="cssCamera === 'not-detect'"></i>
+                            <i class='fas fa-eye' style='font-size:36px; color:green' v-if="cssCamera === 'is-detect'"></i>
+                        </div> -->
+                    </div>
+
                     <div class="is-mic-text" v-if="micOffText !== ''">
                         {{micOffText}}
                     </div>
@@ -314,7 +325,7 @@ recognition.continuous = true;
                             <div v-if="(isActionBtn)" @click="ToggleMic"> 
                                 <button 
                                 class="mic" 
-                                @click="haddleMicOff"
+                                @click="cameraAction"
                                 v-if="setArrayMood.length > 0"
                                 >
                                 Next
@@ -322,7 +333,7 @@ recognition.continuous = true;
 
                                 <button 
                                 class="mic-off" 
-                                @click="cameraAction"
+                                @click="haddleMicOff"
                                 v-if="setArrayMood.length === 0"
                                 >
                                 Next
@@ -377,6 +388,13 @@ recognition.continuous = true;
 </template>
 
 <style scoed>
+/* 
+.set-detection{
+    margin: auto;
+    text-align: center;
+    margin-top: 30px;
+} */
+
 
 .not-detect{
     margin: auto;

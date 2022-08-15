@@ -44,6 +44,18 @@ services:
       - ./backend_python:/usr/src/app:cached
     networks:
       - net
+  
+  # backend_iat:
+  #   container_name: iat_backend
+  #   restart: always
+  #   build:
+  #     context: ./backend_iat
+  #   ports:
+  #     - 7878:7878
+  #   volumes:
+  #     -./backend_iat:/usr/src/app:cached
+  #   networks:
+  #     - net
 
   database:
     container_name: hdt_database

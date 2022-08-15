@@ -29,9 +29,16 @@ export default {
                 <div class="setting-img">
                     <img width="300" height="300" src="../components/img/homepage.jpg"/>
                 </div>
-                <button class="test-button" @click="haddleRouter('tool')">
-                    Using Tools
-                </button>
+                <div>
+                    <button class="test-button" @click="haddleRouter('tool')">
+                        Using Tools
+                    </button>
+                </div>
+                <div>
+                    <button class="test-button" @click="haddleRouter('tool')">
+                        IAT
+                    </button>
+                </div>
             </div>
             <div class="footer-container">
                 <h5>Created by Nexter Living team.</h5>
