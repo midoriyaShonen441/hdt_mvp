@@ -84,16 +84,39 @@
 
             <div class="iat-content">
                 <div class="title-iat">
-                    <h4>Button Content</h4>
+                    <h4>Button content example</h4>
                 </div>
                 <div class="set-btn-text">
                     <div>
                         <div class="conf-title">Left side</div>
-                        <button class="btn-config">{{selectedRunner.btn_left}}</button>
+                        <div>
+                            <button class="btn-config">{{selectedRunner.target_pratice_name}}</button>
+                        </div>
+                        <div>
+                            <button class="btn-config">
+                                <div>{{selectedRunner.target_pratice_name}}</div>
+                                <div>-or-</div>
+                                <div>{{selectedRunner.attribute_pratice_name}}</div>
+                            </button>
+                        </div>
+                        
                     </div>
                     <div>
                         <div class="conf-title">Right side</div>
-                        <button class="btn-config">{{selectedRunner.btn_right}}</button>
+                        <div>
+                            <button class="btn-config">{{selectedRunner.target_test_name}}</button>
+                        </div>
+                        <div>
+                            <button class="btn-config">
+                                <div>
+                                    {{selectedRunner.target_test_name}}
+                                </div>
+                                <div>-or-</div>
+                                <div>
+                                    {{selectedRunner.attribute_test_name}}
+                                </div>
+                            </button>
+                        </div>
                     </div>
                     
                     
@@ -269,12 +292,13 @@ export default {
 
 .btn-config{
     width: 120px;
-    height: 40px;
+    height: 55px;
     border-radius: 10px;
     color: white;
     border: 1px solid rgb(129, 125, 125);
     background: rgb(129, 125, 125);
     font-weight: bold;
+    margin-top: 10px;
 }
 
 .icon-border{
@@ -305,6 +329,7 @@ export default {
 .test-pratice{
     display:flex;
     justify-content: space-around;
+    text-align: center;
 }
 
 .btn-panel-iat{

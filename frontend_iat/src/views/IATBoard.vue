@@ -5,48 +5,19 @@
         {{runner}}
       </div>
     </div>
-    <!-- <div class="time-out">
-      {{timingCount}}
-    </div> -->
+
+    <div class="set-is-pages" v-if="isFinsh === false && isStart === true">
+      Block Done: {{isCountingPages}} / 7
+    </div>
+
     <div class="content-iat-container" v-if="isFinsh === false">
       <div class="set-content">
         <div class="content-container">
           <div class="set-text">
           {{isWord}}
           </div>
-          <div class="set-sub-text">
-            {{isSubWord}}
-          </div>
-        </div>
-
-        <div class="content-container" v-if="isCompareAttrubuteAndTest === true">
-          <div class="set-text">
-          {{compareIsWord}}
-          </div>
-          <div class="set-sub-text">
-            {{compareIsSubWord}}
-          </div>
-        </div>
-        
-      </div>
-      
-      <!-- <div class="set-pratice">
-        <div class="show-content" >
-          {{isPratice}}
-        </div>
-        <div class="show-conten-at">
-          {{isPraticeTA}}
         </div>
       </div>
-
-      <div class="set-test" >
-        <div class="show-content" >
-          {{isTest}}
-        </div>
-        <div class="show-conten-at">
-          {{isTestTA}}
-        </div>
-      </div> -->
     </div>
 
     <div class="d-score-content" v-if="showResult === true">
@@ -78,13 +49,46 @@
     </div>
 
     <div class="footer-iat-container" v-if="isStart === true && isFinsh === false">
-      <div v-if="switchType === false">
-        <button class="btn-ok" @click="btnSelection('left',isWord + ' ' + isSubWord, compareIsWord + ' ' + compareIsSubWord)">{{iatData.btn_left}}</button>
-        <button class="btn-nope" @click="btnSelection('right',isWord + ' ' + isSubWord, compareIsWord + ' ' + compareIsSubWord)">{{iatData.btn_right}}</button>
+
+      <div v-if="isType === 'b1'">
+        <button class="btn-ok" @click="btnSelection('left',isWord)">{{targetPraticeName}}</button>
+        <button class="btn-nope" @click="btnSelection('right',isWord)">{{targetTestName}}</button>
       </div>
-      <div v-if="switchType === true">
-        <button class="btn-ok" @click="btnSelection('right',isWord + ' ' + isSubWord), compareIsWord + ' ' + compareIsSubWord">{{iatData.btn_right}}</button>
-        <button class="btn-nope" @click="btnSelection('left',isWord + ' ' + isSubWord), compareIsWord + ' ' + compareIsSubWord">{{iatData.btn_left}}</button>
+
+      <div v-if="isType === 'b2'">
+        <button class="btn-ok" @click="btnSelection('left',isWord)">{{attributePraticeName}}</button>
+        <button class="btn-nope" @click="btnSelection('right',isWord)">{{attributeTestName}}</button>
+      </div>
+
+      <div  v-if="isType === 'b3' || isType ==='b4'">
+        <button class="btn-ok" @click="btnSelection('left',isWord)">
+          <div>{{targetPraticeName}}</div>
+          <div>-or-</div>
+          <div>{{attributePraticeName}}</div>
+        </button>
+        <button class="btn-nope" @click="btnSelection('right',isWord)">
+          <div>{{targetTestName}}</div>
+          <div>-or-</div>
+          <div>{{attributeTestName}}</div>
+        </button>
+      </div>
+
+      <div v-if="isType === 'b5'">
+        <button class="btn-ok" @click="btnSelection('left',isWord)">{{targetTestName}}</button>
+        <button class="btn-nope" @click="btnSelection('right',isWord)">{{targetPraticeName}}</button>
+      </div>
+
+      <div  v-if="isType === 'b6' || isType ==='b7'">
+        <button class="btn-ok" @click="btnSelection('left',isWord)">
+          <div>{{targetTestName}}</div>
+          <div>-or-</div>
+          <div>{{attributePraticeName}}</div>
+        </button>
+        <button class="btn-nope" @click="btnSelection('right',isWord)">
+          <div>{{targetPraticeName}}</div>
+          <div>-or-</div>
+          <div>{{attributeTestName}}</div>
+        </button>
       </div>
     </div>
 
@@ -138,7 +142,14 @@ export default {
       isSubWord:"",
 
       compareIsWord: "",
-      compareIsSubWord:""
+      compareIsSubWord:"",
+
+      targetPraticeName:"",
+      targetTestName:"",
+      attributePraticeName:"",
+      attributeTestName:"",
+      isCountingPages:1,
+      
 
     }
   },
@@ -156,10 +167,17 @@ export default {
         const selectionIat = await axios.post(`${sendAPI}/useiat`,payload);
 
         this.iatData = selectionIat.data
+        // console.log("this.iatData ===> ", this.iatData)
         this.targetPratice = selectionIat.data.target_pratice
         this.targetTest = selectionIat.data.target_test
         this.attributePratice = selectionIat.data.attribute_pratice
         this.attributeTest = selectionIat.data.attribute_test
+        this.targetPraticeName = selectionIat.data.target_pratice_name
+        this.targetTestName = selectionIat.data.target_test_name
+        this.attributePraticeName = selectionIat.data.attribute_pratice_name
+        this.attributeTestName = selectionIat.data.attribute_test_name
+
+        // console.log(this.targetPraticeName,this.targetTestName,  this.attributePraticeName, this.attributeTestName)
 
       }catch(err){
 
@@ -171,6 +189,7 @@ export default {
         if(this.indexCount >= 10){
           this.isType = "b2"
           this.indexCount = 0;
+          this.isCountingPages += 1
         }
 
         const timing =  performance.now();
@@ -185,13 +204,17 @@ export default {
           milliseconds: caltiming
         });
 
-        const targetPraticeElement =  this.targetPratice[Math.floor(Math.random()*this.targetPratice.length)];
+        // console.log("targetPratice ==> ",this.targetPratice)
+        // console.log("targetTest ===> ", this.targetTest)
+        // console.log("attributePratice ===> ",this.attributePratice)
+        // console.log("attributeTest ===> ",this.attributeTest)
+
+        const setArray = this.targetPratice.concat(this.targetTest)
+        const targetPraticeElement =  setArray[Math.floor(Math.random()*setArray.length)];
         this.isWord = targetPraticeElement;
 
         this.setTime = performance.now();
         this.indexCount += 1
-
-        
 
       }else if(this.isType === "b2"){
         console.log('b2')
@@ -199,6 +222,7 @@ export default {
           this.isType = "b3"
           this.indexCount = 0
           this.isCompareAttrubuteAndTest = true
+          this.isCountingPages += 1
         }
 
         const timing = performance.now();
@@ -214,8 +238,15 @@ export default {
         });
 
         // const attributePraticeElement = this.attributePratice[Math.floor(Math.random()*this.attributePratice.length)];
-        const attributeTestElement = this.attributeTest[Math.floor(Math.random()*this.attributeTest.length)];
+        // console.log(this.targetPratice)
+        // console.log(this.targetTest)
+        // console.log(this.attributePratice)
+        // console.log(this.attributeTest)
+        const setArray = this.attributePratice.concat(this.attributeTest)
+        // console.log(setArray)
+        const attributeTestElement = setArray[Math.floor(Math.random()*setArray.length)];
         this.isWord = attributeTestElement;
+
 
 
         // this.isPratice = attributePraticeElement;
@@ -228,8 +259,8 @@ export default {
         console.log('b3')
         if(this.indexCount >= 20){
           this.isType = "b4"
-          this.indexCount = 0;
-          
+          this.indexCount = 0
+          this.isCountingPages += 1
         }
 
         const timing = performance.now();
@@ -244,17 +275,12 @@ export default {
           milliseconds: caltiming
         });
 
-        const targetPraticeElement = this.targetPratice[Math.floor(Math.random()*this.targetPratice.length)];
-        const attributePraticeElement = this.attributePratice[Math.floor(Math.random()*this.attributePratice.length)];
-
-        this.compareIsWord = this.targetTest[Math.floor(Math.random()*this.targetTest.length)];
-        this.compareIsSubWord = this.attributeTest[Math.floor(Math.random()*this.attributeTest.length)];
-
-        this.isWord = targetPraticeElement
-        this.isSubWord = attributePraticeElement
+        const setArray = this.targetPratice.concat(this.attributePratice, this.targetTest, this.attributeTest);
+        this.isWord = setArray[Math.floor(Math.random()*setArray.length)];
 
         this.setTime = performance.now();
         this.indexCount += 1
+
       }else if(this.isType === "b4"){
         console.log('b4')
 
@@ -262,7 +288,8 @@ export default {
           this.isType = "b5"
           this.switchType = true
           this.indexCount = 0
-          this.isCompareAttrubuteAndTest = false;
+          this.isCompareAttrubuteAndTest = false
+          this.isCountingPages += 1
         }
         // console.log("D4")
         const timing = performance.now();
@@ -277,14 +304,8 @@ export default {
           milliseconds: caltiming
         });
 
-        const targetPraticeElement = this.targetPratice[Math.floor(Math.random()*this.targetPratice.length)];
-        const attributePraticeElement = this.attributePratice[Math.floor(Math.random()*this.attributePratice.length)];
-
-        this.compareIsWord = this.targetTest[Math.floor(Math.random()*this.targetTest.length)];
-        this.compareIsSubWord = this.attributeTest[Math.floor(Math.random()*this.attributeTest.length)];
-
-        this.isWord = targetPraticeElement
-        this.isSubWord = attributePraticeElement
+        const setArray = this.targetPratice.concat(this.attributePratice, this.targetTest, this.attributeTest);
+        this.isWord = setArray[Math.floor(Math.random()*setArray.length)];
 
         this.setTime = performance.now();
         this.indexCount += 1
@@ -294,6 +315,7 @@ export default {
           this.isType = "b6"
           this.indexCount = 0
           this.isCompareAttrubuteAndTest = true;
+          this.isCountingPages += 1
         }
 
         this.isSubWord = "";
@@ -308,11 +330,10 @@ export default {
           contentRight: contentRight? contentRight: "No-content",
           milliseconds: caltiming
         });
-
-        const targetPraticeElement =  this.targetPratice[Math.floor(Math.random()*this.targetPratice.length)];
-        this.isWord = targetPraticeElement;
-       // const targetTestElement =  this.targetTest[Math.floor(Math.random()*this.targetTest.length)];
         
+         const setArray = this.targetPratice.concat(this.targetTest)
+        const targetPraticeElement =  setArray[Math.floor(Math.random()*setArray.length)];
+        this.isWord = targetPraticeElement;
 
         // this.isPratice = targetPraticeElement;
         // this.isTest = targetTestElement; 
@@ -324,6 +345,7 @@ export default {
         if(this.indexCount >= 20){
           this.isType = "b7"
           this.indexCount = 0
+          this.isCountingPages += 1
         }
 
         const timing =  performance.now();
@@ -338,18 +360,8 @@ export default {
           milliseconds: caltiming
         });
 
-        const targetPraticeElement = this.targetPratice[Math.floor(Math.random()*this.targetPratice.length)];
-        const attributePraticeElement = this.attributePratice[Math.floor(Math.random()*this.attributePratice.length)];
-
-        this.compareIsWord = this.targetTest[Math.floor(Math.random()*this.targetTest.length)];
-        this.compareIsSubWord = this.attributeTest[Math.floor(Math.random()*this.attributeTest.length)];
-
-        this.isWord = targetPraticeElement
-        this.isSubWord = attributePraticeElement
-        
-
-        this.isWord = targetPraticeElement
-        this.isSubWord = attributePraticeElement
+        const setArray = this.targetPratice.concat(this.attributePratice, this.targetTest, this.attributeTest);
+        this.isWord = setArray[Math.floor(Math.random()*setArray.length)];
 
         this.setTime = performance.now();
         this.indexCount += 1
@@ -367,14 +379,8 @@ export default {
           milliseconds: caltiming
         });
 
-        const targetPraticeElement = this.targetPratice[Math.floor(Math.random()*this.targetPratice.length)];
-        const attributePraticeElement = this.attributePratice[Math.floor(Math.random()*this.attributePratice.length)];
-
-        this.compareIsWord = this.targetTest[Math.floor(Math.random()*this.targetTest.length)];
-        this.compareIsSubWord = this.attributeTest[Math.floor(Math.random()*this.attributeTest.length)];
-
-        this.isWord = targetPraticeElement
-        this.isSubWord = attributePraticeElement
+        const setArray = this.targetPratice.concat(this.attributePratice, this.targetTest, this.attributeTest);
+        this.isWord = setArray[Math.floor(Math.random()*setArray.length)];
 
         this.setTime = performance.now();
         this.indexCount += 1;
@@ -386,11 +392,9 @@ export default {
         }
         
       }
-      
 
     },
     btnStart(){
-
 
       this.isStart = true;
       this.btnSelection();
@@ -436,6 +440,21 @@ export default {
   mounted(){
     this.fetchIATData();
     // this.btnSelection();
+    // console.log(this.isStart)
+    // if(this.isStart === true){
+        // console.log(this.isStart)
+        window.addEventListener("keypress", e => {
+        const getKey = String.fromCharCode(e.keyCode)
+        console.log(getKey);
+        if(getKey === "a" || getKey === "A"){
+          this.btnSelection('left',this.isWord)
+        }else if(getKey === "l" || getKey === "L"){
+          this.btnSelection('right',this.isWord)
+        }
+
+      });
+    // }
+
   },
   updated(){
  
@@ -465,18 +484,29 @@ export default {
 }
 
 .content-iat-container{
-  display: flex;
-  justify-content: space-around;
+  /* display: flex;
+  justify-content: space-around; */
   margin: auto;
   text-align: center;
+}
+
+.set-header-contiainer{
+
+  margin-bottom: 50px;
+}
+
+.set-object-header{
+  display:flex;
+  justify-content: space-around;
 }
   
 .title-iat{
   margin: auto;
   text-align: center;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 18px;
   margin-bottom: 60px;
+  color: grey;
 }
 
 .footer-iat-container > div{
@@ -491,9 +521,12 @@ export default {
   
 }
 
-.set-content{
-  display:flex;
-  justify-content: space-around;
+.set-is-pages{
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: grey;
 }
 
 .content-container{
@@ -510,6 +543,13 @@ export default {
   justify-content: space-around;
   margin-top: 50px;
   margin-bottom: 30px;
+}
+
+.set-text{
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 150px;
+  margin-bottom: 150px;
 }
 
 .title-test{
@@ -531,8 +571,8 @@ export default {
 }
 
 .btn-ok{
-  width: 100px;
-  height: 40px;
+  width: 120px;
+  height: 60px;
   border-radius: 10px;
   color: white;
   border: 1px solid rgb(129, 125, 125);
@@ -541,8 +581,8 @@ export default {
 }
 
 .btn-nope{
-  width: 100px;
-  height: 40px;
+  width: 120px;
+  height: 60px;
   border-radius: 10px;
   color: white;
   border: 1px solid rgb(129, 125, 125);

@@ -1,8 +1,8 @@
 <script>
 import axios from 'axios';
-import {httpAPI} from '../apiSetting';
+import {httpAPIEmotion} from '../apiSetting';
 
-const sendAPI = httpAPI();
+const sendAPI = httpAPIEmotion();
 
 
 export default {

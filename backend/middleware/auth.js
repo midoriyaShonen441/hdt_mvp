@@ -2,14 +2,16 @@ const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
     const getToken = req.headers['access-token']
-    // console.log("mid ware ===>", getToken)
+    // console.log("1mid ware ===>", getToken)
 
-    if(!getToken){
+    if(getToken === undefined || getToken === NaN || getToken === null){
+        // console.log("2mid ware ===>")
         res.sendStatus(401)
     }else{
         try{
 
             const decode = jwt.verify(getToken, process.env.TOKEN_KEY)
+            // console.log("3mid ware ===>", decode)
             const replyText = {
                 loginStatus: true,
                 decode: decode,

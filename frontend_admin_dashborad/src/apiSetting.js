@@ -2,8 +2,13 @@
 ///////////  For Testing  ////////////
 /////////// ++++++++++++++ ////////////
 
-const httpAPI = () => {
+const httpAPIEmotion = () => {
     const isAPI = "http://localhost:8888/backend";
+    return isAPI;
+}
+
+const httpApiIat = () => {
+    const isAPI = "http://localhost:7878/backend_iat";
     return isAPI;
 }
 
@@ -12,14 +17,19 @@ const httpAPI = () => {
 /////////// For production ////////////
 ////////// +++++++++++++++ ///////////
 
-// const httpAPI = () => {
+// const httpAPIEmotion = () => {
 //     const isAPI = "https://anotherme.tech/backend";
 //     return isAPI;
 // }
 
 
+// const httpApiIat = () => {
+//     const isAPI = "https://anotherme.tech/backend_iat";
+//     return isAPI;
+// }
+
 /////////// ++++++++++++++ ////////////
 ///////////////////////////////////////
 /////////// ++++++++++++++ ////////////
 
-export {httpAPI}
+export {httpAPIEmotion, httpApiIat}

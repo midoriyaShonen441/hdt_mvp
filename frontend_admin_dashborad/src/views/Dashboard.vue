@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container" >
     <div class="title-dashboard">
-        หน้าจอสรุปผลข้อมูล
+        หน้าจอสรุปผลข้อมูล: {{isUseDatabase}}
     </div>
     <div class="all-user">
         <div :class="cssFilter">
@@ -51,85 +51,153 @@
                 </div>
             </div>
         </div>
-        <div class="config-filter" @click="haddleFitlerMenu">
-            Filter
+        <div class="warping-config-container">
+            <div class="change-module">
+                <span>Change Database</span>
+                <select v-model="selectionDatabase">
+                    <option>Emotion</option>
+                    <option>IAT</option>
+                </select>
+                <button class="btn-change-database" @click="haddleChangeDatabase">Submit</button>
+            </div>
+            
         </div>
+        <div class="config-filter" @click="haddleFitlerMenu">
+                Filter
+        </div>
+       
         <div class="counting-page">
                 Page {{isStayInPage}}/ {{isNumOfPage}}
             </div>
-        <div class="setting-table">
-            
-            <table>
-                <tr>
-                    <th>email</th>
-                    <th>username</th>
-                    <th>phone</th>
-                    <th>Gender</th>
-                    <th>marital status</th>
-                    <th>occupation</th>
-                    <th>interest</th>
-                    <th>objective</th>
-                    <th>sentence</th>
-                    <th>question</th>
-                    <th>face result</th>
-                    <th>sentiment score</th>
-                    <th>answer</th>
-                </tr>
-                <tr v-for="(data, index) in userData" :key="index" >
-                    <td v-if="index < indexEnd && index >= indexStart">{{data.email}}</td>
-                    <td v-if="index < indexEnd && index >= indexStart">{{data.username}}</td>
-                    <td v-if="index < indexEnd && index >= indexStart">{{data.phone}}</td>
-                    <td v-if="index < indexEnd && index >= indexStart">{{data.sex}}</td>
-                    <td v-if="index < indexEnd && index >= indexStart">{{data.marital_status}}</td>
-                    <td v-if="index < indexEnd && index >= indexStart">{{data.occupation}}</td>
-                    <td v-if="index < indexEnd && index >= indexStart">{{data.interest}}</td>
-                    <td v-if="index < indexEnd && index >= indexStart">{{data.objective}}</td>
-                    <td v-if="index < indexEnd && index >= indexStart">{{data.sentence}}</td>
-                    <td v-if="index < indexEnd && index >= indexStart">{{data.question}}</td>
-                    <td v-if="index < indexEnd && index >= indexStart">{{data.face_result}}</td>
-                    <td v-if="index < indexEnd && index >= indexStart">{{data.sentiment_score}}</td>
-                    <td v-if="index < indexEnd && index >= indexStart">{{data.answer}}</td>
-                </tr>
-            </table>
-            
-        </div>
-        <div class="setting-btn-change-table">
-                <button class="btn-pre" @click="haddlePervioseTalbe">Previous</button>
-                <span>Page {{isStayInPage}}/ {{isNumOfPage}}</span>
-                <button class="btn-next" @click="haddleNextTable">Next</button>
+
+        <div class="dashboard-container" v-if="isUseDatabase === 'Emotion'">
+            <div class="setting-table">
+                <table>
+                    <tr>
+                        <th>email</th>
+                        <th>username</th>
+                        <th>phone</th>
+                        <th>Gender</th>
+                        <th>marital status</th>
+                        <th>occupation</th>
+                        <th>interest</th>
+                        <th>objective</th>
+                        <th>sentence</th>
+                        <th>question</th>
+                        <th>face result</th>
+                        <th>sentiment score</th>
+                        <th>answer</th>
+                    </tr>
+                    <tr v-for="(data, index) in userData" :key="index" >
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.email}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.username}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.phone}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.sex}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.marital_status}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.occupation}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.interest}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.objective}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.sentence}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.question}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.face_result}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.sentiment_score}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.answer}}</td>
+                    </tr>
+                </table>
+                
             </div>
-        <div class="set-download-area">
-            <select class="type-file" name="type-file" id="type-file" v-model="selectionFile">
-                <option>csv</option>
-                <option>json</option>
-                <!-- <option>excel</option> -->
-            </select>
-            <button class="btn-download" @click="haddleDownload">Download</button>
+            <div class="setting-btn-change-table">
+                    <button class="btn-pre" @click="haddlePervioseTalbe">Previous</button>
+                    <span>Page {{isStayInPage}}/ {{isNumOfPage}}</span>
+                    <button class="btn-next" @click="haddleNextTable">Next</button>
+                </div>
+            <div class="set-download-area">
+                <select class="type-file" name="type-file" id="type-file" v-model="selectionFile">
+                    <option>csv</option>
+                    <option>json</option>
+                    <!-- <option>excel</option> -->
+                </select>
+                <button class="btn-download" @click="haddleDownload('IAT')('Emotion')">Download</button>
+            </div>
         </div>
+
+
+        <div class="dashboard-container" v-if="isUseDatabase === 'IAT'">
+            <div class="setting-table">
+                <table>
+                    <tr>
+                        <th>firstname</th>
+                        <th>lastname</th>
+                        <th>gender</th>
+                        <th>personalities</th>
+                        <th>dscore</th>
+                        <th>blockType</th>
+                        <th>runner name</th>
+                        <th>selection</th>
+                        <th>content left</th>
+                        <th>content right</th>
+                        <th>milliseconds</th>
+                    </tr>
+                    <tr v-for="(data, index) in userIatData" :key="index" >
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.firstname}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.lastname}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.gender}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.personalities}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.dscore}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.blockType}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.runnerName}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.userSelect}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.contentLeft}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.contentRight}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.milliseconds}}</td>
+                    </tr>
+                </table>
+                
+            </div>
+            <div class="setting-btn-change-table">
+                    <button class="btn-pre" @click="haddlePervioseTalbe">Previous</button>
+                    <span>Page {{isStayInPage}}/ {{isNumOfPage}}</span>
+                    <button class="btn-next" @click="haddleNextTable">Next</button>
+                </div>
+            <div class="set-download-area">
+                <select class="type-file" name="type-file" id="type-file" v-model="selectionFile">
+                    <option>csv</option>
+                    <option>json</option>
+                    <!-- <option>excel</option> -->
+                </select>
+                <button class="btn-download" @click="haddleDownload('IAT')">Download</button>
+            </div>
+        </div>
+        
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import {httpAPI} from '../apiSetting';
+import {httpAPIEmotion, httpApiIat} from '../apiSetting';
 
-const sendAPI = httpAPI();
+const sendAPI = httpAPIEmotion();
+const sendAPIEmo = httpApiIat();
 
 
 export default {
     data(){
         return{
+            selectionDatabase: "Emotion",
+            isUseDatabase:"Emotion",
             selectionFile:"csv",
             userData:"",
+            userIatData:"",
+
             filteruserData:"",
             countOfRow:0,
             indexStart:0,
-            indexEnd: 15,
+            indexEnd: 20,
             
             isNumOfPage:0,
             isStayInPage:1,
-            maxRows:15,
+            maxRows:20,
             
             arrayEmail:[],
             arrayObjective:[],
@@ -149,6 +217,14 @@ export default {
         }
     },
     methods:{
+
+        // async haddleSelectionDatabase(){
+        //     if(this.SelectionDatabase === "Emotion"){
+        //         this.haddleShowData();
+        //     }else{
+        //         console.log("IAT")
+        //     }
+        // },
 
         haddleFitlerMenu(){
             if(this.cssFilter === "set-filter"){
@@ -174,6 +250,7 @@ export default {
         },
 
         async haddleShowData(){
+            // console.log("Hi")
             const headerConf = {
                 headers:{
                     'access-token': this.$cookies.get("admin_anotherme")
@@ -232,7 +309,7 @@ export default {
 
         },
 
-        async haddleDownload(){
+        async haddleDownload(evt){
             
             const headerConf = {
                 headers:{
@@ -244,52 +321,128 @@ export default {
                 typeFile: this.selectionFile,
                 // typeFile:  "csv"
             }
-            try{
-                const emotionData = await axios.post(`${sendAPI}/download`,payload,headerConf );
-                if(emotionData.status === 500){
+
+            if(evt === "Emotion"){
+                try{
+
+                    const emotionData = await axios.post(`${sendAPI}/download`,payload,headerConf );
+
+                    if(emotionData.status === 500){
+                        this.$cookies.remove("admin_anotherme");
+                        alert("user alreadly expired please login again");
+                        this.$router.push("./login")
+                    }else{
+                        if(this.selectionFile === "csv"){
+                            console.log(emotionData.data)
+                            const anchor = document.createElement('a');
+                            anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(emotionData.data);
+                            anchor.target = '_blank';
+                            anchor.download = 'emotionFile.csv';
+                            anchor.click();
+                        }else if(this.selectionFile === "json"){
+                            // console.log("json: ",emotionData)
+                            this.$store.state.setJson = emotionData.data.listData
+                            this.$router.push("./json")
+                        }
+                        // else if(this.selectionFile === "excel"){
+                        //     const url = URL.createObjectURL(new Blob([response.data], {
+                        //         type: 'application/vnd.ms-excel'
+                        //     }))
+                        //     const link = document.createElement('a')
+                        //     link.href = url
+                        //     link.setAttribute('download', fileName)
+                        //     document.body.appendChild(link)
+                        //     link.click()
+                        // }
+                    }
+
+                }catch(err){
                     this.$cookies.remove("admin_anotherme");
                     alert("user alreadly expired please login again");
-                    this.$router.push("./login")
-                }else{
-                    if(this.selectionFile === "csv"){
-                        console.log(emotionData.data)
-                        const anchor = document.createElement('a');
-                        anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(emotionData.data);
-                        anchor.target = '_blank';
-                        anchor.download = 'emotionFile.csv';
-                        anchor.click();
-                    }else if(this.selectionFile === "json"){
-                        // console.log("json: ",emotionData)
-                        this.$store.state.setJson = emotionData.data.listData
-                        this.$router.push("./json")
-                    }
-                    // else if(this.selectionFile === "excel"){
-                    //     const url = URL.createObjectURL(new Blob([response.data], {
-                    //         type: 'application/vnd.ms-excel'
-                    //     }))
-                    //     const link = document.createElement('a')
-                    //     link.href = url
-                    //     link.setAttribute('download', fileName)
-                    //     document.body.appendChild(link)
-                    //     link.click()
-                    // }
+                    this.$router.push("./login");
                 }
+
+            }else if(evt === "IAT"){
+                try{
+
+                    const IATData = await axios.post(`${sendAPI}/sendAPIEmo`,payload,headerConf );
+
+                    if(IATData.status === 500){
+                        this.$cookies.remove("admin_anotherme");
+                        alert("user alreadly expired please login again");
+                        this.$router.push("./login")
+                    }else{
+                        if(this.selectionFile === "csv"){
+                            console.log(IATData.data.listData)
+                            const anchor = document.createElement('a');
+                            anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(IATData.data.listData);
+                            anchor.target = '_blank';
+                            anchor.download = 'iatFile.csv';
+                            anchor.click();
+                        }else if(this.selectionFile === "json"){
+                            // console.log("json: ",IATData)
+                            this.$store.state.setJson = IATData.data.listData
+                            this.$router.push("./json")
+                        }
+                        // else if(this.selectionFile === "excel"){
+                        //     const url = URL.createObjectURL(new Blob([response.data], {
+                        //         type: 'application/vnd.ms-excel'
+                        //     }))
+                        //     const link = document.createElement('a')
+                        //     link.href = url
+                        //     link.setAttribute('download', fileName)
+                        //     document.body.appendChild(link)
+                        //     link.click()
+                        // }
+                    }
+
+                }catch(err){
+                    this.$cookies.remove("admin_anotherme");
+                    alert("user alreadly expired please login again");
+                    this.$router.push("./login");
+                }
+            }
+
+            
+        },
+
+        async haddleShowDataIAT(){
+
+            try{
+                const showDataIAT = await axios.get(`${sendAPIEmo}/dashboard`);
+                console.log(showDataIAT.data.listData)
+                this.userIatData = showDataIAT.data.listData;
+                this.countOfRow = showDataIAT.data.listData.length;
+
+                const setPages = showDataIAT.data.listData.length / this.maxRows;
+                this.isNumOfPage = parseInt(setPages) + 1;
             }catch(err){
-                this.$cookies.remove("admin_anotherme");
-                alert("user alreadly expired please login again");
-                this.$router.push("./login");
+                console.log(`error in function haddleShowDataIAT: ${err}`);
             }
             
-            // console.log(data);
-            
-            
+        },
+
+        async haddleChangeDatabase(){
+            if(this.selectionDatabase === "Emotion"){
+                this.isUseDatabase = "Emotion";
+                this.haddleShowData();
+            }else{
+                this.isUseDatabase = "IAT";
+                console.log(this.isUseDatabase)
+                this.haddleShowDataIAT();
+
+            }
         }
     },
     mounted(){
         this.haddleShowData();
+        // if(this.SelectionDatabase === "Emotion"){
+        //     this.haddleShowData();
+        // }else{
+        //     console.log(this.SelectionDatabase)
+        // }
     },
     updated(){
-        // console.log(this.selectionFile)
     }
 }
 </script>
@@ -312,8 +465,30 @@ export default {
         text-align: center;
     }
 
+    .change-module{
+        margin-left: 50px
+    }
+
+    .btn-change-database{
+        margin-left: 10px;
+        height: 30px;
+        width: 80px;
+        border: 1px solid rgb(65, 128, 255);
+        background: rgb(65, 128, 255);
+        color: white;
+        border-radius: 10px;
+        
+    }
+
+    .warping-config-container{
+        display:flex;
+        justify-content: start;
+        margin-top: 20px;
+    }
+
     .config-filter{
         margin-left: 50px;
+        margin-top: 20px;
         background: grey;
         width: 100px;
         height: 30px;

@@ -368,6 +368,46 @@ app.post("/backend_iat/analysis", async (req, res) => {
 
 });
 
+app.get("/backend_iat/dashboard", async (req, res) => {
+
+    try{
+        const userData = await userDscore.find({});
+
+        let arrayUserData = [];
+
+        userData.forEach((arrayResult) => {
+            arrayResult.result.forEach((element) => {
+                const setData = {
+                    firstname: arrayResult.firstname,
+                    lastname: arrayResult.lastname,
+                    gender: arrayResult.gender,
+                    personalities: arrayResult.personalities,
+                    dscore: arrayResult.dscore,
+                    blockType: element.typeCal,
+                    runnerName: element.runnerName, 
+                    contentLeft: element.contentLeft,
+                    contentRight: element.contentRight,
+                    userSelect: element.userSelect, 
+                    milliseconds: element.milliseconds
+                }
+
+                arrayUserData.push(setData);
+            })
+        })
+
+        const warpingData = {
+            listData: arrayUserData
+        }
+
+        res.send(warpingData);
+
+    }catch(err){
+        console.log(`Error in api backend_iat/dashboard: ${err}`);
+        res.sendStatus(500);
+    }
+    
+});
+
 
 app.listen(port, () => {
     console.log(`app running on port: ${port} ==> http://localhost:${port}`)
