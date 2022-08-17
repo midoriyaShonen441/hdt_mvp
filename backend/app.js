@@ -88,6 +88,7 @@ app.post("/backend/download", auth, async (req, res) => {
     const {typeFile} = req.body;
 
     let jsonData = [];
+    
     try{
         const allUser = await userProfile.find();
         const personalEmotion = await emotion.find();

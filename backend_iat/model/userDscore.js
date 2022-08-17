@@ -13,9 +13,10 @@ const userDscore = new mongoose.Schema({
             typeCal: {type:String},
             runnerName: {type:String},
             userSelect:{type:String},
-            contentSelect:{type:String},
+            wordShow:{type:String},
             contentLeft: {type:String},
             contentRight: {type:String},
+            isCorrect: {type:Boolean},
             milliseconds: {type:Number},
         }
     ]

@@ -117,7 +117,7 @@
                     <option>json</option>
                     <!-- <option>excel</option> -->
                 </select>
-                <button class="btn-download" @click="haddleDownload('IAT')('Emotion')">Download</button>
+                <button class="btn-download" @click="haddleDownload('Emotion')">Download</button>
             </div>
         </div>
 
@@ -134,8 +134,10 @@
                         <th>blockType</th>
                         <th>runner name</th>
                         <th>selection</th>
+                        <th>word show</th>
                         <th>content left</th>
                         <th>content right</th>
+                        <th>correct status</th>
                         <th>milliseconds</th>
                     </tr>
                     <tr v-for="(data, index) in userIatData" :key="index" >
@@ -147,8 +149,10 @@
                         <td v-if="index < indexEnd && index >= indexStart">{{data.blockType}}</td>
                         <td v-if="index < indexEnd && index >= indexStart">{{data.runnerName}}</td>
                         <td v-if="index < indexEnd && index >= indexStart">{{data.userSelect}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.wordShow}}</td>
                         <td v-if="index < indexEnd && index >= indexStart">{{data.contentLeft}}</td>
                         <td v-if="index < indexEnd && index >= indexStart">{{data.contentRight}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.isCorrect?'Correct':'Wrong'}}</td>
                         <td v-if="index < indexEnd && index >= indexStart">{{data.milliseconds}}</td>
                     </tr>
                 </table>
@@ -274,7 +278,7 @@ export default {
                 this.arraySentence.push("All")
                 this.arrayFaceResult.push("All")
 
-                 this.userData.forEach((element) => {
+                this.userData.forEach((element) => {
                     if(!(this.arrayEmail.some(item => item === element.email))){
                         this.arrayEmail.push(element.email)
                     }
@@ -290,7 +294,7 @@ export default {
                     if(!(this.arrayFaceResult.some(item => item === element.face_result))){
                         this.arrayFaceResult.push(element.face_result)
                     }
-                 })
+                })
 
                 //  console.log(this.arrayEmail)
                 //  console.log(this.arrayObjective)
@@ -333,7 +337,7 @@ export default {
                         this.$router.push("./login")
                     }else{
                         if(this.selectionFile === "csv"){
-                            console.log(emotionData.data)
+                            // console.log(emotionData.data)
                             const anchor = document.createElement('a');
                             anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(emotionData.data);
                             anchor.target = '_blank';
@@ -365,7 +369,8 @@ export default {
             }else if(evt === "IAT"){
                 try{
 
-                    const IATData = await axios.post(`${sendAPI}/sendAPIEmo`,payload,headerConf );
+                    const IATData = await axios.post(`${sendAPIEmo}/download`,payload,headerConf );
+                    // console.log("before download: ",IATData.data.listData)
 
                     if(IATData.status === 500){
                         this.$cookies.remove("admin_anotherme");
@@ -373,9 +378,9 @@ export default {
                         this.$router.push("./login")
                     }else{
                         if(this.selectionFile === "csv"){
-                            console.log(IATData.data.listData)
+                            // console.log("array ===> ",IATData.data)
                             const anchor = document.createElement('a');
-                            anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(IATData.data.listData);
+                            anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(IATData.data);
                             anchor.target = '_blank';
                             anchor.download = 'iatFile.csv';
                             anchor.click();
@@ -397,6 +402,7 @@ export default {
                     }
 
                 }catch(err){
+                    console.log(err)
                     this.$cookies.remove("admin_anotherme");
                     alert("user alreadly expired please login again");
                     this.$router.push("./login");

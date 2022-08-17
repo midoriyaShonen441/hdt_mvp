@@ -10,11 +10,57 @@
       Block Done: {{isCountingPages}} / 7
     </div>
 
-    <div class="content-iat-container" v-if="isFinsh === false">
+    <div class="popup-container" v-if="isPopupDesc === true">
+      <div class="title-popup">ระบบได้ทำการสลับปุ่มกด</div>
+      <div class="example-btn">
+        <div class="example-btn-1">
+          <button class="btn-ok" >{{targetTestName}}</button>
+          <button class="btn-nope" >{{targetPraticeName}}</button>
+        </div>
+        <div class="example-btn-2">
+          <button class="btn-ok">
+            <div>{{targetTestName}}</div>
+            <div>-or-</div>
+            <div>{{attributePraticeName}}</div>
+          </button>
+           <button class="btn-nope" >
+            <div>{{targetPraticeName}}</div>
+            <div>-or-</div>
+            <div>{{attributeTestName}}</div>
+          </button>
+        </div>
+      </div>
+      <div class="submit-popup-btn">
+        <button class="popup-submit" @click="haddlePopup">Submit</button>
+      </div>
+    </div>
+
+    <div class="example-desc-starter" v-if="isStart === false">
+      <div class="set-example-title">
+        ตัวอย่าง
+      </div>
+      <div class="explain-b1">
+        กรุณากดปุ่มให้ตรงกับความหมายของข้อความที่ปรากฎบนหน้าจอ
+      </div>
+      <div class="btn-example">
+          <div class="example-text">
+            {{isWord}}
+          </div>
+          <div class="example-btn-select-side">
+            <button class="btn-ok" >{{targetPraticeName}}</button>
+            <button class="btn-nope" >{{targetTestName}}</button>
+          </div>
+      </div>
+    </div>
+
+    <div :class="cssContentIatContainer" v-if="isFinsh === false">
       <div class="set-content">
         <div class="content-container">
           <div class="set-text">
-          {{isWord}}
+          {{isWord.element}}
+            <div>
+              {{setTrueSide}}
+            </div>
           </div>
         </div>
       </div>
@@ -51,22 +97,22 @@
     <div class="footer-iat-container" v-if="isStart === true && isFinsh === false">
 
       <div v-if="isType === 'b1'">
-        <button class="btn-ok" @click="btnSelection('left',isWord)">{{targetPraticeName}}</button>
-        <button class="btn-nope" @click="btnSelection('right',isWord)">{{targetTestName}}</button>
+        <button class="btn-ok" @click="btnSelection('L',isWord.element,targetPraticeName,targetTestName)">{{targetPraticeName}}</button>
+        <button class="btn-nope" @click="btnSelection('R',isWord.element,targetPraticeName,targetTestName)">{{targetTestName}}</button>
       </div>
 
       <div v-if="isType === 'b2'">
-        <button class="btn-ok" @click="btnSelection('left',isWord)">{{attributePraticeName}}</button>
-        <button class="btn-nope" @click="btnSelection('right',isWord)">{{attributeTestName}}</button>
+        <button class="btn-ok" @click="btnSelection('L',isWord.element,attributePraticeName,attributeTestName)">{{attributePraticeName}}</button>
+        <button class="btn-nope" @click="btnSelection('R',isWord.element,attributePraticeName,attributeTestName)">{{attributeTestName}}</button>
       </div>
 
       <div  v-if="isType === 'b3' || isType ==='b4'">
-        <button class="btn-ok" @click="btnSelection('left',isWord)">
+        <button class="btn-ok" @click="btnSelection('L',isWord.element,targetPraticeName + '-or-' + attributePraticeName,targetTestName+'-or-'+attributeTestName)">
           <div>{{targetPraticeName}}</div>
           <div>-or-</div>
           <div>{{attributePraticeName}}</div>
         </button>
-        <button class="btn-nope" @click="btnSelection('right',isWord)">
+        <button class="btn-nope" @click="btnSelection('R',isWord.element,targetPraticeName + '-or-' + attributePraticeName,targetTestName+'-or-'+attributeTestName)">
           <div>{{targetTestName}}</div>
           <div>-or-</div>
           <div>{{attributeTestName}}</div>
@@ -74,17 +120,17 @@
       </div>
 
       <div v-if="isType === 'b5'">
-        <button class="btn-ok" @click="btnSelection('left',isWord)">{{targetTestName}}</button>
-        <button class="btn-nope" @click="btnSelection('right',isWord)">{{targetPraticeName}}</button>
+        <button class="btn-ok" @click="btnSelection('L',isWord.element,targetPraticeName,targetTestName)">{{targetTestName}}</button>
+        <button class="btn-nope" @click="btnSelection('R',isWord.element,targetPraticeName,targetTestName)">{{targetPraticeName}}</button>
       </div>
 
       <div  v-if="isType === 'b6' || isType ==='b7'">
-        <button class="btn-ok" @click="btnSelection('left',isWord)">
+        <button class="btn-ok" @click="btnSelection('L',isWord.element,targetTestName + '-or-' + attributePraticeName,targetPraticeName+'-or-'+attributeTestName)">
           <div>{{targetTestName}}</div>
           <div>-or-</div>
           <div>{{attributePraticeName}}</div>
         </button>
-        <button class="btn-nope" @click="btnSelection('right',isWord)">
+        <button class="btn-nope" @click="btnSelection('R',isWord.element,targetTestName + '-or-' + attributePraticeName,targetPraticeName+'-or-'+attributeTestName)">
           <div>{{targetPraticeName}}</div>
           <div>-or-</div>
           <div>{{attributeTestName}}</div>
@@ -139,18 +185,19 @@ export default {
 
       isCompareAttrubuteAndTest: false,
       isWord:"",
-      isSubWord:"",
-
-      compareIsWord: "",
-      compareIsSubWord:"",
 
       targetPraticeName:"",
       targetTestName:"",
       attributePraticeName:"",
       attributeTestName:"",
       isCountingPages:1,
-      
 
+      setTrueSide: "",
+      isPopupDesc: false,
+
+      cssContentIatContainer: "content-iat-container",
+      atIndex:0,
+      arrayIndex:[]
     }
   },
   methods:{
@@ -177,47 +224,108 @@ export default {
         this.attributePraticeName = selectionIat.data.attribute_pratice_name
         this.attributeTestName = selectionIat.data.attribute_test_name
 
-        // console.log(this.targetPraticeName,this.targetTestName,  this.attributePraticeName, this.attributeTestName)
+        const setArrayRandom = this.targetPratice.concat(this.targetTest);
+        let randomIndex = Math.floor(Math.random()*setArrayRandom.length);
+        const setWord = setArrayRandom[randomIndex];
+        this.isWord = setWord
 
       }catch(err){
 
       }
     },
-    btnSelection(evt, contentLeft, contentRight){
+
+    btnSelection(evt, wordShow,contentLeft, contentRight){
       if(this.isType === "b1"){
         console.log('b1')
+
         if(this.indexCount >= 10){
           this.isType = "b2"
           this.indexCount = 0;
           this.isCountingPages += 1
         }
 
-        const timing =  performance.now();
-        const caltiming = timing - this.setTime;
+        const setArrayRandom = this.targetPratice.concat(this.targetTest);
 
-        this.isResult.push({
-          typeCal: "b1",
-          runnerName: this.runner,
-          userSelect: evt,
-          contentLeft: contentLeft ? contentLeft: "No-content",
-          contentRight: contentRight? contentRight: "No-content",
-          milliseconds: caltiming
-        });
+        if(this.indexCount !== 0){
+          console.log("array =>", this.arrayIndex)
+          // console.log("true side: ",this.targetTest);
+          // console.log("select side: ", evt)
+          const correctAns = evt === this.setTrueSide? true: false;
+          this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
+          if(correctAns === false){
+            if(this.setTrueSide === "R"){
+              alert("correct answer is right side!")
+            }else{
+              alert("correct answer is left side!")
+            }
+          }
 
-        // console.log("targetPratice ==> ",this.targetPratice)
-        // console.log("targetTest ===> ", this.targetTest)
-        // console.log("attributePratice ===> ",this.attributePratice)
-        // console.log("attributeTest ===> ",this.attributeTest)
+          let randomIndex = Math.floor(Math.random()*setArrayRandom.length);
+          while(true){
+            if(this.arrayIndex[0] === this.arrayIndex[1] || this.arrayIndex.length <= 1){
+              this.arrayIndex.push(randomIndex)
+              // console.log("randomIndex: ",randomIndex);
+              break;
+            }
+          }
 
-        const setArray = this.targetPratice.concat(this.targetTest)
-        const targetPraticeElement =  setArray[Math.floor(Math.random()*setArray.length)];
-        this.isWord = targetPraticeElement;
+          if( this.arrayIndex.length >= 2){
+            this.arrayIndex = []
+          }
 
-        this.setTime = performance.now();
-        this.indexCount += 1
+          const setWord = setArrayRandom[randomIndex];
+          const setElement = this.targetPratice.includes(setWord)?{side:"L", element:setWord}: {side:"R", element:setWord}
+
+          const timing = performance.now();
+          const caltiming = timing - this.setTime;
+
+          // console.log("timing:", caltiming)
+          this.isResult.push({
+            typeCal: "b1",
+            runnerName: this.runner,
+            userSelect: evt,
+            wordShow:wordShow,
+            contentLeft: contentLeft,
+            contentRight: contentRight,
+            isCorrect: correctAns,
+            milliseconds: caltiming
+          });
+
+          this.setTrueSide = setElement.side;
+          this.isWord = setElement
+
+          this.setTime = performance.now();
+          this.indexCount += 1
+        }else{
+          
+          let randomIndex = Math.floor(Math.random()*setArrayRandom.length);
+          while(true){
+            if(this.arrayIndex[0] === this.arrayIndex[1] || this.arrayIndex.length <= 1){
+              this.arrayIndex.push(randomIndex)
+              // console.log("randomIndex: ",randomIndex);
+              break;
+            }
+          }
+
+          if( this.arrayIndex.length >= 2){
+            this.arrayIndex = []
+          }
+
+          const setWord = setArrayRandom[randomIndex];
+          const setElement = this.targetPratice.includes(setWord)?{side:"L", element:setWord}: {side:"R", element:setWord}
+          
+          this.setTrueSide = setElement.side;
+          this.isWord = setElement
+
+          this.setTime = performance.now();
+          this.indexCount += 1
+        }
 
       }else if(this.isType === "b2"){
         console.log('b2')
+
+        const setArrayRandom = this.attributePratice.concat(this.attributeTest);
+
         if(this.indexCount >= 10){
           this.isType = "b3"
           this.indexCount = 0
@@ -225,58 +333,108 @@ export default {
           this.isCountingPages += 1
         }
 
+        const correctAns = evt === this.setTrueSide? true: false;
+        this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
+        if(correctAns === false){
+            if(this.setTrueSide === "R"){
+              alert("correct answer is right side!")
+            }else{
+              alert("correct answer is left side!")
+            }
+          }
+
+        let randomIndex = Math.floor(Math.random()*setArrayRandom.length);
+          while(true){
+            if(this.arrayIndex[0] === this.arrayIndex[1] || this.arrayIndex.length <= 1){
+              this.arrayIndex.push(randomIndex)
+              // console.log("randomIndex: ",randomIndex);
+              break;
+            }
+          }
+
+          if( this.arrayIndex.length >= 2){
+            this.arrayIndex = []
+          }
+
+        const setWord = setArrayRandom[randomIndex];
+        const setElement = this.attributePratice.includes(setWord)?{side:"L", element:setWord}: {side:"R", element:setWord}
+        // console.log("testing ==> ",correctAns)
+
+        this.setTrueSide = setElement.side;
+        this.isWord = setElement
+
         const timing = performance.now();
         const caltiming = timing - this.setTime;
-
+        // console.log("caltiming: ", caltiming)
         this.isResult.push({
           typeCal: "b2",
           runnerName: this.runner,
           userSelect: evt,
-          contentLeft: contentLeft ? contentLeft: "No-content",
-          contentRight: contentRight? contentRight: "No-content",
+          wordShow:wordShow,
+          contentLeft: contentLeft,
+          contentRight: contentRight,
+          isCorrect: correctAns,
           milliseconds: caltiming
         });
-
-        // const attributePraticeElement = this.attributePratice[Math.floor(Math.random()*this.attributePratice.length)];
-        // console.log(this.targetPratice)
-        // console.log(this.targetTest)
-        // console.log(this.attributePratice)
-        // console.log(this.attributeTest)
-        const setArray = this.attributePratice.concat(this.attributeTest)
-        // console.log(setArray)
-        const attributeTestElement = setArray[Math.floor(Math.random()*setArray.length)];
-        this.isWord = attributeTestElement;
-
-
-
-        // this.isPratice = attributePraticeElement;
-        // this.isTest = attributeTestElement;
 
         this.setTime = performance.now();
         this.indexCount += 1
 
       }else if(this.isType === "b3"){
         console.log('b3')
+
+        const checkPratice = this.attributePratice.concat(this.targetPratice) // L side
+        const setArrayRandom = this.attributePratice.concat(this.targetTest,this.targetPratice,this.attributeTest )
+
         if(this.indexCount >= 20){
           this.isType = "b4"
           this.indexCount = 0
           this.isCountingPages += 1
         }
 
+        const correctAns = evt === this.setTrueSide? true: false;
+        this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
+        if(correctAns === false){
+            if(this.setTrueSide === "R"){
+              alert("correct answer is right side!")
+            }else{
+              alert("correct answer is left side!")
+            }
+          }
+
+        let randomIndex = Math.floor(Math.random()*setArrayRandom.length);
+          while(true){
+            if(this.arrayIndex[0] === this.arrayIndex[1] || this.arrayIndex.length <= 1){
+              this.arrayIndex.push(randomIndex)
+              // console.log("randomIndex: ",randomIndex);
+              break;
+            }
+          }
+
+          if( this.arrayIndex.length >= 2){
+            this.arrayIndex = []
+          }
+
+        const setWord = setArrayRandom[randomIndex];
+        const setElement = checkPratice.includes(setWord)?{side:"L", element:setWord}: {side:"R", element:setWord}
+        // console.log("testing ==> ",correctAns)
+
+        this.setTrueSide = setElement.side;
+        this.isWord = setElement
+
         const timing = performance.now();
         const caltiming = timing - this.setTime;
-
+        // console.log("caltiming: ", caltiming)
         this.isResult.push({
           typeCal: "b3",
           runnerName: this.runner,
           userSelect: evt,
-          contentLeft: contentLeft ? contentLeft: "No-content",
-          contentRight: contentRight? contentRight: "No-content",
+          wordShow:wordShow,
+          contentLeft: contentLeft,
+          contentRight: contentRight,
+          isCorrect: correctAns,
           milliseconds: caltiming
         });
-
-        const setArray = this.targetPratice.concat(this.attributePratice, this.targetTest, this.attributeTest);
-        this.isWord = setArray[Math.floor(Math.random()*setArray.length)];
 
         this.setTime = performance.now();
         this.indexCount += 1
@@ -284,33 +442,73 @@ export default {
       }else if(this.isType === "b4"){
         console.log('b4')
 
+        const checkPratice = this.attributePratice.concat(this.targetPratice) // L side
+        const setArrayRandom = this.attributePratice.concat(this.targetTest,this.targetPratice,this.attributeTest )
+
         if(this.indexCount >= 40){
           this.isType = "b5"
           this.switchType = true
           this.indexCount = 0
           this.isCompareAttrubuteAndTest = false
+          this.isPopupDesc = true
+          // while(this.isPopupDesc){
+          //   if(this.isPopupDesc === false){
+          //     break;
+          //   }
+          // }
           this.isCountingPages += 1
         }
-        // console.log("D4")
-        const timing = performance.now();
-        const caltiming = timing - this.setTime;
+          const correctAns = evt === this.setTrueSide? true: false;
+          this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
+          if(correctAns === false){
+            if(this.setTrueSide === "R"){
+              alert("correct answer is right side!")
+            }else{
+              alert("correct answer is left side!")
+            }
+          }
+          let randomIndex = Math.floor(Math.random()*setArrayRandom.length);
+          while(true){
+            if(this.arrayIndex[0] === this.arrayIndex[1] || this.arrayIndex.length <= 1){
+              this.arrayIndex.push(randomIndex)
+              // console.log("randomIndex: ",randomIndex);
+              break;
+            }
+          }
 
-        this.isResult.push({
-          typeCal: "b4",
-          runnerName: this.runner,
-          userSelect: evt,
-          contentLeft: contentLeft ? contentLeft: "No-content",
-          contentRight: contentRight? contentRight: "No-content",
-          milliseconds: caltiming
-        });
+          if( this.arrayIndex.length >= 2){
+            this.arrayIndex = []
+          }
 
-        const setArray = this.targetPratice.concat(this.attributePratice, this.targetTest, this.attributeTest);
-        this.isWord = setArray[Math.floor(Math.random()*setArray.length)];
+          const setWord = setArrayRandom[randomIndex];
+          const setElement = checkPratice.includes(setWord)?{side:"L", element:setWord}: {side:"R", element:setWord}
+          // console.log("testing ==> ",correctAns)
 
-        this.setTime = performance.now();
-        this.indexCount += 1
+          this.setTrueSide = setElement.side;
+          this.isWord = setElement
+
+          const timing = performance.now();
+          const caltiming = timing - this.setTime;
+          // console.log("caltiming: ", caltiming)
+
+          this.isResult.push({
+            typeCal: "b4",
+            runnerName: this.runner,
+            userSelect: evt,
+            wordShow:wordShow,
+            contentLeft: contentLeft,
+            contentRight: contentRight,
+            isCorrect: correctAns,
+            milliseconds: caltiming
+          });
+
+          this.setTime = performance.now();
+          this.indexCount += 1
       }else if(this.isType === "b5"){
         console.log('b5')
+
+        const setArrayRandom = this.targetPratice.concat(this.targetTest);
+
         if(this.indexCount >= 10){
           this.isType = "b6"
           this.indexCount = 0
@@ -318,35 +516,92 @@ export default {
           this.isCountingPages += 1
         }
 
-        this.isSubWord = "";
+        const correctAns = evt === this.setTrueSide? true: false;
+        this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
+        if(correctAns === false){
+            if(this.setTrueSide === "R"){
+              alert("correct answer is right side!")
+            }else{
+              alert("correct answer is left side!")
+            }
+          }
+
+        let randomIndex = Math.floor(Math.random()*setArrayRandom.length);
+          while(true){
+            if(this.arrayIndex[0] === this.arrayIndex[1] || this.arrayIndex.length <= 1){
+              this.arrayIndex.push(randomIndex)
+              // console.log("randomIndex: ",randomIndex);
+              break;
+            }
+          }
+
+          if( this.arrayIndex.length >= 2){
+            this.arrayIndex = []
+          }
+
+          const setWord = setArrayRandom[randomIndex];
+        const setElement = this.attributePratice.includes(setWord)?{side:"R", element:setWord}: {side:"L", element:setWord}
+        // console.log("testing ==> ",correctAns)
+
+        this.setTrueSide = setElement.side;
+        this.isWord = setElement
+
         const timing =  performance.now();
         const caltiming = timing - this.setTime;
-
+        // console.log("caltiming: ", caltiming)
         this.isResult.push({
           typeCal: "b5",
           runnerName: this.runner,
           userSelect: evt,
-          contentLeft: contentLeft ? contentLeft: "No-content",
-          contentRight: contentRight? contentRight: "No-content",
+          wordShow:wordShow,
+          contentLeft: contentLeft,
+          contentRight: contentRight,
+          isCorrect: correctAns,
           milliseconds: caltiming
         });
-        
-         const setArray = this.targetPratice.concat(this.targetTest)
-        const targetPraticeElement =  setArray[Math.floor(Math.random()*setArray.length)];
-        this.isWord = targetPraticeElement;
-
-        // this.isPratice = targetPraticeElement;
-        // this.isTest = targetTestElement; 
 
         this.setTime = performance.now();
         this.indexCount += 1
       }else if(this.isType === "b6"){
         console.log('b6')
+
+        const checkPratice = this.attributePratice.concat(this.targetPratice) // L side
+        const setArrayRandom = this.attributePratice.concat(this.targetTest,this.targetPratice,this.attributeTest)
+
         if(this.indexCount >= 20){
           this.isType = "b7"
           this.indexCount = 0
           this.isCountingPages += 1
         }
+
+        const correctAns = evt === this.setTrueSide? true: false;
+        this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
+        if(correctAns === false){
+            if(this.setTrueSide === "R"){
+              alert("correct answer is right side!")
+            }else{
+              alert("correct answer is left side!")
+            }
+          }
+        let randomIndex = Math.floor(Math.random()*setArrayRandom.length);
+          while(true){
+            if(this.arrayIndex[0] === this.arrayIndex[1] || this.arrayIndex.length <= 1){
+              this.arrayIndex.push(randomIndex)
+              // console.log("randomIndex: ",randomIndex);
+              break;
+            }
+          }
+
+          if( this.arrayIndex.length >= 2){
+            this.arrayIndex = []
+          }
+
+          const setWord = setArrayRandom[randomIndex];
+        const setElement = checkPratice.includes(setWord)?{side:"R", element:setWord}: {side:"L", element:setWord}
+        // console.log("testing ==> ",correctAns)
+
+        this.setTrueSide = setElement.side;
+        this.isWord = setElement;
 
         const timing =  performance.now();
         const caltiming = timing - this.setTime;
@@ -355,32 +610,64 @@ export default {
           typeCal: "b6",
           runnerName: this.runner,
           userSelect: evt,
-          contentLeft: contentLeft ? contentLeft: "No-content",
-          contentRight: contentRight? contentRight: "No-content",
+          wordShow:wordShow,
+          contentLeft: contentLeft,
+          contentRight: contentRight,
+          isCorrect: correctAns,
           milliseconds: caltiming
         });
-
-        const setArray = this.targetPratice.concat(this.attributePratice, this.targetTest, this.attributeTest);
-        this.isWord = setArray[Math.floor(Math.random()*setArray.length)];
 
         this.setTime = performance.now();
         this.indexCount += 1
       }else if(this.isType === "b7"){
         console.log('b7')
+
+        const checkPratice = this.attributePratice.concat(this.targetPratice) // L side
+        const setArrayRandom = this.attributePratice.concat(this.targetTest,this.targetPratice,this.attributeTest)
+
+        const correctAns = evt === this.setTrueSide? true: false;
+        this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
+        if(correctAns === false){
+            if(this.setTrueSide === "R"){
+              alert("correct answer is right side!")
+            }else{
+              alert("correct answer is left side!")
+            }
+          }
+        let randomIndex = Math.floor(Math.random()*setArrayRandom.length);
+          while(true){
+            if(this.arrayIndex[0] === this.arrayIndex[1] || this.arrayIndex.length <= 1){
+              this.arrayIndex.push(randomIndex)
+              // console.log("randomIndex: ",randomIndex);
+              break;
+            }
+          }
+
+          if( this.arrayIndex.length >= 2){
+            this.arrayIndex = []
+          }
+
+        const setWord = setArrayRandom[randomIndex];
+        const setElement = checkPratice.includes(setWord)?{side:"R", element:setWord}: {side:"L", element:setWord}
+        // console.log("testing ==> ",correctAns)
+
+        this.setTrueSide = setElement.side;
+        this.isWord = setElement;
+
         const timing =  performance.now();
         const caltiming = timing - this.setTime;
+        // console.log("caltiming: ", caltiming)
 
         this.isResult.push({
           typeCal: "b7",
           runnerName: this.runner,
           userSelect: evt,
-          contentLeft: contentLeft ? contentLeft: "No-content",
-          contentRight: contentRight? contentRight: "No-content",
+          wordShow:wordShow,
+          contentLeft: contentLeft,
+          contentRight: contentRight,
+          isCorrect: correctAns,
           milliseconds: caltiming
         });
-
-        const setArray = this.targetPratice.concat(this.attributePratice, this.targetTest, this.attributeTest);
-        this.isWord = setArray[Math.floor(Math.random()*setArray.length)];
 
         this.setTime = performance.now();
         this.indexCount += 1;
@@ -390,22 +677,22 @@ export default {
           this.indexCount = 0
           this.isCompareAttrubuteAndTest = false;
         }
-        
       }
 
     },
     btnStart(){
-
       this.isStart = true;
       this.btnSelection();
-
     },
+
+    haddlePopup(){
+      this.isPopupDesc= false;
+    },
+
     async btnCalResult(){
 
       const personalData = localStorage.getItem("user_sign_iat");
       const convertData = JSON.parse(personalData);
-      
-
 
       const payload = {
         firstname: convertData.firstname,
@@ -427,8 +714,8 @@ export default {
       }catch(err){
         console.log(err);
       }
-
     },
+
     haddleRecover(){
       this.$router.go()
     }
@@ -439,10 +726,7 @@ export default {
   },
   mounted(){
     this.fetchIATData();
-    // this.btnSelection();
-    // console.log(this.isStart)
-    // if(this.isStart === true){
-        // console.log(this.isStart)
+
         window.addEventListener("keypress", e => {
         const getKey = String.fromCharCode(e.keyCode)
         console.log(getKey);
@@ -453,16 +737,11 @@ export default {
         }
 
       });
-    // }
+
 
   },
   updated(){
- 
-    // setTimeout(() => {
-    //   if(this.timingCount > 0){
-    //      this.timingCount = this.timingCount -1
-    //   }
-    // },1000);
+
   }
 }
 </script>
@@ -475,14 +754,6 @@ export default {
 }
 
 
-.time-out{
-  margin: auto;
-  text-align: center;
-  margin-top: 25px;
-  font-weight: bold;
-  font-size: 20px;
-}
-
 .content-iat-container{
   /* display: flex;
   justify-content: space-around; */
@@ -490,16 +761,17 @@ export default {
   text-align: center;
 }
 
-.set-header-contiainer{
-
-  margin-bottom: 50px;
+.content-iat-container-error{
+  /* display: flex;
+  justify-content: space-around; */
+  margin: auto;
+  text-align: center;
+  border: 1px solid red;
+  border-radius: 30px;
+  translate: 0.5s;
 }
 
-.set-object-header{
-  display:flex;
-  justify-content: space-around;
-}
-  
+
 .title-iat{
   margin: auto;
   text-align: center;
@@ -588,5 +860,83 @@ export default {
   border: 1px solid rgb(129, 125, 125);
   background: rgb(129, 125, 125);
   font-weight: bold;
+}
+
+.popup-container{
+  position: fixed;
+  left:0;
+  top:0;
+  width: 100%;
+  height: 100vh;
+  margin: auto;
+  z-index: 999;
+  text-align: center;
+  background: rgb(46, 46, 46);
+  opacity: 0.8;
+}
+
+.title-popup{
+  margin-top: 45%;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.example-btn{
+  margin-top: 200px;
+}
+
+.example-btn-1  > button, .example-btn-2> button{
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 20px;
+}
+
+.popup-submit{
+  margin-top: 30px;
+  border: 1px solid rgb(0, 157, 255);
+  background: rgb(0, 157, 255);;
+  color: white;
+  width: 120px;
+  height:30px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+.popup-submit:active{
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.example-desc-starter{
+  border: 1px solid grey;
+  border-radius: 30px;
+}
+.set-example-title{
+  margin-top: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.explain-b1{
+  text-align: center;
+}
+
+.btn-example{
+  margin-top: 50px;
+}
+
+.example-btn-select-side{
+  margin-top: 30px;
+  text-align: center;
+  margin-bottom: 30px; 
+}
+
+.example-btn-select-side > button{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.example-text{
+  text-align: center;
 }
 </style>

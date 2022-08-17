@@ -7,6 +7,7 @@ const express  = require('express');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
+const json2csv = require('json2csv').parse;
 // const multer  = require('multer');
 // const imageToBase64 = require("image-to-base64");
 
@@ -277,6 +278,8 @@ app.post("/backend_iat/analysis", async (req, res) => {
         iatReply
     } = req.body
 
+    // console.log("array of IAT: ",iatReply);
+
     const avgCalculate = require("./calculateFunction/avgCalculate")
     const calculateD = require("./calculateFunction/calculateD")
 
@@ -369,11 +372,12 @@ app.post("/backend_iat/analysis", async (req, res) => {
 });
 
 app.get("/backend_iat/dashboard", async (req, res) => {
+    let arrayUserData = [];
 
     try{
         const userData = await userDscore.find({});
-
-        let arrayUserData = [];
+        // console.log("userData ==> ",userData[0].result)
+        
 
         userData.forEach((arrayResult) => {
             arrayResult.result.forEach((element) => {
@@ -387,7 +391,9 @@ app.get("/backend_iat/dashboard", async (req, res) => {
                     runnerName: element.runnerName, 
                     contentLeft: element.contentLeft,
                     contentRight: element.contentRight,
+                    wordShow: element.wordShow,
                     userSelect: element.userSelect, 
+                    isCorrect: element.isCorrect,
                     milliseconds: element.milliseconds
                 }
 
@@ -395,15 +401,85 @@ app.get("/backend_iat/dashboard", async (req, res) => {
             })
         })
 
-        const warpingData = {
+        const arrayData = {
             listData: arrayUserData
         }
-
-        res.send(warpingData);
+    
+        res.send(arrayData);
 
     }catch(err){
         console.log(`Error in api backend_iat/dashboard: ${err}`);
         res.sendStatus(500);
+    }
+
+    
+
+});
+
+app.post("/backend_iat/download", async (req, res) => {
+    const {typeFile} = req.body;
+
+    let arrayUserData = [];
+
+    try{
+        const userData = await userDscore.find({});
+        // console.log("userData ==> ",userData[0].result)
+
+        userData.forEach((arrayResult) => {
+            arrayResult.result.forEach((element) => {
+                const setData = {
+                    firstname: arrayResult.firstname,
+                    lastname: arrayResult.lastname,
+                    gender: arrayResult.gender,
+                    personalities: arrayResult.personalities,
+                    dscore: arrayResult.dscore,
+                    blockType: element.typeCal,
+                    runnerName: element.runnerName, 
+                    contentLeft: element.contentLeft,
+                    contentRight: element.contentRight,
+                    wordShow: element.wordShow,
+                    userSelect: element.userSelect, 
+                    isCorrect: element.isCorrect,
+                    milliseconds: element.milliseconds
+                }
+
+                arrayUserData.push(setData);
+            })
+        })
+
+    }catch(err){
+        console.log(`Error in api backend_iat/dashboard: ${err}`);
+        res.sendStatus(500);
+    }
+
+    if(typeFile === "json"){
+        const arrayData = {
+            listData: arrayUserData
+        }
+        res.send(arrayData)
+    }else if(typeFile === "excel"){
+        // console.log("jsonDatav", jsonData)
+        const workSheet = XLSX.utils.json_to_sheet(arrayUserData);
+        const workBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workBook, workSheet, "Sheet 1");
+        XLSX.writeFile(workBook, "./result/emotion.xlsx");
+        const file = `${__dirname}/result/emotion.xlsx`;
+        console.log("backend action", file)
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader("Content-Disposition", 'attachment; filename=emotion.xlsx');
+        res.download(file, "emotion.xlsx", (err) => {
+            if(err){
+                console.log("download error:", err)
+            }else{
+                console.log("download!")
+            }
+        });
+    }else if(typeFile === "csv"){
+        const csvString = json2csv(arrayUserData);
+        // console.log(csvString);
+        res.setHeader('Content-disposition', 'attachment; filename=shifts-report.csv');
+        res.set('Content-Type', 'text/csv');
+        res.status(200).send(csvString);
     }
     
 });
