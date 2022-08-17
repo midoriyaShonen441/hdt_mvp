@@ -441,7 +441,14 @@ export default {
         }
     },
     mounted(){
-        this.haddleShowData();
+        const tokenset = this.$cookies.get("admin_anotherme")
+        if(!tokenset){
+            this.$cookies.remove("admin_anotherme")
+            this.$router.push("/login")
+        }else{
+            this.haddleShowData();
+        }
+        
         // if(this.SelectionDatabase === "Emotion"){
         //     this.haddleShowData();
         // }else{

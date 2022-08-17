@@ -11,9 +11,9 @@ COPY package-lock.json .
 
 RUN npm install && npm cache clean --force
 RUN npm i bcrypt@5.0.0
-RUN npm install -g nodemon
+# RUN npm install -g nodemon
 COPY . .
 
 EXPOSE 8888
 
-CMD ["nodemon", "index.js"]
+CMD ["node", "index.js"]
