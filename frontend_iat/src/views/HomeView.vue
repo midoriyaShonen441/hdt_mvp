@@ -1,7 +1,7 @@
 <template>
   <div class="set-homepage-container">
     <div class="title-iat"> 
-      <h4>testing</h4>
+      <h4>Welcome to implicit Association Test</h4>
     </div>
     <div class="user-selection">
       <div class="user-container">

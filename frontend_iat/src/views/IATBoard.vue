@@ -11,24 +11,58 @@
     </div>
 
     <div class="popup-container" v-if="isPopupDesc === true">
-      <div class="title-popup">ระบบได้ทำการสลับปุ่มกด</div>
+      <div class="title-popup" v-if="isBtnChange === false">ระบบได้ทำการสลับปุ่มกด</div>
+      <div class="title-popup" v-if="isBtnChange === true">ความหมายปุ่มกดมีการเปลี่ยนแปลง</div>
       <div class="example-btn">
-        <div class="example-btn-1">
+        <div class="example-btn-1"  v-if="isBtnChange === false">
           <button class="btn-ok" >{{targetTestName}}</button>
           <button class="btn-nope" >{{targetPraticeName}}</button>
         </div>
-        <div class="example-btn-2">
-          <button class="btn-ok">
+
+        <div class="example-btn-2" v-if="isBtnChange === true">
+          <div v-if="this.isType === 'b2' && this.setType !== 'b3'">
+            <button class="btn-ok" style="margin-right: 20px;">{{attributePraticeName}}</button>
+            <button class="btn-nope" style="margin-left: 20px;">{{attributeTestName}}</button>
+          </div>
+          <div v-if="this.setType === 'b3'">
+            <button class="btn-ok" style="margin-right: 20px;">
+              <div>{{targetPraticeName}}</div>
+              <div>-or-</div>
+              <div>{{attributePraticeName}}</div>
+            </button>
+            <button class="btn-nope" style="margin-left: 20px;">
+              <div>{{targetTestName}}</div>
+              <div>-or-</div>
+              <div>{{attributeTestName}}</div>
+            </button>
+          </div>
+          <div v-if="this.setType === 'b6'" >
+            <button class="btn-ok" style="margin-right: 20px;">
             <div>{{targetTestName}}</div>
             <div>-or-</div>
             <div>{{attributePraticeName}}</div>
           </button>
-           <button class="btn-nope" >
+          <button class="btn-nope" style="margin-left: 20px;">
+            <div>{{targetPraticeName}}</div>
+            <div>-or-</div>
+            <div>{{attributeTestName}}</div>
+          </button>
+          </div>
+        </div>
+
+        <div class="example-btn-2" v-if="isBtnChange === false">
+          <button class="btn-ok" >
+            <div>{{targetTestName}}</div>
+            <div>-or-</div>
+            <div>{{attributePraticeName}}</div>
+          </button>
+           <button class="btn-nope"  >
             <div>{{targetPraticeName}}</div>
             <div>-or-</div>
             <div>{{attributeTestName}}</div>
           </button>
         </div>
+        
       </div>
       <div class="submit-popup-btn">
         <button class="popup-submit" @click="haddlePopup">Submit</button>
@@ -54,13 +88,16 @@
     </div>
 
     <div :class="cssContentIatContainer" v-if="isFinsh === false">
+      <div v-if="cssContentIatContainer === 'content-iat-container-error'" 
+      style="color: red; 
+      font-weight: bold; margin-top: 10px">Mistaken</div>
       <div class="set-content">
         <div class="content-container">
           <div class="set-text">
           {{isWord.element}}
-            <div>
+            <!-- <div>
               {{setTrueSide}}
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -72,7 +109,7 @@
       </div>
       <div class="target-attibute">
         <div class="test-set">
-          <div class="title-pratice">{{iatData.target_pratice_name}}</div>
+          <div class="title-pratice">{{iatData.target_test_name}}</div>
           <div v-for="(data, index) in targetTest" :key="index">
             {{data}}
           </div>
@@ -182,6 +219,7 @@ export default {
       showResult: false,
       isResult:[],
       isType:"b1",
+      setType:"",
 
       isCompareAttrubuteAndTest: false,
       isWord:"",
@@ -194,6 +232,7 @@ export default {
 
       setTrueSide: "",
       isPopupDesc: false,
+      isBtnChange: true,
 
       cssContentIatContainer: "content-iat-container",
       atIndex:0,
@@ -234,6 +273,7 @@ export default {
       }
     },
 
+ 
     btnSelection(evt, wordShow,contentLeft, contentRight){
       if(this.isType === "b1"){
         console.log('b1')
@@ -241,22 +281,23 @@ export default {
         if(this.indexCount >= 10){
           this.isType = "b2"
           this.indexCount = 0;
-          this.isCountingPages += 1
+          this.isPopupDesc = true
+          this.isCountingPages += 1          
         }
 
         const setArrayRandom = this.targetPratice.concat(this.targetTest);
 
         if(this.indexCount !== 0){
-          console.log("array =>", this.arrayIndex)
+          // console.log("array =>", this.arrayIndex)
           // console.log("true side: ",this.targetTest);
           // console.log("select side: ", evt)
           const correctAns = evt === this.setTrueSide? true: false;
           this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
           if(correctAns === false){
             if(this.setTrueSide === "R"){
-              alert("correct answer is right side!")
+              alert("Mistaken! correct answer is right side!")
             }else{
-              alert("correct answer is left side!")
+              alert("Mistaken! correct answer is left side!")
             }
           }
 
@@ -327,19 +368,19 @@ export default {
         const setArrayRandom = this.attributePratice.concat(this.attributeTest);
 
         if(this.indexCount >= 10){
-          this.isType = "b3"
+          this.setType = "b3"
           this.indexCount = 0
           this.isCompareAttrubuteAndTest = true
-          this.isCountingPages += 1
+          this.isPopupDesc = true;          
         }
 
         const correctAns = evt === this.setTrueSide? true: false;
         this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
         if(correctAns === false){
             if(this.setTrueSide === "R"){
-              alert("correct answer is right side!")
+              alert("Mistaken! correct answer is right side!")
             }else{
-              alert("correct answer is left side!")
+              alert("Mistaken! correct answer is left side!")
             }
           }
 
@@ -396,9 +437,9 @@ export default {
         this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
         if(correctAns === false){
             if(this.setTrueSide === "R"){
-              alert("correct answer is right side!")
+              alert("Mistaken! correct answer is right side!")
             }else{
-              alert("correct answer is left side!")
+              alert("Mistaken! correct answer is left side!")
             }
           }
 
@@ -448,23 +489,18 @@ export default {
         if(this.indexCount >= 40){
           this.isType = "b5"
           this.switchType = true
-          this.indexCount = 0
-          this.isCompareAttrubuteAndTest = false
+          this.isBtnChange = false
           this.isPopupDesc = true
-          // while(this.isPopupDesc){
-          //   if(this.isPopupDesc === false){
-          //     break;
-          //   }
-          // }
+          this.indexCount = 0
           this.isCountingPages += 1
         }
           const correctAns = evt === this.setTrueSide? true: false;
           this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
           if(correctAns === false){
             if(this.setTrueSide === "R"){
-              alert("correct answer is right side!")
+              alert("Mistaken! correct answer is right side!")
             }else{
-              alert("correct answer is left side!")
+              alert("Mistaken! correct answer is left side!")
             }
           }
           let randomIndex = Math.floor(Math.random()*setArrayRandom.length);
@@ -510,19 +546,20 @@ export default {
         const setArrayRandom = this.targetPratice.concat(this.targetTest);
 
         if(this.indexCount >= 10){
-          this.isType = "b6"
+          this.setType = "b6"
           this.indexCount = 0
           this.isCompareAttrubuteAndTest = true;
-          this.isCountingPages += 1
+          this.isBtnChange = true;
+          this.isPopupDesc = true;
         }
 
         const correctAns = evt === this.setTrueSide? true: false;
         this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
         if(correctAns === false){
             if(this.setTrueSide === "R"){
-              alert("correct answer is right side!")
+              alert("Mistaken! correct answer is right side!")
             }else{
-              alert("correct answer is left side!")
+              alert("Mistaken! correct answer is left side!")
             }
           }
 
@@ -578,9 +615,9 @@ export default {
         this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
         if(correctAns === false){
             if(this.setTrueSide === "R"){
-              alert("correct answer is right side!")
+              alert("Mistaken! correct answer is right side!")
             }else{
-              alert("correct answer is left side!")
+              alert("Mistaken! correct answer is left side!")
             }
           }
         let randomIndex = Math.floor(Math.random()*setArrayRandom.length);
@@ -629,9 +666,9 @@ export default {
         this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
         if(correctAns === false){
             if(this.setTrueSide === "R"){
-              alert("correct answer is right side!")
+              alert("Mistaken! correct answer is right side!")
             }else{
-              alert("correct answer is left side!")
+              alert("Mistaken! correct answer is left side!")
             }
           }
         let randomIndex = Math.floor(Math.random()*setArrayRandom.length);
@@ -686,7 +723,19 @@ export default {
     },
 
     haddlePopup(){
-      this.isPopupDesc= false;
+      if(this.setType === 'b3'){
+        this.isType = 'b3'
+        this.isCountingPages += 1
+        this.isPopupDesc= false;
+        this.setType = ""
+      }else if(this.setType === 'b6'){
+        this.isType = 'b6'
+        this.isCountingPages += 1
+        this.isPopupDesc= false;
+        this.setType = ""
+      }else{
+        this.isPopupDesc= false;
+      }
     },
 
     async btnCalResult(){

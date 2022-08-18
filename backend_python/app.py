@@ -30,7 +30,7 @@ def send_word_cloud():
     if request.method == 'POST':
         # base64_array = []
         req = request.get_json(force=True)
-        print("req body ===> ",req['text'])
+        # print("req body ===> ",req['text'])
         text = req['text']
 
         if(text != ''):
@@ -64,7 +64,7 @@ def send_word_cloud():
             text= "ทดสอบระบบ wordcloud นะครับ"
             words = word_tokenize(text) 
             all_words = ' '.join(words).lower().strip()
-            print("all_words ==> ",all_words)
+            # print("all_words ==> ",all_words)
             
             wordcloud = WordCloud(
                         regexp='[ก-๙]+',

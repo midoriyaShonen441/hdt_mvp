@@ -7,7 +7,10 @@ const userDscore = new mongoose.Schema({
     gender: {type:String},
     birthday: {type:String},
     personalities: {type:String},
-    dscore: {type:Number},
+    dscore_method3: {type:Number},
+    dscore_method4: {type:Number},
+    dscore_method5: {type:Number},
+    dscore_method6: {type:Number},
     result: [
         {
             typeCal: {type:String},

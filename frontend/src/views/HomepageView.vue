@@ -51,6 +51,22 @@ export default {
                         Summary
                     </button>
             </div>
+            <div class="rec-app">
+                <div class="rec-text"><u>We recommend google application.</u></div>
+                <div class="rec-google-apk">
+                    <div class="rec-img">
+                        <img src="../assets/google.png" height="120" width="120"/>
+                    </div>
+                    <div class="rec-link">
+                        <a href="https://apps.apple.com/us/app/google/id284815942">
+                            <img class="apple-app" src="../assets/apple.png" height="60" width="150"/>
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=com.google.android.googlequicksearchbox&hl=th&gl=US">
+                            <img class="google-app" src="../assets/appstore.png"  height="100" width="130"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
             <div class="footer-container">
                 <h5>Created by Nexter Living team.</h5>
             </div>
@@ -64,6 +80,27 @@ export default {
 .icon-img{
     margin-right: 15px;
 }
+
+.rec-text{
+    margin-top: 50px;
+}
+.rec-google-apk{
+    display: grid;
+    grid-template-columns: 1fr 1fr
+        
+}
+
+.rec-img{
+    margin-left: 1rem;
+}
+
+.rec-app{
+    text-align: center;
+    max-width: 350px;
+    min-width: 350px;
+    margin: auto;
+}
+
 .test-button{ 
     margin-top: 40px;
     width: 200px;
@@ -111,12 +148,16 @@ export default {
 }
 
 .footer-container{
-    margin-top: 40%;
+    margin-top: 50px;
     padding-bottom: 40px;
 }
 
 .setting-img{
     margin-top: 10%
+}
+
+.google-app{
+    transform: translateY(-20px);
 }
 
 </style>

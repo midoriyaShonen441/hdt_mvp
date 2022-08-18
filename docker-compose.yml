@@ -28,8 +28,8 @@ services:
       context: ./backend
     ports:
       - 8888:8888
-    volumes:
-      - ./backend:/usr/src/app:cached
+    # volumes:
+    #   - ./backend:/usr/src/app:cached
     networks:
       - net
   
@@ -40,8 +40,8 @@ services:
       context: ./backend_python
     ports:
       - 8773:8773
-    volumes:
-      - ./backend_python:/usr/src/app:cached
+    # volumes:
+    #   - ./backend_python:/usr/src/app:cached
     networks:
       - net
 
@@ -53,8 +53,8 @@ services:
       context: ./backend_iat
     ports:
       - 7878:7878
-    volumes:
-      -./backend_iat:/usr/src/app:cached
+    # volumes:
+    #   -./backend_iat:/usr/src/app:cached
     networks:
       - net
 

@@ -221,7 +221,7 @@ export default {
                 runner: this.selectionIAT.runner
             }
 
-            console.log("querySelectedIAT ==> ", payload)
+            // console.log("querySelectedIAT ==> ", payload)
 
             try{
                 const selectedIAT = await axios.get(`${sendAPI}/iatselected`,headerConf);

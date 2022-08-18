@@ -2,7 +2,7 @@ const calculateD = (inA, inB, stdA, stdB) => {
 
     // console.log(inA, inB, stdA, stdB)
 
-    const isResult = (inB / stdB) - (inA / stdA)
+    const isResult = (inB / stdB * stdA) - (inA / stdA)
 
     return isResult;
 

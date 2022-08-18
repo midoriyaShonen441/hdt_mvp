@@ -281,12 +281,20 @@ app.post("/backend_iat/analysis", async (req, res) => {
     // console.log("array of IAT: ",iatReply);
 
     const avgCalculate = require("./calculateFunction/avgCalculate")
-    const calculateD = require("./calculateFunction/calculateD")
 
-    let arrayOfMillisecondsD3 = [];
-    let arrayOfMillisecondsD4 = [];
-    let arrayOfMillisecondsD6 = [];
-    let arrayOfMillisecondsD7 = [];
+    const stdCalulate = require("./calculateFunction/stdCalulate")
+    const DscoreFunc = require("./calculateFunction/cal_Dscore")
+
+
+    let arrayOfWorngD3 = [];
+    let arrayOfWorngD4 = [];
+    let arrayOfWorngD6 = [];
+    let arrayOfWorngD7 = [];
+
+    let arrayOfCorrectD3 = [];
+    let arrayOfCorrectD4 = [];
+    let arrayOfCorrectD6 = [];
+    let arrayOfCorrectD7 = [];
 
     try{
         // console.log(iatReply);
@@ -294,48 +302,56 @@ app.post("/backend_iat/analysis", async (req, res) => {
         iatReply.forEach((element) => {
 
             if(element.typeCal === "b3"){
-                if(element.milliseconds >= 7000){
-                    arrayOfMillisecondsD3.push(0);
+                if(element.milliseconds >= 10000 ){
+      
+                }else if(element.isCorrect === false){
+                    arrayOfWorngD3.push(element.milliseconds)
                 }else{
-                    arrayOfMillisecondsD3.push(element.milliseconds);
+                    arrayOfCorrectD3.push(element.milliseconds);
                 }
                 
-            }else if(element.typeCal === "b4"){
-                if(element.milliseconds >= 7000){
-                    arrayOfMillisecondsD4.push(0);
+            }else if(element.typeCal === "b4" ){
+                if(element.milliseconds >= 10000 ){
+  
+                }else if(element.isCorrect === false){
+                    arrayOfWorngD4.push(element.milliseconds)
                 }else{
-                    arrayOfMillisecondsD4.push(element.milliseconds);
+                    arrayOfCorrectD4.push(element.milliseconds);
                 }
             }else if(element.typeCal === "b6"){
-                if(element.milliseconds >= 7000){
-                    arrayOfMillisecondsD6.push(0);
+                if(element.milliseconds >= 10000 ){
+   
+                }else if(element.isCorrect === false){
+                    arrayOfWorngD6.push(element.milliseconds)
                 }else{
-                    arrayOfMillisecondsD6.push(element.milliseconds);
+                    arrayOfCorrectD6.push(element.milliseconds);
                 }
             }else if(element.typeCal === "b7"){
-                // console.log("D7 ==> ",element.milliseconds)
-                if(element.milliseconds >= 7000){
-                    arrayOfMillisecondsD7.push(0);
+                if(element.milliseconds >= 10000 ){
+      
+                }else if(element.isCorrect === false){
+                    arrayOfWorngD7.push(element.milliseconds)
                 }else{
-                    arrayOfMillisecondsD7.push(element.milliseconds);
+                    arrayOfCorrectD7.push(element.milliseconds);
                 }
             }
 
         });
+
+        const concatArrayCorrect = arrayOfCorrectD3.concat(arrayOfCorrectD4, arrayOfCorrectD6, arrayOfCorrectD7);
+        const correctAvg = avgCalculate(concatArrayCorrect);
+        const correctStd = stdCalulate(concatArrayCorrect);
         
-        // console.log(arrayOfMillisecondsD3.length, arrayOfMillisecondsD4.length, arrayOfMillisecondsD6.length, arrayOfMillisecondsD7.length)
-        const subResultD3 = avgCalculate(arrayOfMillisecondsD3);
-        const subResultD4 = avgCalculate(arrayOfMillisecondsD4);
-        const subResultD6 = avgCalculate(arrayOfMillisecondsD6);
-        const subResultD7 = avgCalculate(arrayOfMillisecondsD7);
-        // const subResultD8 = avgCalculate(arrayOfMillisecondsD3);
-        // console.log(subResultD7)
-        
-        const dPratice = calculateD(subResultD3.sumOf, subResultD4.sumOf, subResultD3.standardDeviation, subResultD4.standardDeviation)
-        const dTest = calculateD(subResultD6.sumOf, subResultD7.sumOf, subResultD6.standardDeviation, subResultD7.standardDeviation)
-        const Dscore = (dPratice + dTest ) / 2;
-        const sendD = {
-            Dscore: Dscore
+        const DscoreMethod3 = DscoreFunc(arrayOfCorrectD3, arrayOfWorngD3, correctAvg, correctStd)
+        const DscoreMethod4 = DscoreFunc(arrayOfCorrectD4, arrayOfWorngD4, correctAvg, correctStd)
+        const DscoreMethod5 = DscoreFunc(arrayOfCorrectD6, arrayOfWorngD6, correctAvg, correctStd)
+        const DscoreMethod6 = DscoreFunc(arrayOfCorrectD7, arrayOfWorngD7, correctAvg, correctStd)
+
+        const replayDscore = {
+            D3:DscoreMethod3,
+            D4:DscoreMethod4,
+            D6:DscoreMethod5,
+            D7:DscoreMethod6
         }
 
         try{
@@ -348,14 +364,17 @@ app.post("/backend_iat/analysis", async (req, res) => {
                 gender:gender,
                 birthday:birthday,
                 personalities:personalities,
-                dscore:Dscore,
+                dscore_method3:DscoreMethod3,
+                dscore_method4:DscoreMethod4,
+                dscore_method5:DscoreMethod5,
+                dscore_method6:DscoreMethod6,
                 result:iatReply
             });
             
             // const replyRsult = {
             //     result: sendD
             // }
-            res.send(sendD)
+            res.send(replayDscore)
 
         }catch(err){
             console.log("err in api analysis: "+ err);
