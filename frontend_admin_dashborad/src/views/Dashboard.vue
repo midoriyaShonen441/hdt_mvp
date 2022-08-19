@@ -130,7 +130,10 @@
                         <th>lastname</th>
                         <th>gender</th>
                         <th>personalities</th>
-                        <th>dscore</th>
+                        <th>dscore D3</th>
+                        <th>dscore D4</th>
+                        <th>dscore D5</th>
+                        <th>dscore D6</th>
                         <th>blockType</th>
                         <th>runner name</th>
                         <th>selection</th>
@@ -145,7 +148,10 @@
                         <td v-if="index < indexEnd && index >= indexStart">{{data.lastname}}</td>
                         <td v-if="index < indexEnd && index >= indexStart">{{data.gender}}</td>
                         <td v-if="index < indexEnd && index >= indexStart">{{data.personalities}}</td>
-                        <td v-if="index < indexEnd && index >= indexStart">{{data.dscore}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.dscore_method3}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.dscore_method4}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.dscore_method5}}</td>
+                        <td v-if="index < indexEnd && index >= indexStart">{{data.dscore_method6}}</td>
                         <td v-if="index < indexEnd && index >= indexStart">{{data.blockType}}</td>
                         <td v-if="index < indexEnd && index >= indexStart">{{data.runnerName}}</td>
                         <td v-if="index < indexEnd && index >= indexStart">{{data.userSelect}}</td>
@@ -348,16 +354,7 @@ export default {
                             this.$store.state.setJson = emotionData.data.listData
                             this.$router.push("./json")
                         }
-                        // else if(this.selectionFile === "excel"){
-                        //     const url = URL.createObjectURL(new Blob([response.data], {
-                        //         type: 'application/vnd.ms-excel'
-                        //     }))
-                        //     const link = document.createElement('a')
-                        //     link.href = url
-                        //     link.setAttribute('download', fileName)
-                        //     document.body.appendChild(link)
-                        //     link.click()
-                        // }
+
                     }
 
                 }catch(err){
@@ -389,16 +386,7 @@ export default {
                             this.$store.state.setJson = IATData.data.listData
                             this.$router.push("./json")
                         }
-                        // else if(this.selectionFile === "excel"){
-                        //     const url = URL.createObjectURL(new Blob([response.data], {
-                        //         type: 'application/vnd.ms-excel'
-                        //     }))
-                        //     const link = document.createElement('a')
-                        //     link.href = url
-                        //     link.setAttribute('download', fileName)
-                        //     document.body.appendChild(link)
-                        //     link.click()
-                        // }
+
                     }
 
                 }catch(err){
