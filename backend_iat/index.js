@@ -284,17 +284,22 @@ app.post("/backend_iat/analysis", async (req, res) => {
 
     const stdCalulate = require("./calculateFunction/stdCalulate")
     const DscoreFunc = require("./calculateFunction/cal_Dscore")
+    
+    // console.log("iatReply: ==> ",iatReply)
 
+    // let arrayOfWorngD3 = [];
+    // let arrayOfWorngD4 = [];
+    // let arrayOfWorngD6 = [];
+    // let arrayOfWorngD7 = [];
 
-    let arrayOfWorngD3 = [];
-    let arrayOfWorngD4 = [];
-    let arrayOfWorngD6 = [];
-    let arrayOfWorngD7 = [];
+    // let arrayOfCorrectD3 = [];
+    // let arrayOfCorrectD4 = [];
+    // let arrayOfCorrectD6 = [];
+    // let arrayOfCorrectD7 = [];
 
-    let arrayOfCorrectD3 = [];
-    let arrayOfCorrectD4 = [];
-    let arrayOfCorrectD6 = [];
-    let arrayOfCorrectD7 = [];
+    let correctArray = [];
+    let setArrayElementCorrect = [];
+    let setArrayElementWorng = [];
 
     try{
         // console.log(iatReply);
@@ -305,57 +310,86 @@ app.post("/backend_iat/analysis", async (req, res) => {
                 if(element.milliseconds >= 10000 ){
       
                 }else if(element.isCorrect === false){
-                    arrayOfWorngD3.push(element.milliseconds)
+                    const replyBack = {
+                        typeCal: element.typeCal,
+                        milliseconds: element.milliseconds
+                    }
+                    setArrayElementWorng.push(replyBack)
                 }else{
-                    arrayOfCorrectD3.push(element.milliseconds);
+                    const replyBack = {
+                        typeCal: element.typeCal,
+                        milliseconds: element.milliseconds
+                    }
+                    correctArray.push(element.milliseconds)
+                    setArrayElementCorrect.push(replyBack)
                 }
                 
-            }else if(element.typeCal === "b4" ){
+            }if(element.typeCal === "b4" ){
                 if(element.milliseconds >= 10000 ){
   
                 }else if(element.isCorrect === false){
-                    arrayOfWorngD4.push(element.milliseconds)
+                    const replyBack = {
+                        typeCal: element.typeCal,
+                        milliseconds: element.milliseconds
+                    }
+                    setArrayElementWorng.push(replyBack)
                 }else{
-                    arrayOfCorrectD4.push(element.milliseconds);
+                    const replyBack = {
+                        typeCal: element.typeCal,
+                        milliseconds: element.milliseconds
+                    }
+                    correctArray.push(element.milliseconds)
+                    setArrayElementCorrect.push(replyBack)
                 }
-            }else if(element.typeCal === "b6"){
+            }if(element.typeCal === "b6"){
                 if(element.milliseconds >= 10000 ){
    
                 }else if(element.isCorrect === false){
-                    arrayOfWorngD6.push(element.milliseconds)
+                    const replyBack = {
+                        typeCal: element.typeCal,
+                        milliseconds: element.milliseconds
+                    }
+                    correctArray.push(element.milliseconds)
+                    setArrayElementWorng.push(replyBack)
                 }else{
-                    arrayOfCorrectD6.push(element.milliseconds);
+                    const replyBack = {
+                        typeCal: element.typeCal,
+                        milliseconds: element.milliseconds
+                    }
+                    correctArray.push(element.milliseconds)
+                    setArrayElementCorrect.push(replyBack)
                 }
-            }else if(element.typeCal === "b7"){
+            }if(element.typeCal === "b7"){
                 if(element.milliseconds >= 10000 ){
       
                 }else if(element.isCorrect === false){
-                    arrayOfWorngD7.push(element.milliseconds)
+                    const replyBack = {
+                        typeCal: element.typeCal,
+                        milliseconds: element.milliseconds
+                    }
+                    correctArray.push(element.milliseconds)
+                    setArrayElementWorng.push(replyBack)
                 }else{
-                    arrayOfCorrectD7.push(element.milliseconds);
+                    const replyBack = {
+                        typeCal: element.typeCal,
+                        milliseconds: element.milliseconds
+                    }
+                    correctArray.push(element.milliseconds)
+                    setArrayElementCorrect.push(replyBack)
                 }
             }
 
         });
 
-        const concatArrayCorrect = arrayOfCorrectD3.concat(arrayOfCorrectD4, arrayOfCorrectD6, arrayOfCorrectD7);
-        const correctAvg = avgCalculate(concatArrayCorrect);
-        const correctStd = stdCalulate(concatArrayCorrect);
+        // console.log("concatArrayCorrect: ", concatArrayCorrect)
+        const correctAvg = avgCalculate(correctArray);
+        const correctStd = stdCalulate(correctArray);
         
-        const DscoreMethod3 = DscoreFunc(arrayOfCorrectD3, arrayOfWorngD3, correctAvg, correctStd)
-        const DscoreMethod4 = DscoreFunc(arrayOfCorrectD4, arrayOfWorngD4, correctAvg, correctStd)
-        const DscoreMethod5 = DscoreFunc(arrayOfCorrectD6, arrayOfWorngD6, correctAvg, correctStd)
-        const DscoreMethod6 = DscoreFunc(arrayOfCorrectD7, arrayOfWorngD7, correctAvg, correctStd)
-
-        const replayDscore = {
-            D3:DscoreMethod3,
-            D4:DscoreMethod4,
-            D6:DscoreMethod5,
-            D7:DscoreMethod6
-        }
+        const replayDscore = DscoreFunc(setArrayElementCorrect, setArrayElementWorng, correctAvg, correctStd)
+        
+        console.log("dScoreMethod: ", replayDscore ,"\n")
 
         try{
-
 
             await userDscore.create({
                 firstname:firstname,
@@ -364,28 +398,22 @@ app.post("/backend_iat/analysis", async (req, res) => {
                 gender:gender,
                 birthday:birthday,
                 personalities:personalities,
-                dscore_method3:DscoreMethod3,
-                dscore_method4:DscoreMethod4,
-                dscore_method5:DscoreMethod5,
-                dscore_method6:DscoreMethod6,
+                dscore_method3:replayDscore.D1,
+                dscore_method4:replayDscore.D2,
+                dscore_method5:replayDscore.D3,
+                dscore_method6:replayDscore.D4,
                 result:iatReply
             });
-            
-            // const replyRsult = {
-            //     result: sendD
-            // }
-            res.send(replayDscore)
+
+            res.send(replayDscore);
 
         }catch(err){
             console.log("err in api analysis: "+ err);
-            res.sendStatus(500)
+            res.sendStatus(500);
         }
-
-        // console.log(Dscore)
-        // res.send(sendD)
     }catch(err){
         console.log("err in api analysis: "+ err);
-        res.sendStatus(500)
+        res.sendStatus(500);
     }
 
 });

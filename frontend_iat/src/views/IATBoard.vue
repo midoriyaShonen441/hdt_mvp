@@ -95,9 +95,9 @@
         <div class="content-container">
           <div class="set-text">
           {{isWord.element}}
-            <!-- <div>
+            <div>
               {{setTrueSide}}
-            </div> -->
+            </div>
           </div>
         </div>
       </div>
@@ -105,7 +105,10 @@
 
     <div class="d-score-content" v-if="showResult === true">
       <div class="title-d-score">
-        D-score: {{dScore}}
+        <div class="dscoreM3">D-score M3: {{dScore.D1}}</div>
+        <div class="dscoreM4">D-score M4: {{dScore.D2}}</div>
+        <div class="dscoreM5">D-score M5: {{dScore.D3}}</div>
+        <div class="dscoreM6">D-score M6: {{dScore.D4}}</div>
       </div>
       <div class="target-attibute">
         <div class="test-set">
@@ -278,7 +281,7 @@ export default {
       if(this.isType === "b1"){
         console.log('b1')
 
-        if(this.indexCount >= 10){
+        if(this.indexCount >= 5){
           this.isType = "b2"
           this.indexCount = 0;
           this.isPopupDesc = true
@@ -367,7 +370,7 @@ export default {
 
         const setArrayRandom = this.attributePratice.concat(this.attributeTest);
 
-        if(this.indexCount >= 10){
+        if(this.indexCount >= 5){
           this.setType = "b3"
           this.indexCount = 0
           this.isCompareAttrubuteAndTest = true
@@ -427,7 +430,7 @@ export default {
         const checkPratice = this.attributePratice.concat(this.targetPratice) // L side
         const setArrayRandom = this.attributePratice.concat(this.targetTest,this.targetPratice,this.attributeTest )
 
-        if(this.indexCount >= 20){
+        if(this.indexCount >= 5){
           this.isType = "b4"
           this.indexCount = 0
           this.isCountingPages += 1
@@ -486,7 +489,7 @@ export default {
         const checkPratice = this.attributePratice.concat(this.targetPratice) // L side
         const setArrayRandom = this.attributePratice.concat(this.targetTest,this.targetPratice,this.attributeTest )
 
-        if(this.indexCount >= 40){
+        if(this.indexCount >= 5){
           this.isType = "b5"
           this.switchType = true
           this.isBtnChange = false
@@ -545,7 +548,7 @@ export default {
 
         const setArrayRandom = this.targetPratice.concat(this.targetTest);
 
-        if(this.indexCount >= 10){
+        if(this.indexCount >= 5){
           this.setType = "b6"
           this.indexCount = 0
           this.isCompareAttrubuteAndTest = true;
@@ -605,7 +608,7 @@ export default {
         const checkPratice = this.attributePratice.concat(this.targetPratice) // L side
         const setArrayRandom = this.attributePratice.concat(this.targetTest,this.targetPratice,this.attributeTest)
 
-        if(this.indexCount >= 20){
+        if(this.indexCount >= 5){
           this.isType = "b7"
           this.indexCount = 0
           this.isCountingPages += 1
@@ -709,7 +712,7 @@ export default {
         this.setTime = performance.now();
         this.indexCount += 1;
 
-        if(this.indexCount >= 40){
+        if(this.indexCount >= 5){
           this.isFinsh = true;
           this.indexCount = 0
           this.isCompareAttrubuteAndTest = false;
@@ -753,11 +756,23 @@ export default {
         iatReply: this.isResult
       }
 
-      console.log(payload)
-
       try{
         const resultReplyBack  =  await axios.post(`${sendAPI}/analysis`, payload);
-        this.dScore =  Math.round(resultReplyBack.data.Dscore * 100) / 100;
+        console.log("all methods d score ==> ",resultReplyBack);
+        
+        const M1Score = Math.round(resultReplyBack.data.D1 * 100) / 100;
+        const M2Score = Math.round(resultReplyBack.data.D2 * 100) / 100;
+        const M3Score = Math.round(resultReplyBack.data.D3 * 100) / 100;
+        const M4Score = Math.round(resultReplyBack.data.D4 * 100) / 100;
+        
+
+        this.dScore = {
+          D1:M1Score,
+          D2:M2Score,
+          D3:M3Score,
+          D4:M4Score
+        }
+
         this.showResult = true;
         
       }catch(err){
