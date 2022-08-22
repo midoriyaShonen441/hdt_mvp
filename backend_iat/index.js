@@ -387,7 +387,7 @@ app.post("/backend_iat/analysis", async (req, res) => {
         
         const replayDscore = DscoreFunc(setArrayElementCorrect, setArrayElementWorng, correctAvg, correctStd)
         
-        console.log("dScoreMethod: ", replayDscore ,"\n")
+        // console.log("dScoreMethod: ", replayDscore ,"\n")
 
         try{
 

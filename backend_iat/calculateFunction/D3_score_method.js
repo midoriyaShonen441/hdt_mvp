@@ -4,11 +4,11 @@ const calDpracticeDtest = require("./cal_Dpractice_Dtest")
 
 const D3scoreMethods = (isMethod,correctArray, worngArray, avgCorrect, stdCorrect) => {
 
-    console.log("isMethod: ", isMethod)
-    console.log("correctArray",correctArray)
-    console.log("worngArray",worngArray)
-    console.log("avgCorrect",avgCorrect)
-    console.log("stdCorrect",stdCorrect)
+    // console.log("isMethod: ", isMethod)
+    // console.log("correctArray",correctArray)
+    // console.log("worngArray",worngArray)
+    // console.log("avgCorrect",avgCorrect)
+    // console.log("stdCorrect",stdCorrect)
 
     let newArray = []   
 
@@ -78,9 +78,9 @@ const D3scoreMethods = (isMethod,correctArray, worngArray, avgCorrect, stdCorrec
         const stdB6_B3 = stdCalulate(setConcatB6_B3)
 
         const DPractice = calDpracticeDtest(meanB6, meanB3, stdB6_B3)
-        console.log("DPractice: ", DPractice)
+        // console.log("DPractice: ", DPractice)
         const DTest = calDpracticeDtest(meanB7, meanB4, stdB7_B4)
-        console.log("DTest: ", DTest ,"\n")
+        // console.log("DTest: ", DTest ,"\n")
 
         const Dscore = (DPractice + DTest) / 2;
         return Dscore;

@@ -81,9 +81,9 @@ const D5scoreMethods = (isMethod,correctArray, worngArray, avgCorrect, stdCorrec
         const stdB6_B3 = stdCalulate(setConcatB6_B3)
 
         const DPractice = calDpracticeDtest(meanB6, meanB3, stdB6_B3)
-        console.log("DPractice: ", DPractice)
+        // console.log("DPractice: ", DPractice)
         const DTest = calDpracticeDtest(meanB7, meanB4, stdB7_B4)
-        console.log("DTest: ", DTest, "\n")
+        // console.log("DTest: ", DTest, "\n")
 
         const Dscore = (DPractice + DTest) / 2;
         return Dscore;
