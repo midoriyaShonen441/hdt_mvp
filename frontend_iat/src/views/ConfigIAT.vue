@@ -1,7 +1,7 @@
 <template>
   <div class="config-iat-container">
     <div class="title-page">
-      <div class="back-btn" @click="haddleAdminPanel"><i class='fas fa-angle-double-left' style='font-size:24px;'></i></div>
+      <div class="back-btn" @click="haddleAdminPanel"><img src="../assets/arrow.png" width="20" height="20"/></div>
       <div class="title-iat">New Config IAT</div>
     </div>
     <div class="set-config">

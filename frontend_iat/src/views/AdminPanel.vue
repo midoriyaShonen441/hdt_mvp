@@ -5,7 +5,7 @@
 
                 <div>Config IAT</div>
                 <div class="icon-border" @click="haddleHome">
-                    <i class='fas fa-home' style='font-size:24px; color:white'></i>
+                    <img src="../assets/home-icon-silhouette.png" height="30" width="30"/>
                 </div>
                 
             </div>
@@ -302,7 +302,6 @@ export default {
 }
 
 .icon-border{
-    background: rgb(62, 62, 62);
     padding: 10px;
     border-radius: 10px;
 }
