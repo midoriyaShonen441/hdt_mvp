@@ -95,9 +95,9 @@
         <div class="content-container">
           <div class="set-text">
           {{isWord.element}}
-            <div>
+            <!-- <div>
               {{setTrueSide}}
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

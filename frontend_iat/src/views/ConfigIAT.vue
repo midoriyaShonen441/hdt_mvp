@@ -12,18 +12,6 @@
         </div>
         <input class="runner-input" v-model="runner"/>
       </div>
-
-      <div class="set-btn-change"> 
-        <div class="btn-change">
-          <div><input class="input-change" v-model="btn_left"/></div>
-          <button class="btn-config">{{btn_left}}</button>
-        </div>
-        <div>
-          <div><input class="input-change"  v-model="btn_right"/></div>
-          <button class="btn-config">{{btn_right}}</button>
-        </div>
-      </div>
-
       <div class= "set-category">
         <div class="target-category"> 
           <div class="title">
@@ -54,12 +42,14 @@
               <div class="setting-list" v-if="targetLeft.length > 0 || targetRight.length > 0">
                 <div v-if="targetLeft.length > 0"> 
                   <div v-for="(data, index) in targetLeft" :key="index" >
-                    {{index}}: {{data}}
+                    <p v-if="data.type === 'text'">{{data.item}}</p>
+                    <img v-if="data.type === 'img'" :src="data.item" height="50" width="50"/>
                   </div>
                   </div>
                 <div v-if="targetRight.length > 0">
                   <div v-for="(data, index) in targetRight" :key="index">
-                    {{index}}: {{data}}
+                    <p v-if="data.type === 'text'">{{data.item}}</p>
+                    <img v-if="data.type === 'img'" :src="data.item" height="50" width="50"/>
                   </div>
                 </div>
               </div>
@@ -70,9 +60,13 @@
               {{tarTittleLeft}}
             </div>
             <div class="btn-add-remove">
-              <input class="target-input" v-model="targetPratice"/>
+              <input class="target-input" v-if="switchTargetTypeLeft === false" v-model="targetPratice"/>
+              <input class="target-input" v-if="switchTargetTypeLeft === true" type="file" @change="haddleImgTargetTypeLeft"/>
+
               <button  class="btn-haddle" @click="haddleAddingTargetPratice">+</button>
               <button  class="btn-haddle-mius" @click="haddleRemoveTargetPratice">-</button>
+              <button  class="btn-haddle-switch" v-if="switchTargetTypeLeft === false" @click="switchType('switchTargetTypeLeft')">img</button>
+              <button  class="btn-haddle-switch" v-if="switchTargetTypeLeft === true" @click="switchType('switchTargetTypeLeft')">text</button>
             </div>
           </div>
 
@@ -81,15 +75,15 @@
               {{tarTittleRight}}
             </div>
             <div class="btn-add-remove">
-              <input class="target-input" v-model="targetTest"/>
+              <input class="target-input" v-if="switchTargetTypeRight === false" v-model="targetTest"/>
+              <input class="target-input" v-if="switchTargetTypeRight === true" type="file" @change="haddleImgTargetTypeRight"/>
+
               <button  class="btn-haddle" @click="haddleAddingTargetTest">+</button>
               <button  class="btn-haddle-mius" @click="haddleRemoveTargetTest">-</button>
+              <button  class="btn-haddle-switch" v-if="switchTargetTypeRight === false" @click="switchType('switchTargetTypeRight')">img</button>
+              <button  class="btn-haddle-switch" v-if="switchTargetTypeRight === true" @click="switchType('switchTargetTypeRight')">text</button>
             </div>
           </div>
-          <!-- <div class="set-btn">
-              <button  class="btn-haddle">+</button>
-              <button  class="btn-haddle-mius">-</button>
-          </div> -->
         </div>
 
         <div class="attribute-category">
@@ -101,7 +95,6 @@
               <div class="left-side">
                 <div class="set-title-left-right">
                   <div>{{attTitleLeft}}</div>
-                  <!-- <div><button  class="btn-haddle-t" @click="haddleChangeTitle('att-p')">+</button></div> -->
                 </div>
                 
                 <input placeholder="name attribute left" v-model="attTitleLeft"/>
@@ -109,7 +102,6 @@
               <div class="right-side">
                 <div class="set-title-left-right">
                   <div>{{attTitleRight}}</div>
-                  <!-- <div><button  class="btn-haddle-t" @click="haddleChangeTitle('att-t')">+</button></div> -->
                 </div>
                 <input placeholder="name attribute right" v-model="attTitleRight"/>
               </div>
@@ -122,12 +114,14 @@
               <div class="setting-list" v-if="attributeLeft.length > 0 || attributeRight.length > 0">
               <div v-if="attributeLeft.length > 0">
                 <div v-for="(data, index) in attributeLeft" :key="index">
-                    {{index}} {{data}}
+                  <p v-if="data.type === 'text'">{{data.item}}</p>
+                  <img v-if="data.type === 'img'" :src="data.item" height="50" width="50"/>
                 </div>
               </div>
               <div v-if="attributeRight.length > 0">
                 <div v-for="(data, index) in attributeRight" :key="index">
-                    {{index}} {{data}}
+                  <p v-if="data.type === 'text'">{{data.item}}</p>
+                  <img v-if="data.type === 'img'" :src="data.item" height="50" width="50"/>
                 </div>
               </div>
               </div>
@@ -138,9 +132,13 @@
               {{attTitleLeft}}
             </div>
             <div class="btn-add-remove">
-              <input class="target-input" v-model="attributePratice"/>
+              <input class="target-input" v-if="switchAttributeTypeLeft === false" v-model="attributePratice"/>
+              <input class="target-input" v-if="switchAttributeTypeLeft === true" type="file" @change="haddleImgAttributeTypeLeft"/>
+
               <button  class="btn-haddle" @click="haddleAddingAttributePratice">+</button>
               <button  class="btn-haddle-mius" @click="haddleRemoveAttributePratice">-</button>
+              <button  class="btn-haddle-switch" v-if="switchAttributeTypeLeft === false" @click="switchType('switchAttributeTypeLeft')">img</button>
+              <button  class="btn-haddle-switch" v-if="switchAttributeTypeLeft === true" @click="switchType('switchAttributeTypeLeft')">text</button>
             </div>
           </div>
 
@@ -149,9 +147,13 @@
               {{attTitleRight}}
             </div>
             <div class="btn-add-remove">
-              <input class="target-input" v-model="attributeTest"/>
+              <input class="target-input" v-if="switchAttributeTypeRight === false" v-model="attributeTest"/>
+              <input class="target-input" v-if="switchAttributeTypeRight === true" type="file" @change="haddleImgAttributeTypeRight"/>
+
               <button  class="btn-haddle" @click="haddleAddingAttributeTest">+</button>
               <button  class="btn-haddle-mius" @click="haddleRemoveAttributeTest">-</button>
+              <button  class="btn-haddle-switch" v-if="switchAttributeTypeRight === false" @click="switchType('switchAttributeTypeRight')">img</button>
+              <button  class="btn-haddle-switch" v-if="switchAttributeTypeRight === true" @click="switchType('switchAttributeTypeRight')">text</button>
             </div>
           </div>
 
@@ -233,8 +235,8 @@ export default {
   data(){
     return{
       runner:"",
-      btn_left:"ข้อความปุ่มซ้าย",
-      btn_right: "ข้อความปุ่มขวา",
+      btn_left:"L",
+      btn_right: "R",
       tarTittleLeft: "left side",
       tarTittleRight:"right side",
       attTitleLeft:"left side",
@@ -247,6 +249,14 @@ export default {
       targetRight:[],
       attributeLeft:[],
       attributeRight:[],
+      switchTargetTypeLeft:false,
+      base64TarLeft:null,
+      switchTargetTypeRight:false,
+      base64TarRight:null,
+      switchAttributeTypeLeft:false,
+      base64AttributeLeft:null,
+      switchAttributeTypeRight:false,
+      base64AttributeRight:null,
       d1:false,
       d2:false,
       d3:true,
@@ -258,33 +268,181 @@ export default {
     }
   },
   methods:{
+    switchType(evt){
+      if(evt === 'switchTargetTypeLeft'){
+        if(this.switchTargetTypeLeft === false){
+          this.switchTargetTypeLeft = true
+        }else{
+          this.switchTargetTypeLeft = false
+        }
+      }else if(evt === 'switchTargetTypeRight'){
+        if(this.switchTargetTypeRight === false){
+          this.switchTargetTypeRight = true
+        }else{
+          this.switchTargetTypeRight = false
+        }
+      }else if(evt === 'switchAttributeTypeLeft'){
+        if(this.switchAttributeTypeLeft === false){
+          this.switchAttributeTypeLeft = true
+        }else{
+          this.switchAttributeTypeLeft = false
+        }
+      }else if(evt === 'switchAttributeTypeRight'){
+        if(this.switchAttributeTypeRight === false){
+          this.switchAttributeTypeRight = true
+        }else{
+          this.switchAttributeTypeRight = false
+        }
+      }
+    },
+
+    // haddle show image //
+    async haddleImgTargetTypeLeft(e){
+      const file = e.target.files[0];
+      if(file.size < 1500000){
+          const render = new FileReader();
+          render.readAsDataURL(file);
+          render.onloadend = () => {
+          this.base64TarLeft = String(render.result);
+        }
+      }else{
+        alert("image must lesser than 1.4Mb")
+      }
+      
+    },
+
+    async haddleImgTargetTypeRight(e){
+      const file = e.target.files[0];
+      
+      if(file.size < 1500000){
+        const render = new FileReader();
+        render.readAsDataURL(file);
+        render.onloadend = () => {
+          this.base64TarRight = String(render.result);
+        }
+      }else{
+        alert("image must lesser than 1.4Mb")
+      }
+      
+    },
+
+    async haddleImgAttributeTypeLeft(e){
+      const file = e.target.files[0];
+      
+      if(file.size < 1500000){
+        const render = new FileReader();
+        render.readAsDataURL(file);
+        render.onloadend = () => {
+          this.base64AttributeLeft = String(render.result);
+        }
+      }else{
+        alert("image must lesser than 1.4Mb")
+      }
+      
+    },
+
+    async haddleImgAttributeTypeRight(e){
+      const file = e.target.files[0];
+      
+      if(file.size < 1500000){
+        const render = new FileReader();
+        render.readAsDataURL(file);
+        render.onloadend = () => {
+          this.base64AttributeRight = String(render.result);
+        }
+      }else{
+        alert("image must lesser than 1.4Mb")
+      }
+    },
+
     haddleAdminPanel(){
       this.$router.push("/adminpanel")
     },
+
     haddleAddingTargetPratice(){
-      this.targetLeft.push(this.targetPratice)
-      this.targetPratice = ""
+      
+      if(this.targetPratice.trim()!== ''){
+        const warping = {
+          type:"text",
+          item: this.targetPratice.trim()
+        }
+        this.targetLeft.push(warping)
+        this.targetPratice = ""
+      }else if(this.base64TarLeft){
+        const warping = {
+          type:"img",
+          item: this.base64TarLeft
+        }
+        this.targetLeft.push(warping)
+      }
+      
+      console.log("this.targetLeft ==> ",this.targetLeft)
     },
     haddleRemoveTargetPratice(){
       this.targetLeft.pop()
     },
+
     haddleAddingTargetTest(){
-      this.targetRight.push(this.targetTest)
-      this.targetTest= ""
+
+      if(this.targetTest.trim()!== ''){
+        const warping = {
+          type:"text",
+          item: this.targetTest.trim()
+        }
+        this.targetRight.push(warping)
+        this.targetTest = ""
+      }else if(this.base64TarRight){
+        const warping = {
+          type:"img",
+          item: this.base64TarRight
+        }
+        this.targetRight.push(warping)
+      }
+
+      console.log("this.targetTest ==> ",this.targetRight)
     },
     haddleRemoveTargetTest(){
       this.targetRight.pop()
     },
     haddleAddingAttributePratice(){
-      this.attributeLeft.push(this.attributePratice)
-      this.attributePratice =""
+
+      if(this.attributePratice.trim()!== ''){
+        const warping = {
+          type:"text",
+          item: this.attributePratice.trim()
+        }
+        this.attributeLeft.push(warping)
+        this.attributePratice = ""
+      }else if(this.base64AttributeLeft){
+        const warping = {
+          type:"img",
+          item: this.base64AttributeLeft
+        }
+        this.attributeLeft.push(warping)
+      }
+      console.log("this.attributePratice ==> ",this.attributeLeft)
     },
     haddleRemoveAttributePratice(){
       this.attributeLeft.pop()
     },
+
     haddleAddingAttributeTest(){
-      this.attributeRight.push(this.attributeTest)
-      this.attributeTest = ""
+
+      if(this.attributeTest.trim()!== ''){
+        const warping = {
+          type:"text",
+          item: this.attributeTest.trim()
+        }
+        this.attributeRight.push(warping)
+        this.attributeTest = ""
+      }else if(this.base64AttributeRight){
+        const warping = {
+          type:"img",
+          item: this.base64AttributeRight
+        }
+        this.attributeRight.push(warping)
+      }
+      console.log("this.attributePratice ==> ",this.attributeRight)
     },
     haddleRemoveAttributeTest(){
       this.attributeRight.pop()
@@ -456,7 +614,7 @@ export default {
   
 }
 .config-iat-container{
-  width: 80%;
+  width: 95%;
   margin: auto;
   text-align: center;
 }

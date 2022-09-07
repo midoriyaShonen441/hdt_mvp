@@ -8,7 +8,7 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const json2csv = require('json2csv').parse;
-// const multer  = require('multer');
+// const bodyParser = require('body-parser');
 // const imageToBase64 = require("image-to-base64");
 
 
@@ -21,36 +21,17 @@ const IATmodel = require("./model/IATmodel");
 const IATAdminSelection = require("./model/IATAdminSelection");
 const normalUserSign = require("./model/normalUserSign");
 const userDscore = require("./model/userDscore");
+const imgModel = require("./model/imageSchema");
 
 // config backend // 
 const app = express();
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
+// end setup upload image //
 
 const port = process.env.PORT
 const hashRound = process.env.saltRounds 
-
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, './image_storage')
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, 'file-' + Date.now() + '.' +
-//         file.originalname.split('.')[file.originalname.split('.').length-1])}
-// })
-
-// const upload = multer({ 
-//     storage: storage, 
-//     limits:{
-//         fileSize:3670016
-//     }
-// })
-
-// app.post("/testimg",upload.single('fileupload'), async (req, res) =>{
-
-// })
-
 
 
 app.get('/backend_iat/debug', async (req, res) => {
@@ -536,6 +517,21 @@ app.post("/backend_iat/download", async (req, res) => {
     }
     
 });
+
+// show image upload //
+app.get('/backend_iat/imgshow', (req, res) => {
+    imgModel.find({}, (err, items) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('An error occurred', err);
+        }
+        else {
+            res.render('imagesPage', { items: items });
+        }
+    });
+});
+
+// upload image api // 
 
 
 app.listen(port, () => {
