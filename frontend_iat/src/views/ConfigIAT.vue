@@ -65,8 +65,8 @@
 
               <button  class="btn-haddle" @click="haddleAddingTargetPratice">+</button>
               <button  class="btn-haddle-mius" @click="haddleRemoveTargetPratice">-</button>
-              <button  class="btn-haddle-switch" v-if="switchTargetTypeLeft === false" @click="switchType('switchTargetTypeLeft')">img</button>
-              <button  class="btn-haddle-switch" v-if="switchTargetTypeLeft === true" @click="switchType('switchTargetTypeLeft')">text</button>
+              <button  class="btn-haddle-switch" v-if="switchTargetTypeLeft === false" @click="switchType('switchTargetTypeLeft')"><img class="btn-swtich" src="../assets/photo.png" width="20" height="20"/></button>
+              <button  class="btn-haddle-switch" v-if="switchTargetTypeLeft === true" @click="switchType('switchTargetTypeLeft')"><img class="btn-swtich" src="../assets/text-font.png" width="20" height="20"/></button>
             </div>
           </div>
 
@@ -80,8 +80,8 @@
 
               <button  class="btn-haddle" @click="haddleAddingTargetTest">+</button>
               <button  class="btn-haddle-mius" @click="haddleRemoveTargetTest">-</button>
-              <button  class="btn-haddle-switch" v-if="switchTargetTypeRight === false" @click="switchType('switchTargetTypeRight')">img</button>
-              <button  class="btn-haddle-switch" v-if="switchTargetTypeRight === true" @click="switchType('switchTargetTypeRight')">text</button>
+              <button  class="btn-haddle-switch" v-if="switchTargetTypeRight === false" @click="switchType('switchTargetTypeRight')"><img class="btn-swtich" src="../assets/photo.png" width="20" height="20"/></button>
+              <button  class="btn-haddle-switch" v-if="switchTargetTypeRight === true" @click="switchType('switchTargetTypeRight')"><img class="btn-swtich" src="../assets/text-font.png" width="20" height="20"/></button>
             </div>
           </div>
         </div>
@@ -137,8 +137,8 @@
 
               <button  class="btn-haddle" @click="haddleAddingAttributePratice">+</button>
               <button  class="btn-haddle-mius" @click="haddleRemoveAttributePratice">-</button>
-              <button  class="btn-haddle-switch" v-if="switchAttributeTypeLeft === false" @click="switchType('switchAttributeTypeLeft')">img</button>
-              <button  class="btn-haddle-switch" v-if="switchAttributeTypeLeft === true" @click="switchType('switchAttributeTypeLeft')">text</button>
+              <button  class="btn-haddle-switch" v-if="switchAttributeTypeLeft === false" @click="switchType('switchAttributeTypeLeft')"><img class="btn-swtich" src="../assets/photo.png" width="20" height="20"/></button>
+              <button  class="btn-haddle-switch" v-if="switchAttributeTypeLeft === true" @click="switchType('switchAttributeTypeLeft')"><img class="btn-swtich" src="../assets/text-font.png" width="20" height="20"/></button>
             </div>
           </div>
 
@@ -152,8 +152,8 @@
 
               <button  class="btn-haddle" @click="haddleAddingAttributeTest">+</button>
               <button  class="btn-haddle-mius" @click="haddleRemoveAttributeTest">-</button>
-              <button  class="btn-haddle-switch" v-if="switchAttributeTypeRight === false" @click="switchType('switchAttributeTypeRight')">img</button>
-              <button  class="btn-haddle-switch" v-if="switchAttributeTypeRight === true" @click="switchType('switchAttributeTypeRight')">text</button>
+              <button  class="btn-haddle-switch" v-if="switchAttributeTypeRight === false" @click="switchType('switchAttributeTypeRight')"><img src="../assets/photo.png" width="20" height="20"/></button>
+              <button  class="btn-haddle-switch" v-if="switchAttributeTypeRight === true" @click="switchType('switchAttributeTypeRight')"><img src="../assets/text-font.png" width="20" height="20"/></button>
             </div>
           </div>
 
@@ -786,6 +786,16 @@ export default {
   height: 30px;
   border-radius: 10px;
   font-weight: bold;
+}
+
+.btn-swtich{
+  transform: translateY(3.5px);
+}
+
+.btn-haddle-switch{
+  margin-left: 2px;
+  border: none;
+  background: none;
 }
 
 </style>
