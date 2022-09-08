@@ -29,7 +29,8 @@
                                 <h6>{{selectedRunner.target_pratice_name}}</h6>
                             </div>
                             <div class="list-data" v-for="(data, index) in selectionIAT.target_pratice" :key="index">
-                                <div>{{index}}: {{data}}</div>
+                                <p v-if="data.type === 'text'">{{index}}: {{data.item}}</p>
+                                <div v-if="data.type === 'img'">{{index}}: <img :src="data.item" height="50" width="50"/></div>
                             </div>
                         </div>
                         <div class="is-test">
@@ -37,7 +38,8 @@
                                 <h6>{{selectedRunner.target_test_name}}</h6>
                             </div>
                             <div class="list-data" v-for="(data, index) in selectionIAT.target_test" :key="index">
-                                <div>{{index}}: {{data}}</div>
+                                <p v-if="data.type === 'text'">{{index}}: {{data.item}}</p>
+                                <div v-if="data.type === 'img'">{{index}}: <img :src="data.item" height="50" width="50"/></div>
                             </div>
                         </div>
                     </div>
@@ -53,15 +55,17 @@
                                 <h6>{{selectedRunner.attribute_pratice_name}}</h6>
                             </div>
                             <div class="list-data" v-for="(data, index) in selectionIAT.attribute_pratice" :key="index">
-                                <div>{{index}}: {{data}}</div>
+                                <p v-if="data.type === 'text'">{{index}}: {{data.item}}</p>
+                                <div v-if="data.type === 'img'">{{index}}: <img :src="data.item" height="50" width="50"/></div>
                             </div>
                         </div>
                         <div class="is-test">
                             <div class="title-iat">
                                 <h6>{{selectedRunner.attribute_test_name}}</h6>
                             </div>
-                             <div class="list-data" v-for="(data, index) in selectionIAT.attribute_test" :key="index">
-                                <div>{{index}}: {{data}}</div>
+                            <div class="list-data" v-for="(data, index) in selectionIAT.attribute_test" :key="index">
+                                <p v-if="data.type === 'text'">{{index}}: {{data.item}}</p>
+                                <div v-if="data.type === 'img'">{{index}}: <img :src="data.item" height="50" width="50"/></div>
                             </div>
                         </div>
                     </div>

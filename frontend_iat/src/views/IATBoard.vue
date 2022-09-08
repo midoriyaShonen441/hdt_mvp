@@ -78,7 +78,12 @@
       </div>
       <div class="btn-example">
           <div class="example-text">
-            {{isWord}}
+            <div v-if="isWord.type === 'text'">
+              <p>{{isWord.item}}</p>
+            </div>
+            <div v-if="isWord.type === 'img'">
+              <img :src="isWord.item" width="170" height="170"/>
+            </div>
           </div>
           <div class="example-btn-select-side">
             <button class="btn-ok" >{{targetPraticeName}}</button>
@@ -87,17 +92,19 @@
       </div>
     </div>
 
-    <div :class="cssContentIatContainer" v-if="isFinsh === false">
+    <div :class="cssContentIatContainer" v-if="isFinsh === false && isStart === true">
       <div v-if="cssContentIatContainer === 'content-iat-container-error'" 
       style="color: red; 
       font-weight: bold; margin-top: 10px">Mistaken</div>
       <div class="set-content">
         <div class="content-container">
           <div class="set-text">
-          {{isWord.element}}
-            <!-- <div>
-              {{setTrueSide}}
-            </div> -->
+            <div v-if="isWord.element.type === 'text'">
+              <p>{{isWord.element.item}}</p>
+            </div>
+            <div  v-if="isWord.element.type === 'img'">
+              <img :src="isWord.element.item" width="170" height="170"/>
+            </div>
           </div>
         </div>
       </div>
@@ -114,21 +121,41 @@
         <div class="test-set">
           <div class="title-pratice">{{iatData.target_test_name}}</div>
           <div v-for="(data, index) in targetTest" :key="index">
-            {{data}}
+              <div v-if="data.type === 'text'">
+                <p>{{data.item}}</p>
+              </div>
+              <div v-if="data.type === 'img'">
+                <img :src="data.item" width="60" height="60"/>
+            </div>
           </div>
           <div class="title-test">{{iatData.attribute_test_name}}</div>
           <div v-for="(data, index) in attributeTest" :key="index">
-            {{data}}
+            <div v-if="data.type === 'text'">
+                <p>{{data.item}}</p>
+              </div>
+              <div v-if="data.type === 'img'">
+                <img :src="data.item" width="60" height="60"/>
+            </div>
           </div>
         </div>
         <div class="pratice-set">
           <div class="title-pratice">{{iatData.target_pratice_name}}</div>
           <div v-for="(data, index) in targetPratice" :key="index">
-            {{data}}
+            <div v-if="data.type === 'text'">
+                <p>{{data.item}}</p>
+              </div>
+              <div v-if="data.type === 'img'">
+                <img :src="data.item" width="60" height="60"/>
+            </div>
           </div>
           <div class="title-test">{{iatData.attribute_pratice_name}}</div>
           <div v-for="(data, index) in attributePratice" :key="index">
-            {{data}}
+            <div v-if="data.type === 'text'">
+                <p>{{data.item}}</p>
+              </div>
+              <div v-if="data.type === 'img'">
+                <img :src="data.item" width="60" height="60"/>
+            </div>
           </div>
         </div>
       </div>
@@ -225,6 +252,7 @@ export default {
       setType:"",
 
       isCompareAttrubuteAndTest: false,
+      // exampleWord:"",
       isWord:"",
 
       targetPraticeName:"",
@@ -269,10 +297,11 @@ export default {
         const setArrayRandom = this.targetPratice.concat(this.targetTest);
         let randomIndex = Math.floor(Math.random()*setArrayRandom.length);
         const setWord = setArrayRandom[randomIndex];
-        this.isWord = setWord
-
+        this.isWord = setWord;
+        // this.exampleWord = setWord
+        // console.log("setWord ===> ",setWord)
       }catch(err){
-
+        console.log(err)
       }
     },
 
@@ -291,9 +320,6 @@ export default {
         const setArrayRandom = this.targetPratice.concat(this.targetTest);
 
         if(this.indexCount !== 0){
-          // console.log("array =>", this.arrayIndex)
-          // console.log("true side: ",this.targetTest);
-          // console.log("select side: ", evt)
           const correctAns = evt === this.setTrueSide? true: false;
           this.cssContentIatContainer = correctAns? "content-iat-container":"content-iat-container-error";
           if(correctAns === false){
@@ -328,12 +354,14 @@ export default {
             typeCal: "b1",
             runnerName: this.runner,
             userSelect: evt,
-            wordShow:wordShow,
+            wordShow: wordShow.type === 'text'? wordShow.item: wordShow.filename,
             contentLeft: contentLeft,
             contentRight: contentRight,
             isCorrect: correctAns,
             milliseconds: caltiming
           });
+
+          console.log("this.isResult ===> ", this.isResult)
 
           this.setTrueSide = setElement.side;
           this.isWord = setElement
@@ -414,7 +442,7 @@ export default {
           typeCal: "b2",
           runnerName: this.runner,
           userSelect: evt,
-          wordShow:wordShow,
+          wordShow: wordShow.type === 'text'? wordShow.item: wordShow.filename,
           contentLeft: contentLeft,
           contentRight: contentRight,
           isCorrect: correctAns,
@@ -473,7 +501,7 @@ export default {
           typeCal: "b3",
           runnerName: this.runner,
           userSelect: evt,
-          wordShow:wordShow,
+          wordShow: wordShow.type === 'text'? wordShow.item: wordShow.filename,
           contentLeft: contentLeft,
           contentRight: contentRight,
           isCorrect: correctAns,
@@ -534,7 +562,7 @@ export default {
             typeCal: "b4",
             runnerName: this.runner,
             userSelect: evt,
-            wordShow:wordShow,
+            wordShow: wordShow.type === 'text'? wordShow.item: wordShow.filename,
             contentLeft: contentLeft,
             contentRight: contentRight,
             isCorrect: correctAns,
@@ -593,7 +621,7 @@ export default {
           typeCal: "b5",
           runnerName: this.runner,
           userSelect: evt,
-          wordShow:wordShow,
+          wordShow: wordShow.type === 'text'? wordShow.item: wordShow.filename,
           contentLeft: contentLeft,
           contentRight: contentRight,
           isCorrect: correctAns,
@@ -650,7 +678,7 @@ export default {
           typeCal: "b6",
           runnerName: this.runner,
           userSelect: evt,
-          wordShow:wordShow,
+          wordShow: wordShow.type === 'text'? wordShow.item: wordShow.filename,
           contentLeft: contentLeft,
           contentRight: contentRight,
           isCorrect: correctAns,
@@ -702,7 +730,7 @@ export default {
           typeCal: "b7",
           runnerName: this.runner,
           userSelect: evt,
-          wordShow:wordShow,
+          wordShow: wordShow.type === 'text'? wordShow.item: wordShow.filename,
           contentLeft: contentLeft,
           contentRight: contentRight,
           isCorrect: correctAns,

@@ -299,11 +299,16 @@ export default {
     // haddle show image //
     async haddleImgTargetTypeLeft(e){
       const file = e.target.files[0];
+      // console.log("file ===> ", file.name);
       if(file.size < 1500000){
           const render = new FileReader();
           render.readAsDataURL(file);
           render.onloadend = () => {
-          this.base64TarLeft = String(render.result);
+          this.base64TarLeft = {  
+            filename: file.name,
+            base64:String(render.result)
+          }
+
         }
       }else{
         alert("image must lesser than 1.4Mb")
@@ -318,7 +323,10 @@ export default {
         const render = new FileReader();
         render.readAsDataURL(file);
         render.onloadend = () => {
-          this.base64TarRight = String(render.result);
+          this.base64TarRight = {  
+            filename: file.name,
+            base64:String(render.result)
+          }
         }
       }else{
         alert("image must lesser than 1.4Mb")
@@ -333,7 +341,10 @@ export default {
         const render = new FileReader();
         render.readAsDataURL(file);
         render.onloadend = () => {
-          this.base64AttributeLeft = String(render.result);
+          this.base64AttributeLeft = {  
+            filename: file.name,
+            base64:String(render.result)
+          }
         }
       }else{
         alert("image must lesser than 1.4Mb")
@@ -348,7 +359,10 @@ export default {
         const render = new FileReader();
         render.readAsDataURL(file);
         render.onloadend = () => {
-          this.base64AttributeRight = String(render.result);
+          this.base64AttributeRight = {  
+            filename: file.name,
+            base64:String(render.result)
+          }
         }
       }else{
         alert("image must lesser than 1.4Mb")
@@ -371,12 +385,13 @@ export default {
       }else if(this.base64TarLeft){
         const warping = {
           type:"img",
-          item: this.base64TarLeft
+          filename: this.base64TarLeft.filename,
+          item: this.base64TarLeft.base64
         }
         this.targetLeft.push(warping)
       }
       
-      console.log("this.targetLeft ==> ",this.targetLeft)
+      // console.log("this.targetLeft ==> ",this.targetLeft)
     },
     haddleRemoveTargetPratice(){
       this.targetLeft.pop()
@@ -394,12 +409,13 @@ export default {
       }else if(this.base64TarRight){
         const warping = {
           type:"img",
-          item: this.base64TarRight
+          filename: this.base64TarRight.filename,
+          item: this.base64TarRight.base64
         }
         this.targetRight.push(warping)
       }
 
-      console.log("this.targetTest ==> ",this.targetRight)
+      // console.log("this.targetTest ==> ",this.targetRight)
     },
     haddleRemoveTargetTest(){
       this.targetRight.pop()
@@ -416,11 +432,12 @@ export default {
       }else if(this.base64AttributeLeft){
         const warping = {
           type:"img",
-          item: this.base64AttributeLeft
+          filename: this.base64AttributeLeft.filename,
+          item: this.base64AttributeLeft.base64
         }
         this.attributeLeft.push(warping)
       }
-      console.log("this.attributePratice ==> ",this.attributeLeft)
+      // console.log("this.attributePratice ==> ",this.attributeLeft)
     },
     haddleRemoveAttributePratice(){
       this.attributeLeft.pop()
@@ -438,11 +455,12 @@ export default {
       }else if(this.base64AttributeRight){
         const warping = {
           type:"img",
-          item: this.base64AttributeRight
+          filename:this.base64AttributeRight.filename,
+          item: this.base64AttributeRight.base64
         }
         this.attributeRight.push(warping)
       }
-      console.log("this.attributePratice ==> ",this.attributeRight)
+      // console.log("this.attributePratice ==> ",this.attributeRight)
     },
     haddleRemoveAttributeTest(){
       this.attributeRight.pop()
