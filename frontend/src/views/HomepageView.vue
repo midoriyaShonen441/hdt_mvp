@@ -84,9 +84,10 @@ export default {
     margin-top: 50px;
 }
 .rec-google-apk{
-    display: grid;
-    grid-template-columns: 1fr 1fr
-        
+    display: flex;
+    justify-content: space-around;
+    /* display: grid;
+    grid-template-columns: 1fr 1fr */
 }
 
 .rec-img{
@@ -96,7 +97,6 @@ export default {
 .rec-app{
     text-align: center;
     max-width: 350px;
-    min-width: 350px;
     margin: auto;
 }
 
